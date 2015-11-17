@@ -1,10 +1,10 @@
-vim
+Vim
 ===
 
 Files
 -----
 
-### general
+### General
 
 - `vimrc`
     + Path: `$HOME/.vimrc`
