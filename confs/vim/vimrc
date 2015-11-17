@@ -1,0 +1,157 @@
+" General shenanigans
+
+"" not vi-compatible mode
+set nocompatible
+
+let mapleader=','
+hi CursorLineNr   term=bold ctermfg=Yellow gui=bold guifg=Yellow
+
+"" persistent undos
+set undodir=$HOME/.vim/undo
+set undofile
+set undolevels=1000
+set undoreload=10000
+
+"" much to do with folds
+" highlight folds lightly, fold on syntax, only nest 2 folds deep
+highlight folded ctermbg=233
+set foldmethod=syntax
+set foldnestmax=2
+
+" save and load folds automatically
+autocmd BufWinLeave *.* mkview!
+autocmd BufWinEnter *.* silent loadview
+
+"" 'control+n' to reset highlighting (e.g. after a search or search/replace)
+"nnoremap <C-n> :nohl<CR>
+
+"" 'space + <char>' to insert character <char>
+nnoremap <Space> i_<Esc>r
+
+function! RepeatChar(char, count)
+    return repeat(a:char, a:count)
+endfunction
+
+nnoremap t :<C-U>exec "normal i".RepeatChar(nr2char(getchar()), v:count1)<CR>
+nnoremap T :<C-U>exec "normal a".RepeatChar(nr2char(getchar()), v:count1)<CR>
+
+"" '>' and '<' in normal mode to change tabs
+nnoremap > gt
+nnoremap < gT
+
+"" use 'f' to open/close folds
+nnoremap f za
+
+" " tab behavior (all smart/auto, tab = 4 spaces)
+":retab applyes these rules to the current buffer
+set autoindent
+set smartindent
+set smarttab
+set shiftwidth=4
+set softtabstop=0
+set tabstop=4
+set expandtab
+
+
+"" show trailing spaces as '_', tabs as '>   '
+"set list listchars=tab:\ \ ,trail:_,extends:»,precedes:«
+set list listchars=tab:▸\ ,eol:¬,extends:»,precedes:«
+map <leader>lc :set list!<cr>
+
+"" syntax highlighting
+syntax on
+" set color scheme
+set background=dark
+
+"" numbers in margin
+set number
+
+"" keep 12 lines above and below the current line when scrolling
+set scrolloff=12
+
+" " highlight current line
+highlight cursorline ctermbg=233
+noremap <leader>cl :set cursorline!<cr>
+set cursorline
+
+"Plugins
+
+""vundle
+"filetype must be off for vundle commands
+filetype off
+set rtp+=$HOME/.vim/bundle/Vundle.vim
+call vundle#begin()
+"vundle manages itself, this is required
+Plugin 'gmarik/Vundle.vim'
+Plugin 'bling/vim-airline'
+Plugin 'jiangmiao/auto-pairs'
+"Plugin 'mhinz/vim-startify'
+"Plugin 'Valloric/YouCompleteMe'
+"Plugin 'rdnetto/YCM-Generator'
+"Plugin 'jplaut/vim-arduino-ino'
+"Plugin 'Shougo/neocomplete'
+"Plugin 'FredKSchott/CoVim'
+
+call vundle#end()
+filetype plugin indent on
+
+set laststatus=2
+
+" " line break at 80 characters
+set formatoptions+=t
+set textwidth=80
+set wrap linebreak
+
+set completeopt-=preview
+
+set foldnestmax=2
+
+" options for splits
+"" easier split navigation (Ctrl+direction)
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+"" 'better' default split placements
+set splitbelow
+set splitright
+
+"" enable folder/project -specific vimrc
+"set exrc
+"" ... and restrict what you can do with it
+"set secure
+
+"" ycm options
+""" set default path for ycm conf
+"let g:ycm_extra_conf_globlist = ['$HOME/documents/programming/*','!~/*']
+""" stop ycm from confirming ycm conf file
+"let g:ycm_confirm_extra_conf = 0
+""" disable ycm highlighing errors
+"let g:ycm_enable_diagnostic_highlighting = 0
+
+" set foldmethod to 'indent' for python files
+"autocmd BufRead,BufNewFile,BufEnter *.py  set foldmethod=indent
+
+"autocmd BufRead,BufNewFile *.c,*.cc,*.cpp,*.h let @b=':!make'
+
+autocmd BufRead,BufNewFile *.tex,*.md let @b=':wa:!build_pdf %'
+  \ | let @p=':wa:!ssh_print mh247-19 %:r.pdf'
+  \ | let @o=':!mupdf %:r.pdf &> /dev/null &'
+
+"autocmd BufRead,BufNewFile *.ino let @b=':!ano build -m fio'
+"  \ | let @u=':!ano build -m fio:!ano upload -m fio'
+
+" autocmd BufRead,BufNewFile *.tex let @w=':w:!pdflatex %:r; bibtex %:r; pdflatex %:r; pdflatex %:r'
+"    \ | let @o=':!mupdf %:r.pdf &> /dev/null &'
+""    \ | let @p=':wa:!ssh_print m_mh247 %:r.pdf'
+
+autocmd BufEnter * colorscheme custom2
+autocmd BufEnter *.md colorscheme custom2_md
+
+augroup Shebang
+  autocmd BufNewFile *.py 0put =\"#!/usr/bin/env python\<nl># -*- coding: iso-8859-15 -*-\<nl>\"|$
+  autocmd BufNewFile *.rb 0put =\"#!/usr/bin/env ruby\<nl># -*- coding: None -*-\<nl>\"|$
+  autocmd BufNewFile *.tex 0put =\"%&plain\<nl>\"|$
+  autocmd BufNewFile *.\(cc\|hh\) 0put =\"//\<nl>// \".expand(\"<afile>:t\").\" -- \<nl>//\<nl>\"|2|start!
+augroup END
