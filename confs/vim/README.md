@@ -21,6 +21,7 @@ Files
 ### ftplugin
 
 - `markdown.vim`
+    + Path: `$HOME/.vim/ftplugin/markdown.vim`
     + Adds convenient keyboard shortcuts for Markdown headers
     + Requires the line `filetype plugin indent on` (or simply `filetype on`) in
       the `.vimrc`
