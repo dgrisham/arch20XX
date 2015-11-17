@@ -21,16 +21,17 @@ Files
 ### ftplugin
 
 - `markdown.vim`
-    + adds convenient keyboard shortcuts for Markdown headers
-    + requires the line `filetype plugin indent on` (or simply `filetype on`) in
+    + Adds convenient keyboard shortcuts for Markdown headers
+    + Requires the line `filetype plugin indent on` (or simply `filetype on`) in
       the `.vimrc`
 
 Additional Info
 ---------------
 
 - undo
-    + the `vimrc` file here turns on persistent undoing (the ability to undo a
+    + The `vimrc` file here turns on persistent undoing (the ability to undo a
       file across multiple opens). requires the folder `$HOME/.vim/undo/` to
       exist
-- see the Github pages for the commented-out Vundle plugins in `vimrc` for more
-  info on these plugins
+- See the Github pages for the commented-out [Vundle](https://github.com/VundleVim/Vundle.vim)
+  plugins in `vimrc` for more info on these plugins.
+
