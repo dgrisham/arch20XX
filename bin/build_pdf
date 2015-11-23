@@ -1,0 +1,32 @@
+#!/bin/zsh
+
+usage="usage: build_pdf <filename>
+<filename> = the name of the .tex or .md file to build"
+
+src="$HOME/src/build_pdf"
+
+input="$1"
+shift
+
+file="${input:r}"
+ext="${input:e}"
+
+if [[ "$ext" = "md" ]] ; then
+    . $src/md_build_tex "$file"
+elif [[ "$ext" = "tex" ]] ; then
+    :
+else
+    printf "$usage\n"
+    exit 1
+fi
+
+if [[ "$1" == "--filter-comments" ]]; then
+    `sed -i.bak -r 's_/\*.*?\*/ ?__' "$file.tex"` "$file.tex"
+fi
+
+pdflatex "$file" \
+    && bibtex "$file" \
+    && pdflatex "$file" \
+    && pdflatex "$file"
+
+rm -f "$file".{aux,bbl,blg,log,out}
