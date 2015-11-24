@@ -1,0 +1,10 @@
+#!/bin/env zsh
+
+# usage: get_cover [link]
+# link - url to the image of the album cover you want to download
+#
+# todo: support for png (i.e. convert png files to jpg)
+
+cover_name="cover.jpg"
+
+wget "$1" -O $cover_name
