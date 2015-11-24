@@ -1,0 +1,101 @@
+#!/bin/zsh
+
+# pull in aliases for convenience
+source ~/.aliases
+
+# status commands
+
+## get the date/time
+get_date() {
+    echo "$(date +'%a, %d %b %Y %H:%M')"
+}
+
+## get temperature information
+get_temp() {
+    TEMP_OUT=($(ls -d /sys/class/thermal/thermal_zone* | xargs -I file cat file/temp))
+    TEMPS=""
+    for TEMP in ${TEMP_OUT[@]}
+    do
+        TEMPS="$TEMPS $(($TEMP/1000))"
+    done
+    echo "${TEMPS## }"
+}
+
+## battery information
+get_bat() {
+    BATS=()
+    BAT_OUT=($(acpi -b))
+    echo "${BAT_OUT[3]:0:1}-${BAT_OUT[4]} ${BAT_OUT[5]}"
+}
+
+## figure out the uptime hours/minutes
+get_uptime() {
+    UP_OUT=($(uptime -p))
+    UP_OUTPUT=""
+    i=2
+    while [[ "$i" -lt "${#UP_OUT[@]}" ]]
+    do
+        TEMP="${UP_OUT[$i]}"
+        let i=$i+1
+        TEMP="$TEMP${UP_OUT[$i]:0:1}"
+        UP_OUTPUT="$UP_OUTPUT$TEMP "
+        let i=$i+1
+    done
+    echo "${UP_OUTPUT:0:(-1)}"
+}
+
+## get the network routing state/ip address
+get_net() {
+    NET_OUT=(`ip route | grep 'default'`)
+    if [[ "${#NET_OUT}" -lt 1 ]]
+    then
+        NET_OUT="No route"
+
+    else
+        NET_OUT=`echo "$NET_OUT" | awk '{print $5}'`
+        NET_OUT=`ip addr | grep "$NET_OUT" | grep inet | awk '{print $2}'`
+        NET_OUT=`echo "$NET_OUT" | awk -v FS='/' '{print $1}'`
+    fi
+    echo "$NET_OUT"
+}
+
+# notification commands
+
+## get the brightness of the screen
+get_bright() {
+    BRIGHT=`brightness`
+    [[ "${BRIGHT:0:(-1)}" -gt "80" ]] && echo "$BRIGHT"
+}
+
+## new emails
+get_email() {
+    mines_email="$(ls ~/.mail/mines/INBOX/new | wc -w)"
+    personal_email="$(ls ~/.mail/personal/INBOX/new | wc -w)"
+    email="mines: $mines_email personal: $personal_email"
+    [[ "$email" != "0 0" ]] && echo "$email"
+}
+
+
+# TS_STAT_TYPE is 'status' or 'notifications'
+TS_STAT_TYPE='s'
+[[ -n "$1" ]] && TS_STAT_TYPE="$1"
+TS_OUTPUT=""
+
+
+# status
+if [[ "${TS_STAT_TYPE:0:1}" == 's' ]]
+then
+    TS_OUTPUT="`get_date`  |  Bat: `get_bat`  |  Temps: `get_temp`"
+    TS_OUTPUT="$TS_OUTPUT  |  Net: `get_net`  |  Uptime: `get_uptime`"
+
+# notifications
+elif [[ "${TS_STAT_TYPE:0:1}" == 'n' ]]
+then
+    bright="$(get_bright)"
+    email="$(get_email)"
+    TS_OUTPUT=""
+    [[ -n "$bright" ]] && TS_OUTPUT="Brightness: $bright    |"
+    [[ -n "$email" ]]  && TS_OUTPUT="$TS_OUTPUT Email: $email                                        "
+fi
+
+echo "$TS_OUTPUT"
