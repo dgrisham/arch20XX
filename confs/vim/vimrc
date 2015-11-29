@@ -146,8 +146,8 @@ autocmd BufRead,BufNewFile *.tex,*.md let @b=':wa:!build_pdf %'
 "    \ | let @o=':!mupdf %:r.pdf &> /dev/null &'
 ""    \ | let @p=':wa:!ssh_print m_mh247 %:r.pdf'
 
-autocmd BufEnter * colorscheme custom2
-autocmd BufEnter *.md colorscheme custom2_md
+autocmd BufEnter * colorscheme custom
+autocmd BufEnter *.md colorscheme custom_md
 
 augroup Shebang
   autocmd BufNewFile *.py 0put =\"#!/usr/bin/env python\<nl># -*- coding: iso-8859-15 -*-\<nl>\"|$
