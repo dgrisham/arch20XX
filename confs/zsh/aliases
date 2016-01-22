@@ -1,0 +1,114 @@
+# list
+alias ll="ls -lh"
+alias lr="ls -lrh"
+alias la="ls -lah"
+alias lra="ls -lra"
+alias lar="ls -lra"
+alias lha="ls -lah"
+alias lah="ls -lah"
+alias lt="ls -lrth"
+alias lta="ls -lrtah"
+
+# tmux
+alias tmux="tmux -2"
+
+# ipython
+alias ipy="ipython"
+alias ipy2="ipython2"
+
+# hdmi out
+alias hdmi-on="xrandr --output HDMI2 --auto --left-of eDP1 && $HOME/.fehbg"
+alias hdmi-off="xrandr --output HDMI2 --off && $HOME/.fehbg"
+
+# ll after every cd
+chpwd() {
+    ll
+}
+
+#save temp dir
+function s() {
+    dir_alias="$1"
+    [[ -z "$dir_alias" ]] && dir_alias="default"
+    echo "$dir_alias=$(pwd)" >> "$HOME/.local/share/zsh/saved_dirs"
+}
+
+#load temp dir
+function g() {
+    dir_alias="$1"
+    [[ -z "$dir_alias" ]] && dir_alias="default"
+    source "$HOME/.local/share/zsh/saved_dirs"
+    eval next_dir="\$$dir_alias"
+    [[ -z "$next_dir" ]] && return 1
+    cd "$next_dir"
+}
+
+# open pdf, refresh tmux on close
+pdf () {
+    jfbview "$1"
+    tmux refresh-client
+}
+
+# open up <today's_date>.md in vim
+vt () {
+    format='%Y-%m-%d'
+    vim "`date +$format`.md"
+}
+
+
+# Scheduling
+# ==========
+
+# schedule/events
+# ---------------
+schedule() { sed -n '/schedule/,$p' ~/todo.md && echo && echo }
+events() { sed -n '/events/,/schedule/p' ~/todo.md | head -n-1 }
+
+# schedule today
+# --------------
+today() {
+    day_offset="$1"
+    [[ -z "$day_offset" ]] && day_offset='0'
+    schedule_file="$HOME/todo.md"
+    day="$(date --date="$day_offset days" +%A | awk '{print tolower($0)}')"
+    sed -n '/^'"$day"'$/,/^\w/p' $schedule_file | head -n -1
+    dated="$(date --date="$day_offset days" +'%b %-d' | awk '{print tolower($0)}')"
+    sed -n '/^'"$dated"'$/,/^\w/p' $schedule_file | head -n -1
+}
+
+# schedule for week
+# -----------------
+week() {
+    week_offset="$1"
+    [[ -z "$week_offset" ]] && week_offset='0'
+    let day="$week_offset*7"
+    for i in {0..6}; do
+        let day="$day+$i"
+        today $day
+    done
+}
+
+# current event
+# -------------
+tasks() {
+    #event_offset=$1+1
+    #[[ -z "$event_offset" ]] && event_offset=1
+    schedule_file="$HOME/todo.md"
+    curr_event="$(today 0 | grep '^-   ')"
+    [[ -z "$curr_event" ]] && return 1
+    curr_event=$(echo "$curr_event" | sed 's/.*\?-\([0-9:]\+\)/\1/')
+    curr_time="$(date +'%H:%M') {NOW}"
+    curr_event="$(echo "$curr_event\n$curr_time" | sort | grep -A1 "{NOW}" | tail -n1)"
+    curr_event="$(echo "$curr_event" | sed 's/.*\?\s\{4\}\(.*\)/\1/' | awk '{print tolower($0)}')"
+    sed -n '/^'"$curr_event"'$/,/^\w/p' $schedule_file | head -n -1
+}
+
+# next event
+# ----------
+next() {
+    next_event="$(today 0 | grep '^-   ' | cut --characters=5-)"
+    [[ -z "$next_event" ]] && return 1
+    curr_time="$(date +'%H:%M') {NOW}"
+    next_event="$(echo "$next_event\n$curr_time" | sort)"
+    echo "$next_event" | grep -A1 "{NOW}" | tail -n1
+}
+

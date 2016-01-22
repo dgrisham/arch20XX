@@ -1,0 +1,12 @@
+
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
+
+[[ -f ~/.aliases ]] && source ~/.aliases
+
+# set default editor
+export EDITOR="/usr/bin/vim"
+
+LS_COLORS="$LS_Colors:di=01;36"
