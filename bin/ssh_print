@@ -30,7 +30,8 @@ die() {
 }
 
 # various printers, comment out to just use default
-LP_PRINTER="mh247mdhplj"
+LP_PRINTER="bb136-printer"
+#LP_PRINTER="mh247mdhplj"
 #LP_PRINTER="phprt01"
 #LP_PRINTER="mh364cdxxcq"
 
