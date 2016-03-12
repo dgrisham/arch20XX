@@ -7,7 +7,7 @@ complete path/filename that the file should be placed under.
 ### aliases
 
 -   PATH: `$HOME/.aliases`
--   Various `zsh` aliases
+-   Various `zsh` aliases, just `wifi_connect() so far`
 
 #### wifi_connect
 
