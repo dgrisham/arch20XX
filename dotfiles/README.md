@@ -15,3 +15,6 @@ complete path/filename that the file should be placed under.
     holds details for wireless networks. See the [example
     `wireless_networks.conf`](../confs/wpa_supplicant/wireless_networks.conf)
     template for formatting/examples.
+-   NOTE: If `wpa_supplicant` is already running (even if it's as a result of a
+    call to `wifi_connect()`), you may have to run `wifi_connect()` again if it
+    doesn't work the first time.
