@@ -122,7 +122,18 @@ set splitright
 "" ... and restrict what you can do with it
 "set secure
 
+
+" netrw
+"" macro for opening file browser
+nmap <C-n>v :Vexplore!<cr>
+nmap <C-n>h :Hexplore<cr>
+nmap <C-n>n :Explore<cr>
+"" moving up a directory
+autocmd FileType netrw nmap <buffer> h -
+autocmd FileType netrw nmap <buffer> K -
+autocmd FileType netrw nmap <buffer> l <cr>
 "" ycm options
+
 """ set default path for ycm conf
 "let g:ycm_extra_conf_globlist = ['$HOME/documents/programming/*','!~/*']
 """ stop ycm from confirming ycm conf file
