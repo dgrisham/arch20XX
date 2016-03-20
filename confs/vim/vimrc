@@ -127,7 +127,7 @@ set splitright
 "" macro for opening file browser
 nmap <C-n>v :Vexplore!<cr>
 nmap <C-n>h :Hexplore<cr>
-nmap <C-n>n :Explore<cr>
+nmap <C-n>n :Rexplore<cr>
 "" moving up a directory
 autocmd FileType netrw nmap <buffer> h -
 autocmd FileType netrw nmap <buffer> K -
