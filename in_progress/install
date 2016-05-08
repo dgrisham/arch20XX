@@ -1,0 +1,74 @@
+# install script for convenient rebuilding of systems
+# todo:
+#
+# - flags, way more functions, linking of confs, pulling of repos and don't
+# forget: function for updating arch20xx with everett's files (git pull, cp,
+# ...)
+# - create directories from default `.profile` based on flags
+#
+
+# zsh
+# ===
+install_zsh() {
+    #install_zprezto
+}
+# zprezto
+# -------
+install_zprezto() {
+
+}
+
+# jfbview
+# =======
+install_jfbview() {
+    wd="$HOME/src"
+    cd $wd
+    git clone https://github.com/jichu4n/JFBView
+    mv JFBView jfbview
+    ln -s "$wd/jfbview/jfbview" jfbview
+}
+
+# vim
+# ===
+install_vim() {
+    # handle vimrc and vim from git, mkdir undo
+    install_vundle
+}
+# vundle
+# ------
+install_vundle() {
+    git clone https://github.com/VundleVim/Vundle.vim.git $DOTFILES/vim/bundle/Vundle.vim
+    # run PluginInstall for default plugins
+    # if wants_ycm (rename), install_ycm
+}
+
+install_ycm() {
+    # make sure PluginInstall has been run
+    cd "$DOTFILES/vim/bundle/YouCompleteMe"
+    python2 install.py --clang-completer
+}
+
+# markdown/latex
+# ==============
+# beamer theme
+# ------------
+install_metropolis() {
+    git pull "https://github.com/matze/mtheme"
+    # add to profile: export TEXMFHOME=$DOTFILES/texmf
+    # `make`, ensure everything ends up in modified TEXMFHOME
+    #
+    # also, figure how to handle theme option w/ pandoc (-V theme=metropolis, btw)
+}
+
+# etc
+# ===
+# potentially useful commands
+# ---------------------------
+# exeptions:
+#   -   fehbg needs to be executable, 744
+set_default_user_permissions() {
+    chown -R "$USER:$USER" *
+    find . -type f -exec chmod 644 {} \;
+    # need executable flag on directories to cd, hence the 755
+    find . -type d -exec chmod 755 {} \;
+}
