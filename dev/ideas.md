@@ -54,6 +54,8 @@ vim
 
 -   get down different `map` functions, maybe convenient combinations of shiz
     (e.g. `dA`)
+-   vim colorscheme formatter (haskell?) (and general config formatter as well? bigger
+    project, chill)
 
 keyboard stuff
 ==============
