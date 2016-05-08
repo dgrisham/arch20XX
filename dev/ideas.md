@@ -24,13 +24,17 @@ useful commands
 
 a.  download everything except for Devin Townsend (figure out how to incorporate
     w/ beets?)
+
 `rsync -rtpszPD --exclude="Devin Townsend" xps:"/home/musicadmin/queue/*" ~/music/queue`
+
     -   (to extend to multiple artists, just include additional
         `--exclude=<artist>` arguments)
 
 b.  import all artists *excluding* Kanye West and Devin Townsend
+
 `beet import ^(Kanye West|Devin Townsend)`
--   probably a lot of potentially extensions here (import all *except* certain
+
+-   probably a lot of potential extensions here (import all *except* certain
     genre(s)? that'll be different)
 
 other notes
@@ -49,6 +53,7 @@ other notes
         from musicbrainz (unless the match is >95% or something?)
     -   figure out this `asciify` mess
 
+
 vim
 ===
 
@@ -56,6 +61,7 @@ vim
     (e.g. `dA`)
 -   vim colorscheme formatter (haskell?) (and general config formatter as well? bigger
     project, chill)
+
 
 keyboard stuff
 ==============
