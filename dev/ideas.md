@@ -27,8 +27,8 @@ a.  download everything except for Devin Townsend (figure out how to incorporate
 
 `rsync -rtpszPD --exclude="Devin Townsend" xps:"/home/musicadmin/queue/*" ~/music/queue`
 
-    -   (to extend to multiple artists, just include additional
-        `--exclude=<artist>` arguments)
+-   (to extend to multiple artists, just include additional `--exclude=<artist>`
+    arguments)
 
 b.  import all artists *excluding* Kanye West and Devin Townsend
 
