@@ -132,6 +132,8 @@ nmap <C-n>n :Rexplore<cr>
 autocmd FileType netrw nmap <buffer> h -
 autocmd FileType netrw nmap <buffer> K -
 autocmd FileType netrw nmap <buffer> l <cr>
+
+
 "" ycm options
 
 """ set default path for ycm conf
@@ -140,6 +142,7 @@ autocmd FileType netrw nmap <buffer> l <cr>
 "let g:ycm_confirm_extra_conf = 0
 """ disable ycm highlighing errors
 "let g:ycm_enable_diagnostic_highlighting = 0
+
 
 " set foldmethod to 'indent' for python files
 "autocmd BufRead,BufNewFile,BufEnter *.py  set foldmethod=indent
