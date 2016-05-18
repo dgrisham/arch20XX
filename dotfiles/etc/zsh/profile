@@ -18,4 +18,3 @@ export VIEWER="jfbview"
 export BROWSER="w3m"
 export PUBLISHER="git"
 export PLAYER="mpv"
-

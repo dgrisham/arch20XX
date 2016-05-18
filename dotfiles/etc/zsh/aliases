@@ -39,9 +39,6 @@ alias tarx='tar -xvf'
 tarc() { tar -cvf $1.tar $1 }
 zipd() { zip -rv $1.zip $1 }
 
-# ipython
-# -------
-alias ipy="ipython"
 
 # Shortcuts
 # =========
@@ -68,7 +65,7 @@ pdf () {
     tmux refresh-client
 }
 
-# open up <today's_date>.md in vim
+# `vim <today's_date>.md`
 vt () {
     format='%Y-%m-%d'
     vim "`date +$format`.md"

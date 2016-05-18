@@ -1,58 +1,10 @@
-# list
-alias ll="ls -lh"
-alias lr="ls -lrh"
-alias la="ls -lah"
-alias lra="ls -lra"
-alias lar="ls -lra"
-alias lha="ls -lah"
-alias lah="ls -lah"
-alias lt="ls -lrth"
-alias lta="ls -lrtah"
+# Media
+# =====
 
-# tmux
-alias tmux="tmux -2"
-
-# ipython
-alias ipy="ipython"
-alias ipy2="ipython2"
-
-# hdmi out
+# hdmi
+# ----
 alias hdmi-on="xrandr --output HDMI2 --auto --left-of eDP1 && $HOME/.fehbg"
 alias hdmi-off="xrandr --output HDMI2 --off && $HOME/.fehbg"
-
-# ll after every cd
-chpwd() {
-    ll
-}
-
-#save temp dir
-function s() {
-    dir_alias="$1"
-    [[ -z "$dir_alias" ]] && dir_alias="default"
-    echo "$dir_alias=$(pwd)" >> "$HOME/.local/share/zsh/saved_dirs"
-}
-
-#load temp dir
-function g() {
-    dir_alias="$1"
-    [[ -z "$dir_alias" ]] && dir_alias="default"
-    source "$HOME/.local/share/zsh/saved_dirs"
-    eval next_dir="\$$dir_alias"
-    [[ -z "$next_dir" ]] && return 1
-    cd "$next_dir"
-}
-
-# open pdf, refresh tmux on close
-pdf () {
-    jfbview "$1"
-    tmux refresh-client
-}
-
-# open up <today's_date>.md in vim
-vt () {
-    format='%Y-%m-%d'
-    vim "`date +$format`.md"
-}
 
 
 # Scheduling
