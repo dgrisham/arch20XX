@@ -3,6 +3,9 @@ emulate sh -c 'source /etc/profile'
 # General environment
 # -------------------
 
+### Terminal
+export TERM=xterm
+
 ### Directories
 export DOTFILES="$HOME/dotfiles"
 export DOWNLOADS="$HOME/downloads"

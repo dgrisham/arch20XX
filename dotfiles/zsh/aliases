@@ -1,3 +1,17 @@
+# Shortcuts
+# =========
+
+# copy etc
+# --------
+cp_etc() {
+    dir="$1"
+    [[ ! -d "$DOTFILES/etc/$dir" ]] && return 1
+    for file in $(find "$DOTFILES/etc/$dir" -type f); do
+        sudo cp "$file" "${file#$DOTFILES}"
+    done
+}
+
+
 # Media
 # =====
 

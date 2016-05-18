@@ -1,9 +1,9 @@
 
 # Source Prezto.
-if [[ -s "${ZDOTDIR:-$HOME}/dotfiles/zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/dotfiles/zprezto/init.zsh"
+if [[ -s "$DOTFILES/zprezto/init.zsh" ]]; then
+  source "$DOTFILES/zprezto/init.zsh"
 fi
 
-[[ -f $DOTFILES/zsh/aliases ]] && source $DOTFILES/zsh/aliases
+[[ -f "$DOTFILES/zsh/aliases" ]] && source "$DOTFILES/zsh/aliases"
 
 LS_COLORS="$LS_Colors:di=01;36"
