@@ -1,0 +1,84 @@
+# Default options
+# ===============
+
+# colors
+# ------
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+
+# list
+# ----
+alias ll="ls -lh"
+alias lr="ls -lrh"
+alias la="ls -lah"
+alias lra="ls -lra"
+alias lar="ls -lra"
+alias lha="ls -lah"
+alias lah="ls -lah"
+alias lt="ls -lrth"
+alias lta="ls -lrtah"
+
+# tmux
+# ----
+alias tmux="tmux -2"
+
+# convenient cd
+# -------------
+chpwd() { ll } 			  # cd and ls
+mc() { mv $@ && ${(P)#} } # mv and cd
+cc() { cp $@ && ${(P)#} } # cp and cd
+
+# tail/head
+# ---------
+alias tail='tail -n30'
+alias head='head -n30'
+
+# compression
+# -----------
+alias tarx='tar -xvf'
+tarc() { tar -cvf $1.tar $1 }
+zipd() { zip -rv $1.zip $1 }
+
+# ipython
+# -------
+alias ipy="ipython"
+
+# Shortcuts
+# =========
+
+# save/go (for directories)
+# -------------------------
+s() {
+    dir_alias="$1"
+    [[ -z "$dir_alias" ]] && dir_alias="default"
+    echo "$dir_alias=$(pwd)" >> "$HOME/.local/share/zsh/saved_dirs"
+}
+g() {
+    dir_alias="$1"
+    [[ -z "$dir_alias" ]] && dir_alias="default"
+    source "$HOME/.local/share/zsh/saved_dirs"
+    eval next_dir="\$$dir_alias"
+    [[ -z "$next_dir" ]] && return 1
+    cd "$next_dir"
+}
+
+# open pdf, refresh tmux on close
+pdf () {
+    $VIEWER "$1"
+    tmux refresh-client
+}
+
+# open up <today's_date>.md in vim
+vt () {
+    format='%Y-%m-%d'
+    vim "`date +$format`.md"
+}
+
+
+# Hardware
+# ========
+
+# system stats
+# ------------
+
+alias temp='ls -d /sys/class/thermal/thermal_zone* | xargs -I f cat f/temp'

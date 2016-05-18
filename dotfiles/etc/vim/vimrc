@@ -1,0 +1,229 @@
+" All system-wide defaults are set in $VIMRUNTIME/archlinux.vim (usually just
+" /usr/share/vim/vimfiles/archlinux.vim) and sourced by the call to :runtime
+" you can find below.  If you wish to change any of those settings, you should
+" do it in this file (/etc/vimrc), since archlinux.vim will be overwritten
+" everytime an upgrade of the vim packages is performed.  It is recommended to
+" make changes after sourcing archlinux.vim since it alters the value of the
+" 'compatible' option.
+"
+" This line should not be removed as it ensures that various options are
+" properly set to work with the Vim-related packages.
+runtime! archlinux.vim
+"
+" If you prefer the old-style vim functionalty, add 'runtime! vimrc_example.vim'
+" Or better yet, read /usr/share/vim/vim74/vimrc_example.vim or the vim manual
+" and configure vim to your own liking!
+
+
+" General
+" =======
+
+" Settings
+" --------
+set nocompatible
+set viminfo+=n/etc/vim/viminfo
+set shell=/bin/zsh
+
+" Local vimrc
+" -----------
+"" don't active these in global, just personal vimrc
+"set exrc
+"set secure
+
+" Undos
+" -----
+" NOTE: undo folder doesn't exist by default
+set undodir=$HOME/dotfiles/vim/undo
+set undofile
+set undolevels=1000
+set undoreload=10000
+
+" Leader
+" ------
+let mapleader=','
+
+
+" Plugins
+" =======
+"
+" vundle
+""filetype must be turned off before vundle commands
+filetype off
+""" where vundle will be stored, call a command
+set runtimepath=/etc/vim,/usr/share/vim/vimfiles,/usr/share/vim/vim74,/usr/share/vim/vimfiles/after,$HOME/.vim/after,/etc/vim/bundle/Vundle.vim
+call vundle#begin('/etc/vim/bundle/')
+
+""" vundle modules to load
+Plugin 'VundleVim/Vundle.vim'
+"Plugin 'tpope/vim-markdown'
+"Plugin 'yuratomo/w3m.vim'
+call vundle#end()
+"
+""" helpful vundle hints (to be run inside vim)
+":PluginList - list plugins
+":PluginInstall - install plugins
+":PluginInstall! - update plugins
+":PluginSearch foo - search for plugin foo
+":PluginClean - remove unused plugins
+"
+"" turn filetype recognition back on
+filetype plugin indent on
+
+
+" Display
+" =======
+
+" Display trailing spaces
+" -----------------------
+"set list listchars=tab:\ \ ,trail:_,extends:»,precedes:«
+"map <leader>lc :set list!<cr>
+
+" Syntax highlighting/numbers in margin
+" -------------------------------------
+syntax on
+set number
+
+" Enable custom colorscheme
+" -------------------------
+"set t_Co=8
+"set background=dark
+autocmd BufEnter * colorscheme custom
+autocmd BufEnter *.md colorscheme custom_md
+
+
+" Behavior
+" ========
+
+" Wild!
+" -----
+set wildmode=list:longest
+set wildmenu
+
+" Search
+" ------
+set incsearch
+set hlsearch
+
+" Autoread external changes
+" -------------------------
+set autoread
+
+" Split Placement
+" ----------------
+set splitbelow
+set splitright
+
+" Tabs
+" ----
+set autoindent
+set smartindent
+set smarttab
+set shiftwidth=4
+set softtabstop=0
+set tabstop=4
+set expandtab
+":retab applys these rules to the current buffer
+
+" Keep 12 lines above/below, don't go over 80 columns
+" ---------------------------------------------------
+set scrolloff=12
+set textwidth=80
+"highlight overlength ctermbg=8
+"match overlength /\%81v.\+/
+
+" Highlight current line lightly
+" ------------------------------
+highlight cursorline cterm=NONE ctermbg=233
+noremap <leader>cl :set cursorline!<cr>
+set cursorline
+
+" Highlight cursor column lightly
+" -------------------------------
+highlight cursorcolumn cterm=NONE ctermbg=8
+noremap <leader>cc :set cursorcolumn!<cr>
+
+" Folding
+" -------
+highlight folded ctermbg=8
+set foldmethod=manual
+set foldnestmax=2
+
+
+" Keybindings
+" ===========
+
+" Window movement
+" ---------------
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+" Buffer movement
+" ---------------
+nnoremap > :bn<cr>
+nnoremap < :bp<cr>
+set hidden
+set nostartofline
+
+" Text movement
+" -------------
+" ### Beginning/end of line
+noremap H ^
+noremap L $
+" ### Around blocks
+noremap K {
+noremap J }
+
+" Netrw (file explorer)
+" --------------------
+" ### Opening
+nmap <C-n>\| :Vexplore!<cr>
+nmap <C-n>- :Hexplore<cr>
+nmap <C-n>n :Explore<cr>
+nmap <C-n>t :Texplore<cr>
+" ### Navigating
+autocmd FileType netrw nmap <buffer> h -
+autocmd FileType netrw nmap <buffer> K -
+autocmd FileType netrw nmap <buffer> l <cr>
+
+" Toggle paste/spellcheck
+" -----------------------
+map <leader>pp :setlocal paste!<cr>
+map <leader>ss :setlocal spell!<cr>
+
+" Reformat paragraph
+" ------------------
+map <leader>g gqip
+
+" Jump to pairs
+" -------------
+nnoremap <C-p> %
+
+" Open/close folds
+" ----------------
+"nnoremap <C-f> za
+
+" Call md_website browser
+" -----------------------
+"command -nargs=* MDW read !md_website <args> 2> /dev/null
+
+
+" Markdown
+" ========
+
+" Boilerplate entry
+" -----------------
+map <leader>h1 VypVr=
+map <leader>h2 VypVr-
+map <leader>h3 I### 
+map <leader>cb I```
+map <leader>j :read !date +\%F<cr>kdd<leader>h1
+
+
+" Other Filetypes
+" ===============
+
+" Makefile don't expand tabs
+" --------------------------
+autocmd filetype make setlocal noexpandtab

@@ -1,0 +1,21 @@
+emulate sh -c 'source /etc/profile'
+
+# General environment
+# -------------------
+
+### Directories
+export DOTFILES="$HOME/dotfiles"
+export DOWNLOADS="$HOME/downloads"
+#export SRC="$HOME/src"
+#export PERSONAL="$HOME/personal"
+export MEDIA="$HOME/media"
+export MUSIC="$MEDIA/music"
+
+### Defaults
+export EDITOR="vim"
+export VISUAL="$EDITOR"
+export VIEWER="jfbview"
+export BROWSER="w3m"
+export PUBLISHER="git"
+export PLAYER="mpv"
+
