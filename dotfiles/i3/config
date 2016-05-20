@@ -45,7 +45,8 @@ focus_follows_mouse no
 bindsym $mod+Return exec urxvt
 
 # start browser
-bindsym $mod+b exec google-chrome-stable
+bindsym $mod+b exec firefox
+#bindsym $mod+b exec google-chrome-stable
 
 # start email client
 bindsym $mod+m exec mutt
@@ -97,10 +98,10 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+n split h
+bindsym $mod+backslash split h
 
 # split in vertical orientation
-bindsym $mod+v split v
+bindsym $mod+minus split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen

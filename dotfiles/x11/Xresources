@@ -8,8 +8,8 @@
 #define t_fg_ceiling   #FEFFFF
 
 URxvt*.transparent: true
-URxvt*.shading: 15
-URxvt.font:xft:Fixed:size=13
+URxvt*.shading: 30
+URxvt.font:xft:Fixed:size=15
 
 URxvt.background: t_background
 URxvt.foreground: t_foreground

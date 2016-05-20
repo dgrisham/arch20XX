@@ -21,8 +21,9 @@ runtime! archlinux.vim
 " Settings
 " --------
 set nocompatible
-set viminfo+=n/etc/vim/viminfo
+"set viminfo+=n/etc/vim/viminfo
 set shell=/bin/zsh
+set rtp+=/etc/vim
 
 " Local vimrc
 " -----------
@@ -43,40 +44,13 @@ set undoreload=10000
 let mapleader=','
 
 
-" Plugins
-" =======
-"
-" vundle
-""filetype must be turned off before vundle commands
-filetype off
-""" where vundle will be stored, call a command
-set runtimepath=/etc/vim,/usr/share/vim/vimfiles,/usr/share/vim/vim74,/usr/share/vim/vimfiles/after,$HOME/.vim/after,/etc/vim/bundle/Vundle.vim
-call vundle#begin('/etc/vim/bundle/')
-
-""" vundle modules to load
-Plugin 'VundleVim/Vundle.vim'
-"Plugin 'tpope/vim-markdown'
-"Plugin 'yuratomo/w3m.vim'
-call vundle#end()
-"
-""" helpful vundle hints (to be run inside vim)
-":PluginList - list plugins
-":PluginInstall - install plugins
-":PluginInstall! - update plugins
-":PluginSearch foo - search for plugin foo
-":PluginClean - remove unused plugins
-"
-"" turn filetype recognition back on
-filetype plugin indent on
-
-
 " Display
 " =======
 
 " Display trailing spaces
 " -----------------------
-"set list listchars=tab:\ \ ,trail:_,extends:»,precedes:«
-"map <leader>lc :set list!<cr>
+set list listchars=tab:>\ ,eol:¬,extends:»,precedes:«
+map <leader>lc :set list!<cr>
 
 " Syntax highlighting/numbers in margin
 " -------------------------------------
@@ -200,10 +174,6 @@ map <leader>g gqip
 " -------------
 nnoremap <C-p> %
 
-" Open/close folds
-" ----------------
-"nnoremap <C-f> za
-
 " Call md_website browser
 " -----------------------
 "command -nargs=* MDW read !md_website <args> 2> /dev/null
@@ -214,8 +184,8 @@ nnoremap <C-p> %
 
 " Boilerplate entry
 " -----------------
-map <leader>h1 VypVr=
-map <leader>h2 VypVr-
+map <leader>h1 VypVr=A
+map <leader>h2 VypVr-A
 map <leader>h3 I### 
 map <leader>cb I```
 map <leader>j :read !date +\%F<cr>kdd<leader>h1
@@ -227,3 +197,4 @@ map <leader>j :read !date +\%F<cr>kdd<leader>h1
 " Makefile don't expand tabs
 " --------------------------
 autocmd filetype make setlocal noexpandtab
+

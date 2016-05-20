@@ -4,7 +4,7 @@
 # - flags, way more functions, linking of confs, pulling of repos and don't
 # forget: function for updating arch20xx with everett's files (git pull, cp,
 # ...)
-# - create directories from default `.profile` based on flags
+# - create directories from default `.profile` (based on flags)
 #
 
 # zsh
@@ -20,12 +20,12 @@ install_zprezto() {
 
 # jfbview
 # =======
+# requires environment variables: SRC
 install_jfbview() {
-    wd="$HOME/src"
-    cd $wd
+    cd $SRC
     git clone https://github.com/jichu4n/JFBView
     mv JFBView jfbview
-    ln -s "$wd/jfbview/jfbview" jfbview
+    ln -s "$SRC/jfbview/jfbview" jfbview
 }
 
 # vim
@@ -43,7 +43,7 @@ install_vundle() {
 }
 
 install_ycm() {
-    # make sure PluginInstall has been run
+    # requirements: YouCompleteMe already installed via vundle
     cd "$DOTFILES/vim/bundle/YouCompleteMe"
     python2 install.py --clang-completer
 }
