@@ -55,7 +55,7 @@ hi Folded guifg=#ffd700 guibg=#555555 guisp=#555555 gui=NONE ctermfg=220 ctermbg
 hi PreCondit guifg=#00ff6f guibg=NONE guisp=NONE gui=NONE ctermfg=47 ctermbg=NONE cterm=NONE
 hi Include guifg=#00ff6f guibg=NONE guisp=NONE gui=NONE ctermfg=47 ctermbg=NONE cterm=NONE
 hi Float guifg=#ff00ff guibg=NONE guisp=NONE gui=NONE ctermfg=201 ctermbg=NONE cterm=NONE
-hi StatusLineNC guifg=#7777777 guibg=#8a8a8a guisp=#8a8a8a gui=NONE ctermfg=196 ctermbg=245 cterm=NONE
+hi StatusLineNC guifg=#777777 guibg=#8a8a8a guisp=#8a8a8a gui=NONE ctermfg=196 ctermbg=245 cterm=NONE
 hi NonText guifg=#0000ff guibg=#000000 guisp=#000000 gui=NONE ctermfg=21 ctermbg=NONE cterm=NONE
 hi Debug guifg=#ff0000 guibg=NONE guisp=NONE gui=NONE ctermfg=196 ctermbg=NONE cterm=NONE
 hi PMenuSbar guifg=NONE guibg=#848688 guisp=#848688 gui=NONE ctermfg=NONE ctermbg=102 cterm=NONE
@@ -86,7 +86,7 @@ hi Exception guifg=#60ff60 guibg=NONE guisp=NONE gui=bold ctermfg=83 ctermbg=NON
 hi Keyword guifg=#60ff60 guibg=NONE guisp=NONE gui=bold ctermfg=83 ctermbg=NONE cterm=bold
 hi Type guifg=#60ff60 guibg=NONE guisp=NONE gui=NONE ctermfg=83 ctermbg=NONE cterm=NONE
 hi Cursor guifg=#708090 guibg=#f0e68c guisp=#f0e68c gui=NONE ctermfg=60 ctermbg=228 cterm=NONE
-hi PMenu guifg=#7777777 guibg=#c2bfa5 guisp=#c2bfa5 gui=NONE ctermfg=196 ctermbg=187 cterm=NONE
+hi PMenu guifg=#777777 guibg=#c2bfa5 guisp=#c2bfa5 gui=NONE ctermfg=196 ctermbg=187 cterm=NONE
 hi SpecialKey guifg=#9acd32 guibg=NONE guisp=NONE gui=NONE ctermfg=149 ctermbg=NONE cterm=NONE
 hi Constant guifg=#00eeff guibg=NONE guisp=NONE gui=NONE ctermfg=14 ctermbg=NONE cterm=NONE
 hi Tag guifg=#ff0000 guibg=NONE guisp=NONE gui=NONE ctermfg=196 ctermbg=NONE cterm=NONE

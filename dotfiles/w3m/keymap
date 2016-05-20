@@ -50,8 +50,8 @@ keymap C-r REDO
 # Buffer operation
 # ----------------
 keymap o GOTO
-keymap b BACK
-keymap m NEXT
+keymap H BACK
+keymap L NEXT
 keymap , PREV
 keymap S SELECT_MENU
 keymap ESC-s SAVE_SCREEN

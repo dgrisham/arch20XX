@@ -6,6 +6,9 @@ emulate sh -c 'source /etc/profile'
 ### Terminal
 export TERM=xterm
 
+### Bin
+export PATH="$PATH:$HOME/bin"
+
 ### Directories
 export DOTFILES="$HOME/dotfiles"
 export DOWNLOADS="$HOME/downloads"

@@ -1,6 +1,35 @@
 # Shortcuts
 # =========
 
+# save/go (for directories)
+# -------------------------
+s() {
+    dir_alias="$1"
+    [[ -z "$dir_alias" ]] && dir_alias="default"
+    echo "$dir_alias=$(pwd)" >> "$HOME/.local/share/zsh/saved_dirs"
+}
+g() {
+    dir_alias="$1"
+    [[ -z "$dir_alias" ]] && dir_alias="default"
+    source "$HOME/.local/share/zsh/saved_dirs"
+    eval next_dir="\$$dir_alias"
+    [[ -z "$next_dir" ]] && return 1
+    cd "$next_dir"
+}
+
+# open pdf, refresh tmux on close
+pdf () {
+    # note: update to check for jfbview
+    $VIEWER "$1"
+    tmux refresh-client
+}
+
+# `vim <today's_date>.md`
+vt () {
+    format='%Y-%m-%d'
+    vim "`date +$format`.md"
+}
+
 # copy etc
 # --------
 cp_etc() {

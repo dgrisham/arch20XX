@@ -1,0 +1,3 @@
+ZDOTDIR="/etc/zsh"
+
+[[ -f "$HOME/dotfiles/zsh/zshenv" ]] && source "$HOME/dotfiles/zsh/zshenv"
