@@ -1,0 +1,16 @@
+# swap files
+.*.sw?
+
+# vim
+view
+undo
+bundle
+## netrw history
+.netrwhist
+
+# zsh
+histfile
+
+# w3m
+cookie
+history
