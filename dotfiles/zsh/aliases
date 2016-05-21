@@ -35,29 +35,48 @@ vt() {
 # sourcing alias files
 # --------------------
 source_alias() {
-    alias_file="$1"
-    shift
-    case "$alias_file" in
-        l|local)
-            source "$LOCAL_ALIAS"
-            ;;
-        g|global)
-            source "$GLOBAL_ALIAS"
-            ;;
-        *)
-            source_alias_dir "$alias_file"
-            source_alias $@
-            ;;
-}
-### source file in $ALIAS_DIR
-source_alias_dir() {
-    alias_file="$1_aliases"
-    if [[ ! -f "$ALIAS_DIR/$alias_file" ]]; then
-        ls -lh "$ALIAS_DIR" | grep --color=never "_"
+    # if no input, print list of possible inputs, return 1
+    if [[ ! "$#" -gt "0" ]]; then
+        echo "options:"
+        echo "  - global"
+        echo "  - local"
+        ls -lh "$ALIAS_DIR" | tail -n +2 | awk '{ print $9 }' | sed -e "s/\([^_ ]\+\)_aliases/  - \1/"
         return 1
     fi
-    source "$ALIAS_DIR/$alias_file"
+    # check input(s), source associated alias file(s) accordingly
+    input_arg="$1"
+    shift
+    case "$input_arg" in
+        g|global)
+            if [[ -f "$GLOBAL_ALIAS" ]]; then
+                echo "sourcing global aliases ($GLOBAL_ALIAS)"
+                source "$GLOBAL_ALIAS"
+            else
+                echo "file '$GLOBAL_ALIAS' does not exist"
+            fi
+            ;;
+        l|local)
+            if [[ -f "$LOCAL_ALIAS" ]]; then
+                echo "sourcing local aliases ($LOCAL_ALIAS)"
+                source "$LOCAL_ALIAS"
+            else
+                echo "file '$LOCAL_ALIAS' does not exist"
+            fi
+            ;;
+        *)
+            alias_file="${input_arg}_aliases"
+            if [[ -f "$ALIAS_DIR/$alias_file" ]]; then
+                echo "sourcing $alias_file"
+                source "$ALIAS_DIR/$alias_file"
+            else
+                print "$alias_file does not exist"
+            fi
+            ;;
+    esac
+    [[ "$#" -gt "0" ]] && source_alias $@
+    return 0
 }
+alias sa="source_alias"
 
 # copy etc
 # --------
