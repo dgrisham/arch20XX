@@ -1,5 +1,3 @@
-emulate sh -c 'source /etc/profile'
-
 # General environment
 # -------------------
 
@@ -17,6 +15,11 @@ export DOWNLOADS="$HOME/downloads"
 export MEDIA="$HOME/media"
 export MUSIC="$MEDIA/music"
 
+### Alias files
+export LOCAL_ALIAS="$DOTFILES/zsh/aliases"
+export GLOBAL_ALIAS="/etc/zsh/aliases"
+export ALIAS_DIR="$DOTFILES/zsh/alias"
+
 ### Defaults
 export EDITOR="vim"
 export VISUAL="$EDITOR"
@@ -24,3 +27,4 @@ export VIEWER="jfbview"
 export BROWSER="w3m"
 export PUBLISHER="git"
 export PLAYER="mpv"
+

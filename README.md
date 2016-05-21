@@ -1,8 +1,5 @@
 arch20XX
 ========
 
-cli_minimal
------------
-
-minimal configuration (`zsh`/`prezto`, `vim`) for client-based (terminal,
-non-GUI/X) setups
+This is a repository to hold various configuration files and scripts. See
+subfolders for more details.
