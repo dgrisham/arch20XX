@@ -1,7 +1,6 @@
 # git aliases
 # ===========
 
-
 # NOTE: careful with `git clean`, which removes untracked files (i.e. don't use
 # in 'master' unless certain!)
 
@@ -22,8 +21,8 @@ merge_branch() {
     dest_branch="$1"
     src_branch=${2:-"master"}
     git checkout "$dest_branch"
-    git checkout "$src_branch" -- ./
-    git reset ./
+    git checkout "$src_branch" -- .
+    git reset .
     git commit -am "updating branch '$dest_branch' with branch '$src_branch'"
 }
 
