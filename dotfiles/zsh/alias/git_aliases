@@ -20,6 +20,7 @@ merge_branch() {
     [[ -z "$1" ]] && return 1
     dest_branch="$1"
     src_branch=${2:-"master"}
+    # TODO: ensure these branches exist before proceeding
     git checkout "$dest_branch"
     git checkout "$src_branch" -- .
     git reset .
