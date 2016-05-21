@@ -9,11 +9,6 @@ export TERM=xterm
 ### Bin
 export PATH="$PATH:$HOME/bin"
 
-### Alias files
-export LOCAL_ALIAS="$DOTFILES/zsh/aliases"
-export GLOBAL_ALIAS="/etc/zsh/aliases"
-export ALIAS_DIR="$DOTFILES/zsh/alias"
-
 ### Directories
 export DOTFILES="$HOME/dotfiles"
 export DOWNLOADS="$HOME/downloads"
@@ -21,6 +16,11 @@ export DOWNLOADS="$HOME/downloads"
 #export PERSONAL="$HOME/personal"
 export MEDIA="$HOME/media"
 export MUSIC="$MEDIA/music"
+
+### Alias files
+export LOCAL_ALIAS="$DOTFILES/zsh/aliases"
+export GLOBAL_ALIAS="/etc/zsh/aliases"
+export ALIAS_DIR="$DOTFILES/zsh/alias"
 
 ### Defaults
 export EDITOR="vim"
