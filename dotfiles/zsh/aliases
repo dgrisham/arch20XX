@@ -19,7 +19,7 @@ g() {
 
 # open pdf, refresh tmux on close
 # -------------------------------
-pdf () {
+pdf() {
     # note: update to check for jfbview
     $VIEWER "$1"
     tmux refresh-client
@@ -27,21 +27,36 @@ pdf () {
 
 # `vim <today's_date>.md`
 # -----------------------
-vt () {
+vt() {
     format='%Y-%m-%d'
     vim "`date +$format`.md"
 }
 
-# source specific '*_alias" file
-# ------------------------------
-source_alias () {
+# sourcing alias files
+# --------------------
+source_alias() {
+    alias_file="$1"
+    shift
+    case "$alias_file" in
+        l|local)
+            source "$LOCAL_ALIAS"
+            ;;
+        g|global)
+            source "$GLOBAL_ALIAS"
+            ;;
+        *)
+            source_alias_dir "$alias_file"
+            source_alias $@
+            ;;
+}
+### source file in $ALIAS_DIR
+source_alias_dir() {
     alias_file="$1_aliases"
-    alias_dir="$DOTFILES/zsh/alias"
-    if [[ ! -f "$alias_dir/$alias_file" ]]; then
-        ls -lh "$alias_dir" | grep --color=never "_"
+    if [[ ! -f "$ALIAS_DIR/$alias_file" ]]; then
+        ls -lh "$ALIAS_DIR" | grep --color=never "_"
         return 1
     fi
-    source "$alias_dir/$alias_file"
+    source "$ALIAS_DIR/$alias_file"
 }
 
 # copy etc
