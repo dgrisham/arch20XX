@@ -1,0 +1,29 @@
+# git aliases
+# ===========
+
+
+# NOTE: careful with `git clean`, which removes untracked files (i.e. don't use
+# in 'master' unless certain!)
+
+# update branch
+# -------------
+# usage: `update_branch <dest_branch> (<src_branch>)`
+# updates existing files in dest_branch with those in src_branch, creates no
+# new files/diretories in dest_branch
+update_branch() {
+    merge_branch $@
+    git clean -fd
+}
+### merge_branch
+# same as update_branch, but doesn't remove untracked files/directories (to
+# easily share new files between branches)
+merge_branch() {
+    [[ -z "$1" ]] && return 1
+    dest_branch="$1"
+    src_branch=${2:-"master"}
+    git checkout "$dest_branch"
+    git checkout "$src_branch" -- ./
+    git reset ./
+    git commit -am "updating branch '$dest_branch' with branch '$src_branch'"
+}
+
