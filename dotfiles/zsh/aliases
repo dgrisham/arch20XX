@@ -32,6 +32,19 @@ vt() {
     vim "`date +$format`.md"
 }
 
+# copy etc
+# --------
+cp_etc() {
+    dir="$1"
+    [[ ! -d "$DOTFILES/etc/$dir" ]] && return 1
+    for directory in $(find "$DOTFILES/etc/$dir" -type d); do
+        sudo mkdir -p "${file#$DOTFILES}/$directory"
+    done
+    for file in $(find "$DOTFILES/etc/$dir" -type f); do
+        sudo cp "$file" "${file#$DOTFILES}"
+    done
+}
+
 # sourcing alias files
 # --------------------
 source_alias() {
@@ -77,16 +90,6 @@ source_alias() {
     return 0
 }
 alias sa="source_alias"
-
-# copy etc
-# --------
-cp_etc() {
-    dir="$1"
-    [[ ! -d "$DOTFILES/etc/$dir" ]] && return 1
-    for file in $(find "$DOTFILES/etc/$dir" -type f); do
-        sudo cp "$file" "${file#$DOTFILES}"
-    done
-}
 
 
 # Media
