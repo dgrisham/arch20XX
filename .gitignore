@@ -15,3 +15,6 @@ histfile
 cookie
 history
 w3m*-*
+
+# rtorrent
+rtorrent.session
