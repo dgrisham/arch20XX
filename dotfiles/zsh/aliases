@@ -39,7 +39,7 @@ cp_etc() {
     [[ ! -d "$DOTFILES/etc/$dir" ]] && return 1
     # TODO: consider other ways of doing this (not bad now though)
     for directory in $(find "$DOTFILES/etc/$dir" -type d); do
-        sudo cp -r "$directory" "${file#$DOTFILES}"
+        sudo cp -r "$directory" "/etc/$dir"
     done
     # TODO
 }
