@@ -37,11 +37,9 @@ vt() {
 cp_etc() {
     dir="$1"
     [[ ! -d "$DOTFILES/etc/$dir" ]] && return 1
-    # TODO: consider other ways of doing this (not bad now though)
-    for directory in $(find "$DOTFILES/etc/$dir" -type d); do
-        sudo cp -r "$directory" "/etc/$dir"
+    for file in $(find "$DOTFILES/etc/$dir" -type f); do
+        sudo cp "$file" "${file#$DOTFILES}"
     done
-    # TODO
 }
 
 # sourcing alias files
