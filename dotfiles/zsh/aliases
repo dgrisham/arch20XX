@@ -32,6 +32,16 @@ vt() {
     vim "`date +$format`.md"
 }
 
+# copy etc
+# --------
+cp_etc() {
+    dir="$1"
+    [[ ! -d "$DOTFILES/etc/$dir" ]] && return 1
+    for file in $(find "$DOTFILES/etc/$dir" -type f); do
+        sudo cp "$file" "${file#$DOTFILES}"
+    done
+}
+
 # sourcing alias files
 # --------------------
 source_alias() {
@@ -78,24 +88,14 @@ source_alias() {
 }
 alias sa="source_alias"
 
-# copy etc
-# --------
-cp_etc() {
-    dir="$1"
-    [[ ! -d "$DOTFILES/etc/$dir" ]] && return 1
-    for file in $(find "$DOTFILES/etc/$dir" -type f); do
-        sudo cp "$file" "${file#$DOTFILES}"
-    done
-}
-
 
 # Media
 # =====
 
 # hdmi
 # ----
-alias hdmi-on="xrandr --output HDMI2 --auto --left-of eDP1 && $HOME/.fehbg"
-alias hdmi-off="xrandr --output HDMI2 --off && $HOME/.fehbg"
+alias hdmi-on="xrandr --output HDMI-2 --auto --above eDP-1 && $HOME/.fehbg"
+alias hdmi-off="xrandr --output HDMI-2 --off && $HOME/.fehbg"
 
 
 # Scheduling
