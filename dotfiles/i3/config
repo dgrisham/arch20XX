@@ -45,8 +45,8 @@ focus_follows_mouse no
 bindsym $mod+Return exec urxvt
 
 # start browser
-bindsym $mod+b exec firefox
-#bindsym $mod+b exec google-chrome-stable
+bindsym $mod+b exec google-chrome-stable
+#bindsym $mod+b exec firefox
 
 # start email client
 bindsym $mod+m exec mutt
