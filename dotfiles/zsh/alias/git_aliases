@@ -17,9 +17,9 @@ update_branch() {
 # same as update_branch, but doesn't remove untracked files/directories (to
 # easily share new files between branches)
 merge_branch() {
-    branch_exists "$1" && dest_branch="$1"
+    if branch_exists "$1"; then dest_branch="$1"; else return 1; fi
     src_branch=${2:-"master"}
-    branch_exists "src_branch" || return 1
+    branch_exists "$src_branch" || return 1
     git checkout "$dest_branch"
     git checkout "$src_branch" -- .
     git reset .
@@ -35,6 +35,7 @@ branch_exists() {
     [[ -z "$1" ]] && return 1
     if [[ -z `git branch --list "$1"` ]]; then
         echo "branch '$1' does not exist"
+        return 1
     fi
     return 0
 }
