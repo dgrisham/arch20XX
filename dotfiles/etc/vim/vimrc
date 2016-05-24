@@ -43,6 +43,15 @@ set undoreload=10000
 " ------
 let mapleader=','
 
+" Toggle options
+" --------------
+function MapToggle(key, opt)
+    let cmd = ':set '.a:opt.'! \| set '.a:opt."?\<cr>"
+    exec 'nnoremap '.a:key.' '.cmd
+    exec 'inoremap '.a:key." \<C-O>".cmd
+endfunction
+command -nargs=+ MapToggle call MapToggle(<f-args>)
+
 
 " Display
 " =======
@@ -56,6 +65,7 @@ map <leader>lc :set list!<cr>
 " -------------------------------------
 syntax on
 set number
+MapToggle <leader>rn relativenumber
 
 " Enable custom colorscheme
 " -------------------------
