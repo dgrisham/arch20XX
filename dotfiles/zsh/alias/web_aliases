@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+# web-dev project aliases
+# =======================
+
+# environment
+# -----------
+export VENV_DIR="$HOME/.venv"
+
+# start python virtual environment
+# --------------------------------
+start_venv() {
+    if [[ -z "$1" ]]; then
+        echo "options:"
+        ls -lh "$VENV_DIR" | tail -n +2 | awk '{ print $9 }' | sed -e "s/\(.*\)/  - \1/"
+        return 1
+    fi
+    virtual_env="$1"
+    [[ -d "$_DIR/$virtual_env" ]] && source "$VENV_DIR/$virtual_env/bin/activate"
+}
+alias sv='start_venv'
