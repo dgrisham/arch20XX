@@ -1,20 +1,18 @@
 # Shortcuts
 # =========
 
-# save/go (for directories)
-# -------------------------
-s() {
-    dir_alias="$1"
-    [[ -z "$dir_alias" ]] && dir_alias="default"
-    echo "$dir_alias=$(pwd)" >> "$HOME/.local/share/zsh/saved_dirs"
-}
-g() {
-    dir_alias="$1"
-    [[ -z "$dir_alias" ]] && dir_alias="default"
-    source "$HOME/.local/share/zsh/saved_dirs"
-    eval next_dir="\$$dir_alias"
-    [[ -z "$next_dir" ]] && return 1
-    cd "$next_dir"
+# convenient cd
+# -------------
+c() {                       # cd with bookmarks
+    dirname="$1"
+    case "$dirname" in      # bookmarks
+        web)    dirname="$SCRATCH/web/flasky"   ;;
+        dev)    dirname="$SRC/arch20xx"         ;;
+        "")     dirname="$HOME"                 ;;
+        *)      return 1                        ;;
+    esac
+    cd "$dirname"
+    unset dirname           # for dir displayed in prompt
 }
 
 # open pdf, refresh tmux on close
@@ -50,7 +48,7 @@ source_alias() {
         echo "options:"
         echo "  - global"
         echo "  - local"
-        ls -lh "$ALIAS_DIR" | tail -n +2 | awk '{ print $9 }' | sed -e "s/\([^_ ]\+\)_aliases/  - \1/"
+        ls -lh "$ALIASES" | tail -n +2 | awk '{ print $9 }' | sed -e "s/\([^_ ]\+\)_aliases/  - \1/"
         return 1
     fi
     # check input(s), source associated alias file(s) accordingly
@@ -75,19 +73,41 @@ source_alias() {
             ;;
         *)
             alias_file="${input_arg}_aliases"
-            if [[ -f "$ALIAS_DIR/$alias_file" ]]; then
+            if [[ -f "$ALIASES/$alias_file" ]]; then
                 echo "sourcing $alias_file"
-                source "$ALIAS_DIR/$alias_file"
+                source "$ALIASES/$alias_file"
             else
                 print "$alias_file does not exist"
             fi
             ;;
     esac
     [[ "$#" -gt "0" ]] && source_alias $@
-    return 0
 }
 alias sa="source_alias"
 
+# general git (more in git_aliases)
+# ---------------------------------
+alias gco="git checkout"
+
+# start working environment
+# -------------------------
+start_environment() {
+    env="$1"
+    [[ -z "$env" ]] && return 1
+    source_alias "$env" > /dev/null
+    c "$env" &> /dev/null
+    case "$env" in
+        web)
+            source_alias "python" > /dev/null
+            flasky_aliases
+            start_venv "flask"
+            ;;
+        dev)
+            source_alias "git" > /dev/null
+            ;;
+    esac
+}
+alias se="start_environment"
 
 # Media
 # =====
@@ -154,4 +174,9 @@ next() {
     next_event="$(echo "$next_event\n$curr_time" | sort)"
     echo "$next_event" | grep -A1 "{NOW}" | tail -n1
 }
+
+
+# Source additional aliases
+# =========================
+[[ -n "$DISPLAY" ]] && source_alias 'x' > /dev/null
 
