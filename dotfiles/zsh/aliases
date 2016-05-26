@@ -3,10 +3,9 @@
 
 # editing alias files
 # -------------------
-# 'v' is for vim, sorry emacs users
-alias vl="$EDITOR $LOCAL_ALIAS"
-alias vg="$EDITOR $GLOBAL_ALIAS"
-va() { "$EDITOR" "$ALIASES/$1_aliases" }
+alias el="$EDITOR $LOCAL_ALIAS"
+alias eg="$EDITOR $GLOBAL_ALIAS"
+ea() { "$EDITOR" "$ALIASES/$1_aliases" }
 
 # convenient cd
 # -------------
