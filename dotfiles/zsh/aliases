@@ -43,6 +43,10 @@ cp_etc() {
 # editing alias files
 # -------------------
 edit_alias() {
+    if [[ $# -eq 0 ]]; then
+        print_aliases
+        return 1
+    fi
     input_arg="$1"
     [[ -z "$input_arg" ]] && return 1
     case "$input_arg" in
@@ -64,11 +68,8 @@ alias ea='edit_alias'
 # --------------------
 source_alias() {
     # if no input, print list of possible inputs, return 1
-    if [[ ! "$#" -gt "0" ]]; then
-        echo "options:"
-        echo "  - global"
-        echo "  - local"
-        ls -lh "$ALIASES" | tail -n +2 | awk '{ print $9 }' | sed -e "s/\([^_ ]\+\)_aliases/  - \1/"
+    if [[ $# -eq 0 ]]; then
+        print_aliases
         return 1
     fi
     # check input(s), source associated alias file(s) accordingly
@@ -89,9 +90,17 @@ source_alias() {
         echo "sourcing $alias_file"
         source "$alias_file"
     fi
-    [[ "$#" -gt "0" ]] && source_alias $@
+    [[ $# -gt 0 ]] && source_alias $@
 }
 alias sa='source_alias'
+
+### print alias file options (helper)
+print_aliases() {
+        echo "options:"
+        echo "  - global (g)"
+        echo "  - local (l)"
+        ls -lh "$ALIASES" | tail -n +2 | awk '{ print $9 }' | sed -e "s/\([^_ ]\+\)_aliases/  - \1/"
+}
 
 # general git (more in git_aliases)
 # ---------------------------------
