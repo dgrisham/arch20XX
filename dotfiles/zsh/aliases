@@ -1,6 +1,12 @@
 # Shortcuts
 # =========
 
+# editing alias files
+# -------------------
+alias vl="$EDITOR $LOCAL_ALIAS"
+alias vg="$EDITOR $GLOBAL_ALIAS"
+va() { "$EDITOR" "$ALIASES/$1_aliases" }
+
 # convenient cd
 # -------------
 c() {                       # cd with bookmarks
