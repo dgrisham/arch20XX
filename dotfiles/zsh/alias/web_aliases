@@ -4,6 +4,8 @@
 # environment
 # -----------
 export VENVS="$HOME/.venv"
+export WEB="$SCRATCH/web"
+export FLASKY="$WEB/flasky"
 
 # start python virtual environment
 # --------------------------------
@@ -17,3 +19,10 @@ start_venv() {
     [[ -d "$VENVS/$virtual_env" ]] && source "$VENVS/$virtual_env/bin/activate"
 }
 alias sv='start_venv'
+
+# convenient aliases for flasky
+# -----------------------------
+flasky_aliases() {
+    alias run="$FLASKY/manage.py runserver"
+    alias test="$FLASKY/manage.py test"
+}

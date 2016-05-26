@@ -1,3 +1,8 @@
+" General
+" ======
+"" start w/ relative line numbers
+set relativenumber
+
 " Plugins
 " =======
 "
@@ -27,6 +32,7 @@ call vundle#end()
 "" turn filetype recognition back on
 filetype plugin indent on
 
+
 " save and load folds automatically
 "autocmd BufWinLeave *.* mkview!
 "autocmd BufWinEnter *.* silent loadview
@@ -37,9 +43,9 @@ filetype plugin indent on
 "" 'space + <char>' to insert character <char>
 nnoremap <Space> i_<Esc>r
 
-"" show trailing spaces as '_', tabs as '>   '
-set list listchars=tab:>\ ,eol:¬,extends:»,precedes:«
-map <leader>lc :set list!<cr>
+"" show newline as hook thing, tabs as '>   '
+"set list listchars=tab:>\ ,eol:¬,extends:»,precedes:«
+"map <leader>lc :set list!<cr>
 
 " status bar
 set laststatus=2

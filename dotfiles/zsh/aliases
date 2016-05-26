@@ -85,6 +85,10 @@ source_alias() {
 }
 alias sa="source_alias"
 
+# general git (more in git_aliases)
+# ---------------------------------
+alias gco="git checkout"
+
 # start working environment
 # -------------------------
 start_environment() {
@@ -94,10 +98,12 @@ start_environment() {
     c "$env" &> /dev/null
     case "$env" in
         web)
-            start_venv "flask" # defined in web_aliases
+            source_alias "python" > /dev/null
+            flasky_aliases
+            start_venv "flask"
             ;;
         dev)
-            source_alias "git"
+            source_alias "git" > /dev/null
             ;;
     esac
 }
