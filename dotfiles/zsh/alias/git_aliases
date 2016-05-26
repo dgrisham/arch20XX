@@ -12,6 +12,7 @@
 update_branch() {
     merge_branch $@
     git clean -fd
+    git checkout "$src_branch"
 }
 ### merge_branch
 # same as update_branch, but doesn't remove untracked files/directories (to
