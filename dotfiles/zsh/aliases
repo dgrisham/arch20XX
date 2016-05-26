@@ -1,13 +1,6 @@
 # Shortcuts
 # =========
 
-# editing alias files
-# -------------------
-# TODO: consider making this more like `sa`, or vice-versa
-alias el="$EDITOR $LOCAL_ALIAS"
-alias eg="$EDITOR $GLOBAL_ALIAS"
-ea() { "$EDITOR" "$ALIASES/$1_aliases" }
-
 # convenient cd
 # -------------
 c() {                       # cd with bookmarks
@@ -47,6 +40,26 @@ cp_etc() {
     done
 }
 
+# editing alias files
+# -------------------
+edit_alias() {
+    input_arg="$1"
+    [[ -z "$input_arg" ]] && return 1
+    case "$input_arg" in
+        g|global)
+            alias_file="$GLOBAL_ALIAS"
+            ;;
+        l|local)
+            alias_file="$LOCAL_ALIAS"
+            ;;
+        *)
+            alias_file="$ALIASES/${input_arg}_aliases"
+            ;;
+    esac
+    [[ -f "$alias_file" ]] && "$EDITOR" "$alias_file"
+}
+alias ea='edit_alias'
+
 # sourcing alias files
 # --------------------
 source_alias() {
@@ -63,38 +76,26 @@ source_alias() {
     shift
     case "$input_arg" in
         g|global)
-            if [[ -f "$GLOBAL_ALIAS" ]]; then
-                echo "sourcing global aliases ($GLOBAL_ALIAS)"
-                source "$GLOBAL_ALIAS"
-            else
-                echo "file '$GLOBAL_ALIAS' does not exist"
-            fi
+            alias_file="$GLOBAL_ALIAS"
             ;;
         l|local)
-            if [[ -f "$LOCAL_ALIAS" ]]; then
-                echo "sourcing local aliases ($LOCAL_ALIAS)"
-                source "$LOCAL_ALIAS"
-            else
-                echo "file '$LOCAL_ALIAS' does not exist"
-            fi
+            alias_file="$LOCAL_ALIAS"
             ;;
         *)
-            alias_file="${input_arg}_aliases"
-            if [[ -f "$ALIASES/$alias_file" ]]; then
-                echo "sourcing $alias_file"
-                source "$ALIASES/$alias_file"
-            else
-                print "$alias_file does not exist"
-            fi
+            alias_file="$ALIASES/${input_arg}_aliases"
             ;;
     esac
+    if [[ -f "$alias_file" ]]; then
+        echo "sourcing $alias_file"
+        source "$alias_file"
+    fi
     [[ "$#" -gt "0" ]] && source_alias $@
 }
-alias sa="source_alias"
+alias sa='source_alias'
 
 # general git (more in git_aliases)
 # ---------------------------------
-alias gco="git checkout"
+alias gco='git checkout'
 
 # start working environment
 # -------------------------
@@ -114,7 +115,7 @@ start_environment() {
             ;;
     esac
 }
-alias se="start_environment"
+alias se='start_environment'
 
 # Media
 # =====
