@@ -3,6 +3,7 @@
 
 # editing alias files
 # -------------------
+# TODO: consider making this more like `sa`, or vice-versa
 alias el="$EDITOR $LOCAL_ALIAS"
 alias eg="$EDITOR $GLOBAL_ALIAS"
 ea() { "$EDITOR" "$ALIASES/$1_aliases" }
