@@ -3,15 +3,16 @@
 
 # convenient cd
 # -------------
-# TODO: somehow split between various 'alias' files (cleanly!)
-chpwd() { ls }              # ls when cd
 c() {                       # cd with bookmarks
     dirname="$1"
-    [[ -z "$dirname" ]] && dirname="$HOME"          # homedir
-    case "$dirname" in                              # bookmarks
+    case "$dirname" in      # bookmarks
         web)    dirname="$SCRATCH/web/flasky"   ;;
+        dev)    dirname="$SRC/arch20xx"         ;;
+        "")     dirname="$HOME"                 ;;
+        *)      return 1                        ;;
     esac
     cd "$dirname"
+    unset dirname           # for dir displayed in prompt
 }
 
 # open pdf, refresh tmux on close
@@ -81,10 +82,26 @@ source_alias() {
             ;;
     esac
     [[ "$#" -gt "0" ]] && source_alias $@
-    return 0
 }
 alias sa="source_alias"
 
+# start working environment
+# -------------------------
+start_environment() {
+    env="$1"
+    [[ -z "$env" ]] && return 1
+    source_alias "$env" > /dev/null
+    c "$env" &> /dev/null
+    case "$env" in
+        web)
+            start_venv "flask" # defined in web_aliases
+            ;;
+        dev)
+            source_alias "git"
+            ;;
+    esac
+}
+alias se="start_environment"
 
 # Media
 # =====
@@ -151,6 +168,7 @@ next() {
     next_event="$(echo "$next_event\n$curr_time" | sort)"
     echo "$next_event" | grep -A1 "{NOW}" | tail -n1
 }
+
 
 # Source additional aliases
 # =========================
