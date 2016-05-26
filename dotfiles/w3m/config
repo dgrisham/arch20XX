@@ -94,11 +94,11 @@ visited_anchor 1
 active_color cyan
 active_style 0
 bg_color terminal
-mark_color cyan
+mark_color magenta
 form_color red
 image_color green
-anchor_color blue
-basic_color terminal
+anchor_color cyan
+basic_color white
 color 1
 nextpage_topline 0
 label_topline 0
