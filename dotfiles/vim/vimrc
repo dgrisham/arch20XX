@@ -1,3 +1,8 @@
+" General
+" ======
+"" start w/ relative line numbers
+set relativenumber
+
 " Plugins
 " =======
 "
@@ -12,6 +17,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'mbbill/undotree'
 "Plugin 'tpope/vim-markdown'
 "Plugin 'yuratomo/w3m.vim'
 call vundle#end()
@@ -25,6 +31,7 @@ call vundle#end()
 "
 "" turn filetype recognition back on
 filetype plugin indent on
+
 
 " save and load folds automatically
 "autocmd BufWinLeave *.* mkview!
