@@ -67,7 +67,7 @@ alias ea='edit_alias'
 # sourcing alias files
 # --------------------
 source_alias() {
-    # if no input, print list of possible inputs, return 1
+    # if no input, print list of possible inputs and return
     if [[ $# -eq 0 ]]; then
         print_aliases
         return 1
@@ -94,7 +94,7 @@ source_alias() {
 }
 alias sa='source_alias'
 
-### print alias file options (helper)
+### print alias file options (helper for {source,edit}_alias)
 print_aliases() {
         echo "options:"
         echo "  - global (g)"
