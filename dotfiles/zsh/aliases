@@ -12,7 +12,7 @@ c() {                       # cd with bookmarks
         *)      return 1                        ;;
     esac
     cd "$dirname"
-    unset dirname           # for dir displayed in prompt
+    unset dirname           # for directory name displayed in prompt
 }
 
 # open pdf, refresh tmux on close
