@@ -38,6 +38,15 @@ update_user() {
     #merge_branch "$tmp_branch" 'master'
 }
 
+update_user() {
+    user_branch="$1"
+    [[ -z "$user_branch" ]] && return 1
+    tmp_branch='user_tmp'
+    git checkout 'master'
+    git checkout -b "$tmp_branch"
+    merge_branch "$tmp_branch" 'master'
+}
+
 # helpers
 # =======
 

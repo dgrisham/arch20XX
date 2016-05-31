@@ -43,9 +43,10 @@ filetype plugin indent on
 "" 'space + <char>' to insert character <char>
 nnoremap <Space> i_<Esc>r
 
-"" show newline as hook thing, tabs as '>   '
+"" show trailing spaces as '_', tabs as '>   '
 "set list listchars=tab:>\ ,eol:¬,extends:»,precedes:«
-"map <leader>lc :set list!<cr>
+set list listchars=tab:\ \ ,trail:_,extends:»,precedes:«
+map <leader>lc :set list!<cr>
 
 " status bar
 set laststatus=2
