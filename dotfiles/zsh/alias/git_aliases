@@ -30,8 +30,6 @@ merge_branch() {
 update_user() {
     user_branch="$1"
     [[ -z "$user_branch" ]] && return 1
-    git checkout 'master'
-    git pull
     git checkout "$user_branch"
     git merge 'master'
     #tmp_branch='user_tmp'
