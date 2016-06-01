@@ -7,19 +7,6 @@ export VENVS="$HOME/.venv"
 export WEB="$SCRATCH/web"
 export FLASKY="$WEB/flasky"
 
-# start python virtual environment
-# --------------------------------
-start_venv() {
-    if [[ -z "$1" ]]; then
-        echo "options:"
-        ls -lh "$VENVS" | tail -n +2 | awk '{ print $9 }' | sed -e "s/\(.*\)/  - \1/"
-        return 1
-    fi
-    virtual_env="$1"
-    [[ -d "$VENVS/$virtual_env" ]] && source "$VENVS/$virtual_env/bin/activate"
-}
-alias sv='start_venv'
-
 # convenient aliases for flasky
 # -----------------------------
 flasky_aliases() {

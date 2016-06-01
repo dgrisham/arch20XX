@@ -11,11 +11,12 @@
 # ===
 install_zsh() {
     #install_zprezto
+    :
 }
 # zprezto
 # -------
 install_zprezto() {
-
+    :
 }
 
 # jfbview
@@ -37,7 +38,8 @@ install_vim() {
 # vundle
 # ------
 install_vundle() {
-    git clone https://github.com/VundleVim/Vundle.vim.git $DOTFILES/vim/bundle/Vundle.vim
+    git clone "https://github.com/VundleVim/Vundle.vim.git" "$DOTFILES/vim/bundle/Vundle.vim"
+    vim +PluginInstall +qall
     # run PluginInstall for default plugins
     # if wants_ycm (rename), install_ycm
 }
@@ -72,3 +74,16 @@ set_default_user_permissions() {
     # need executable flag on directories to cd, hence the 755
     find . -type d -exec chmod 755 {} \;
 }
+
+# interface
+# =========
+install_command="$1"
+shift
+case "$install_command" in
+    vundle)
+        install_vundle $@
+        ;;
+    *)
+        echo "Unrecognized command: '$wifi_command'"
+        ;;
+esac
