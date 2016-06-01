@@ -10,7 +10,7 @@ set relativenumber
 ""filetype must be turned off before vundle commands
 filetype off
 """ set the runtime path to include vundle, and initialize
-set rtp+=$DOTFILES/vim/bundle/vundle.vim
+set rtp+=$DOTFILES/vim/bundle/Vundle.vim
 call vundle#begin()
 
 """ vundle modules to load
@@ -43,8 +43,9 @@ filetype plugin indent on
 "" 'space + <char>' to insert character <char>
 nnoremap <Space> i_<Esc>r
 
-"" show newline as hook thing, tabs as '>   '
-"set list listchars=tab:>\ ,eol:¬,extends:»,precedes:«
+"" show trailing spaces as '_', tabs as '>   '
+"set list listchars=tab:>\ ,eol:¬,extends:�,precedes:«
+"set list listchars=tab:\ \ ,trail:_,extends:»,precedes:«
 "map <leader>lc :set list!<cr>
 
 " status bar

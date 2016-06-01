@@ -13,6 +13,7 @@ update_branch() {
     merge_branch $@
     git clean -fd
     git checkout "$src_branch"
+    git commit -am "updating branch '$dest_branch' with branch '$src_branch'"
 }
 ### merge_branch
 # same as update_branch, but doesn't remove untracked files/directories (to
@@ -24,7 +25,26 @@ merge_branch() {
     git checkout "$dest_branch"
     git checkout "$src_branch" -- .
     git reset .
-    git commit -am "updating branch '$dest_branch' with branch '$src_branch'"
+}
+
+update_user() {
+    user_branch="$1"
+    [[ -z "$user_branch" ]] && return 1
+    git checkout 'master'
+    git merge "$user_branch"
+    #tmp_branch='user_tmp'
+    #git checkout 'master'
+    #git checkout -b "$tmp_branch"
+    #merge_branch "$tmp_branch" 'master'
+}
+
+update_user() {
+    user_branch="$1"
+    [[ -z "$user_branch" ]] && return 1
+    tmp_branch='user_tmp'
+    git checkout 'master'
+    git checkout -b "$tmp_branch"
+    merge_branch "$tmp_branch" 'master'
 }
 
 # helpers
