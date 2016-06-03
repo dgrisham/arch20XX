@@ -18,6 +18,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'mbbill/undotree'
+Plugin 'Valloric/YouCompleteMe'
 "Plugin 'tpope/vim-markdown'
 "Plugin 'yuratomo/w3m.vim'
 call vundle#end()
