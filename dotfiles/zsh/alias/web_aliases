@@ -1,9 +1,8 @@
-# web-dev project aliases
-# =======================
+# General
+# =======
 
-# environment
+# Environment
 # -----------
-export VENVS="$HOME/.venv"
 export WEB="$SCRATCH/web"
 export FLASKY="$WEB/flasky"
 
