@@ -123,7 +123,7 @@ set cursorline
 
 " Highlight cursor column lightly
 " -------------------------------
-highlight cursorcolumn cterm=NONE ctermbg=8
+highlight cursorcolumn cterm=NONE ctermbg=233
 noremap <leader>cc :set cursorcolumn!<cr>
 
 " Folding
@@ -162,7 +162,7 @@ noremap J }
 " Netrw (file explorer)
 " --------------------
 " ### Opening
-nmap <C-n>\| :Vexplore!<cr>
+nmap <C-n>\ :Vexplore!<cr>
 nmap <C-n>- :Hexplore<cr>
 nmap <C-n>n :Explore<cr>
 nmap <C-n>t :Texplore<cr>
