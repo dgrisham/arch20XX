@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+case "$1" in
+    u|up)
+        ponymix increase 5
+        ;;
+    d|down)
+        ponymix decrease 5
+        ;;
+    t|toggle)
+        ponymix toggle
+        ;;
+    *)
+        echo "Unsupported option: '$1'"
+        ;;
+esac
+

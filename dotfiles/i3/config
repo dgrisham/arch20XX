@@ -22,7 +22,7 @@ set $mod Mod1
 # is used in the bar {} block below.
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:DejaVu Sans Mono 12
+font pango:DejaVu Sans Mono 10
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # The font above is very space-efficient, that is, it looks good, sharp and
@@ -55,13 +55,13 @@ bindsym $mod+m exec mutt
 # for_window [class="Uzbl-core"] focus child, layout stacking, focus
 
 # audio buttons
-#bindsym XF86AudioRaiseVolume exec "amixer set Master 3%+"
-#bindsym XF86AudioLowerVolume exec "amixer set Master 3%-"
-#bindsym XF86AudioMute exec "amixer set Master toggle"
+bindsym XF86AudioRaiseVolume exec "sound up"
+bindsym XF86AudioLowerVolume exec "sound down"
+bindsym XF86AudioMute exec "sound toggle"
 
 # control brightness
-#bindsym XF86MonBrightnessDown exec "xbacklight +10%"
-#bindsym XF86MonBrightnessUp exec "xbacklight -10%"
+bindsym Prior exec "xbacklight +5%"
+bindsym Next exec "xbacklight -5%"
 
 # kill focused window
 bindsym $mod+Shift+q kill

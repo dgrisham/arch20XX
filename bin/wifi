@@ -1,17 +1,17 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 
 # constants
 # ---------
 wifi_file="/etc/wpa_supplicant/wifi_networks"
 wifi_config="$DOTFILES$wifi_file"
-wifi_card="wlp3s0"
+wifi_card="$WIFI_CARD"
 
 # reconnect using wpa_supplicant
 # ------------------------------
 wifi_connect() {
     sudo pkill wpa_supplicant
-    sudo dhcpcd -k
+    sudo pkill dhcpcd
     sudo wpa_supplicant -B -Dnl80211 -i"$wifi_card" -c"$wifi_file"
     sudo dhcpcd "$wifi_card"
 }
