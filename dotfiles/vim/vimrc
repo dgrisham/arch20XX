@@ -2,7 +2,6 @@
 " ======
 "" start w/ relative line numbers
 set relativenumber
-set option
 
 " Plugins
 " =======
