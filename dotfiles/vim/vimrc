@@ -1,7 +1,7 @@
 " General
 " ======
 "" start w/ relative line numbers
-set relativenumber
+set relativenumber " comment
 
 " Plugins
 " =======

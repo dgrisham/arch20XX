@@ -1,6 +1,7 @@
 music script
 ============
 
+-   new idea
 features
 --------
 
