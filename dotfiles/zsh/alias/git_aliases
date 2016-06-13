@@ -20,7 +20,7 @@ update_branch() {
 # easily share new files between branches)
 merge_branch() {
     if branch_exists "$1"; then dest_branch="$1"; else return 1; fi
-    src_branch=${2:-"master"}
+    src_branch=${2:-'master'}
     branch_exists "$src_branch" || return 1
     git checkout "$dest_branch"
     git checkout "$src_branch" -- .
@@ -35,6 +35,12 @@ update_user() {
     git merge "$user_branch"
     git commit -am "updating user branch $user_branch"
     git checkout "$user_branch"
+<<<<<<< HEAD
+=======
+    git merge 'master'
+    git checkout "$user_branch"
+    git commit -am "updating user branch $user_branch"
+>>>>>>> lhillber
     #tmp_branch='user_tmp'
     #git checkout 'master'
     #git checkout -b "$tmp_branch"
