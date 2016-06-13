@@ -9,7 +9,8 @@
 
 URxvt*.transparent: true
 URxvt*.shading: 15
-URxvt.font:xft:Fixed:size=15
+URxvt.font:xft:DejaVu Sans Mono:antialias=true:size=12
+URxvt.boldFont:xft:DejaVu Sans Mono:bold:antialias=true:size=12
 
 URxvt.background: t_background
 URxvt.foreground: t_foreground

@@ -11,12 +11,9 @@ alias grep='grep --color=auto'
 alias ll="ls -lh"
 alias lr="ls -lrh"
 alias la="ls -lah"
-alias lra="ls -lra"
-alias lar="ls -lra"
-alias lha="ls -lah"
-alias lah="ls -lah"
 alias lt="ls -lrth"
 alias lta="ls -lrtah"
+alias lat="ls -lrtah"
 
 # tmux
 # ----
