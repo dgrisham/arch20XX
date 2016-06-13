@@ -3,4 +3,4 @@
 # X aliases (not useful in cli/tmux)
 # ==================================
 
-alias stm='LD_PRELOAD='"'"'/usr/$LIB/libstdc++.so.6 /usr/$LIB/libgcc_s.so.1 /usr/$LIB/libxcb.so.1 /usr/$LIB/libgpg-error.so'"'"' steam'
+alias stm='~/.local/share/Steam/steam.sh'
