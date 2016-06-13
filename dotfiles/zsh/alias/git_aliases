@@ -32,9 +32,9 @@ update_user() {
     [[ -z "$user_branch" ]] && return 1
     git checkout 'master'
     git pull
-    git merge '$user_branch'
+    git merge "$user_branch"
     git commit -am "updating user branch $user_branch"
-    git checkout '$user_branch'
+    git checkout "$user_branch"
     #tmp_branch='user_tmp'
     #git checkout 'master'
     #git checkout -b "$tmp_branch"
