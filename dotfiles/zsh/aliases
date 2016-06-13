@@ -104,8 +104,10 @@ print_aliases() {
 
 # general git (more in git_aliases)
 # ---------------------------------
-alias gco='git checkout'
+alias gc='git commit -m'
+alias gca='git commit -am'
 alias gs='git status'
+alias gco='git checkout'
 
 # start working environment
 # -------------------------
