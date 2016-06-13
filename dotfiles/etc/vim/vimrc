@@ -58,8 +58,8 @@ command -nargs=+ MapToggle call MapToggle(<f-args>)
 
 " Display trailing spaces
 " -----------------------
-set list listchars=tab:>\ ,eol:¬,extends:»,precedes:«
-map <leader>lc :set list!<cr>
+"set list listchars=tab:>\ ,eol:¬,extends:»,precedes:«
+"map <leader>lc :set list!<cr>
 
 " Syntax highlighting/numbers in margin
 " -------------------------------------
