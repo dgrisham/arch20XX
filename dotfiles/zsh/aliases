@@ -1,22 +1,12 @@
 # Shortcuts
 # =========
 
-# log into Sensory vpn and ssh into ears
-# --------------------------------------
-ssh_ears() {
-    sudo pon sensory
-    sleep 8
-    sudo ip route add 10.10.0.0/16 dev ppp0
-    ssh ears
-
-}
-
 # convenient cd
 # -------------
 c() {                       # cd with bookmarks
     dirname="$1"
     case "$dirname" in      # bookmarks
-        web)    dirname="$SCRATCH/web/flasky"   ;;
+        web)    dirname="$SCRATCH/flasky"   ;;
         dev)    dirname="$SRC/arch20xx"         ;;
         "")     dirname="$HOME"                 ;;
         *)      return 1                        ;;
@@ -207,3 +197,5 @@ next() {
 # =========================
 [[ -n "$DISPLAY" ]] && source_alias 'x' > /dev/null
 
+source_alias 'web' > /dev/null
+source_alias 'python' > /dev/null
