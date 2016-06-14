@@ -60,8 +60,8 @@ bindsym XF86AudioLowerVolume exec "sound down"
 bindsym XF86AudioMute exec "sound toggle"
 
 # control brightness
-bindsym Prior exec "xbacklight +5%"
-bindsym Next exec "xbacklight -5%"
+bindsym $mod+Prior exec "xbacklight +5%"
+bindsym $mod+Next exec "xbacklight -5%"
 
 # kill focused window
 bindsym $mod+Shift+q kill
