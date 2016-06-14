@@ -2,7 +2,10 @@
 # -------------------
 
 ### Terminal
-export TERM=xterm
+export TERM=xterm-256color
+
+### Wifi card
+export WIFI_CARD="wlp3s0"
 
 ### Bin
 export BIN="$HOME/bin"
