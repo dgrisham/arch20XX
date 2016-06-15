@@ -1,6 +1,18 @@
 #!/bin/zsh
 
-# X aliases (not useful in cli/tmux)
-# ==================================
+# X aliases
+# =========
 
+# general
+# -------
+xb() { xbacklight $1% }
+
+# steam
+# -----
 alias stm='LD_PRELOAD='"'"'/usr/$LIB/libstdc++.so.6 /usr/$LIB/libgcc_s.so.1 /usr/$LIB/libxcb.so.1 /usr/$LIB/libgpg-error.so'"'"' steam'
+
+# hdmi
+# ----
+hdmi-on() { xrandr --output HDMI-0 --auto --above DP-0 $@ && $HOME/.fehbg }
+alias hdmi-off="xrandr --output HDMI-0 --off && $HOME/.fehbg"
+
