@@ -16,5 +16,11 @@ cookie
 history
 w3m*-*
 
+# wpa_supplicant
+wpa_supplicant
+
+# gpg
+gnupg
+
 # rtorrent
 rtorrent.session
