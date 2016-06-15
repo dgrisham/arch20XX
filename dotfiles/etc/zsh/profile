@@ -16,6 +16,8 @@ export PERSONAL="$HOME/personal"
 export MEDIA="$HOME/media"
 export MUSIC="$MEDIA/music"
 export SCRATCH="$HOME/scratch"
+#### GPG
+export GNUPGHOME="$DOTFILES/gnupg"
 
 ### Alias files
 export LOCAL_ALIAS="$DOTFILES/zsh/aliases"
