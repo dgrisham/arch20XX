@@ -11,16 +11,14 @@ bundle
 # zsh
 histfile
 
+# wpa supplicant
+wpa_supplicant
+
 # w3m
 cookie
 history
 w3m*-*
 
-# wpa_supplicant
-wpa_supplicant
-
 # gpg
 gnupg
 
-# rtorrent
-rtorrent.session
