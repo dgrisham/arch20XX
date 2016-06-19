@@ -15,4 +15,4 @@ if [[ "$host_num" -lt '0' || "$host_num" -gt "${#hosts}" ]]; then
     echo "Out of range."
     return 1
 fi
-ssh "${hosts[$host_num]}" -t tmux
+ssh "${hosts[$host_num]}" -t tmux attach
