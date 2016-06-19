@@ -28,8 +28,22 @@ export ALIASES="$DOTFILES/zsh/alias"
 ### Defaults
 export EDITOR="vim"
 export VISUAL="$EDITOR"
-export VIEWER="jfbview"
+export VIEWER="mupdf"
 export BROWSER="w3m"
 export PUBLISHER="git"
 export PLAYER="mpv"
+
+### fbterm vs. x
+virtual_terminal="$( tty | grep -oE ....$ )"
+case "$virtual_terminal" in
+    tty1)
+        startx
+    ;;
+    tty2|tty3)
+        fbterm-bi "$MEDIA/pictures/backgrounds/current_bg" -- zsh -c 'TERM=fbterm tmux'
+    ;;
+    tty4)
+        fbterm-bi "$MEDIA/pictures/backgrounds/current_bg" -- zsh -c "TERM=fbterm ssh_login"
+    ;;
+esac
 

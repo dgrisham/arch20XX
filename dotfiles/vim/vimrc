@@ -70,6 +70,14 @@ let g:airline_theme='jellybeans'
 "let g:ycm_enable_diagnostic_highlighting = 0
 
 
+" Defined actions
+" ---------------
+map <leader>w :wa<cr>:!md make doc %<cr><cr>
+map <leader>e :wa<cr>:!md make exec %<cr><cr>
+map <leader>o :!md view %<cr><cr>
+map <leader>p :!md publish %<cr><cr>
+
+
 " set foldmethod to 'indent' for python files
 "autocmd BufRead,BufNewFile,BufEnter *.py  set foldmethod=indent
 
