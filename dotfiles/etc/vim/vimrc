@@ -184,6 +184,12 @@ map <leader>g gqip
 " -------------
 nnoremap <C-p> %
 
+" Remove 'select mode' macros
+" ---------------------------
+unmap gh
+unmap gH
+unmap g<C-H>
+
 " Call md_website browser
 " -----------------------
 "command -nargs=* MDW read !md_website <args> 2> /dev/null
