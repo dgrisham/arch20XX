@@ -6,7 +6,8 @@
 c() {                       # cd with bookmarks
     dirname="$1"
     case "$dirname" in      # bookmarks
-        web)    dirname="$SCRATCH/flasky"   ;;
+        flasky) dirname="$SCRATCH/flasky"       ;;
+        web)    dirname="/var/www"       ;;
         dev)    dirname="$SRC/arch20xx"         ;;
         "")     dirname="$HOME"                 ;;
         *)      return 1                        ;;
@@ -14,6 +15,30 @@ c() {                       # cd with bookmarks
     cd "$dirname"
     unset dirname           # for dir displayed in prompt
 }
+
+# start working environment
+# -------------------------
+start_environment() {
+    env="$1"
+    [[ -z "$env" ]] && return 1
+    source_alias "$env" > /dev/null
+    c "$env" &> /dev/null
+    case "$env" in
+        web)
+            source_alias "python" > /dev/null
+            start_venv "flask"
+            ;;
+        flasky)
+            source_alias "python" > /dev/null
+            flasky_aliases
+            start_venv "flask"
+            ;;
+        dev)
+            source_alias "git" > /dev/null
+            ;;
+    esac
+}
+alias se='start_environment'
 
 # open pdf, refresh tmux on close
 # -------------------------------
@@ -106,25 +131,6 @@ print_aliases() {
 # ---------------------------------
 alias gco='git checkout'
 
-# start working environment
-# -------------------------
-start_environment() {
-    env="$1"
-    [[ -z "$env" ]] && return 1
-    source_alias "$env" > /dev/null
-    c "$env" &> /dev/null
-    case "$env" in
-        web)
-            source_alias "python" > /dev/null
-            flasky_aliases
-            start_venv "flask"
-            ;;
-        dev)
-            source_alias "git" > /dev/null
-            ;;
-    esac
-}
-alias se='start_environment'
 
 # Media
 # =====
