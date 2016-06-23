@@ -6,7 +6,7 @@
 c() {                       # cd with bookmarks
     dirname="$1"
     case "$dirname" in      # bookmarks
-        web)    dirname="$SCRATCH/web/flasky"   ;;
+        web)    dirname="$SCRATCH/flasky"   ;;
         dev)    dirname="$SRC/arch20xx"         ;;
         "")     dirname="$HOME"                 ;;
         *)      return 1                        ;;
