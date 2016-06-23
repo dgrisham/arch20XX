@@ -11,6 +11,9 @@ bundle
 # zsh
 histfile
 
+# wpa supplicant
+wpa_supplicant
+
 # w3m
 cookie
 history
