@@ -186,9 +186,9 @@ nnoremap <C-p> %
 
 " Remove 'select mode' macros
 " ---------------------------
-unmap gh
-unmap gH
-unmap g<C-H>
+map gh <nop>
+map gH <nop>
+map g<C-h> <nop>
 
 " Call md_website browser
 " -----------------------
