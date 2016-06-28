@@ -10,10 +10,16 @@ wifi_card="$WIFI_CARD"
 # reconnect using wpa_supplicant
 # ------------------------------
 wifi_connect() {
-    sudo pkill wpa_supplicant
-    sudo pkill dhcpcd
+    wifi_disconnect
     sudo wpa_supplicant -B -Dnl80211 -i"$wifi_card" -c"$wifi_file"
     sudo dhcpcd "$wifi_card"
+}
+
+# disconnect
+# ----------
+wifi_disconnect() {
+    sudo pkill wpa_supplicant
+    sudo pkill dhcpcd
 }
 
 # scan for networks in area
@@ -97,6 +103,9 @@ shift
 case "$wifi_command" in
     c|connect)
         wifi_connect $@
+        ;;
+    d|disconnect)
+        wifi_disconnect $@
         ;;
     s|scan)
         wifi_scan $@
