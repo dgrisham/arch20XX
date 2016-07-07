@@ -1,0 +1,13 @@
+# permissions
+
+## chattr
+
+`T` for home directory
+`i` not good because can't create links, find alternative (chmod)
+
+## chmod
+
+line that made directory (seemingly) undeletable: `sudo chmod 2775 library`
+    -   still might be useful, to delete: `chattr -a library`
+    -   however, still want to find a way to give user who adds music power to
+        delete
