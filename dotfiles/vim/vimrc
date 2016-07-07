@@ -19,6 +19,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'mbbill/undotree'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'scrooloose/nerdcommenter'
 "Plugin 'tpope/vim-markdown'
 "Plugin 'yuratomo/w3m.vim'
 call vundle#end()
@@ -53,6 +54,17 @@ nnoremap <Space> i_<Esc>r
 set laststatus=2
 let g:airline_theme='jellybeans'
 
+" nerdcommenter
+"" space after comment
+let g:NERDSpaceDelims = 1
+"" allow comments on otherwise-empty lines
+let g:NERDCommentEmptyLines = 1
+"" flush comment delimeter with start of line
+let g:NERDDefaultAlign = 'left'
+"" inline comments for haskell by default
+let g:NERDAltDelims_haskell = 1
+"" commenting from cursor to EOL
+map <silent> <leader>cL <plug>NERDCommenterToEOL
 
 "" enable folder/project -specific vimrc
 "set exrc

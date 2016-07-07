@@ -86,8 +86,7 @@ TS_OUTPUT=""
 if [[ "${TS_STAT_TYPE:0:1}" == 's' ]]
 then
     #TS_OUTPUT="`get_date`  |  Bat: `get_bat`  |  Temps: `get_temp`"
-    TS_OUTPUT="`get_date`  |  Bat: `get_bat`"
-    TS_OUTPUT="$TS_OUTPUT  |  Net: `get_net`  |  Uptime: `get_uptime`"
+    TS_OUTPUT="`get_date` | Net: `get_net`"
 
 # notifications
 elif [[ "${TS_STAT_TYPE:0:1}" == 'n' ]]
