@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+
+ssh_config="$HOME/.ssh/config"
+
+counter=0
+typeset -A hosts
+grep 'host ' "$ssh_config" | sed 's/host //' | while read host; do
+    hosts[$counter]="$host"
+    echo "$counter: $host"
+    counter="$(($counter + 1))"
+done
+printf "Which host: "
+read host_num
+if [[ "$host_num" -lt '0' || "$host_num" -gt "${#hosts}" ]]; then
+    echo "Out of range."
+    return 1
+fi
+ssh "${hosts[$host_num]}" -t tmux attach

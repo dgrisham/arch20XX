@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 # pull in aliases for convenience
-source ~/.aliases
+source ~/dotfiles/zsh/aliases
 
 # status commands
 

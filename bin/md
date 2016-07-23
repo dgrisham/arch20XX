@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 
 # Utilities
@@ -214,8 +214,7 @@ md_view() {
                 ;;
         esac
         echo "Displaying '$file' with '$program'."
-        md_pause
-        "$program" "$file"
+        "$program" "$file" &
     done
     [[ "$#" -gt "0" ]] && md_view $@
     return 0
