@@ -117,13 +117,13 @@ set textwidth=80
 
 " Highlight current line lightly
 " ------------------------------
-highlight cursorline cterm=NONE ctermbg=233
+highlight cursorline cterm=NONE ctermbg=235
 noremap <leader>cl :set cursorline!<cr>
 set cursorline
 
 " Highlight cursor column lightly
 " -------------------------------
-highlight cursorcolumn cterm=NONE ctermbg=233
+highlight cursorcolumn cterm=NONE ctermbg=235
 noremap <leader>cc :set cursorcolumn!<cr>
 
 " Folding
