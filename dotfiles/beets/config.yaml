@@ -1,51 +1,63 @@
-library   : /home/grish/.beets/library.blb
-directory : /home/grish/music
+library   : /home/media_admin/dotfiles/beets/library.blb
+directory : /home/media_admin/media/music/library
+
 import:
     write              : yes
     copy               : no
     move               : yes
-    incremental        : no #?
+    incremental        : no
     timid              : no
     detail             : yes
     threaded           : yes
     per_disc_numbering : yes
-    # asciify_paths      : yes
+    asciify_paths      : yes
     original_date      : yes
-    # threaded           : yes
+    threaded           : yes
+
 ui:
     color : yes
+
 match:
     ignored  : missing_tracks unmatched_tracks
     preferred:
         media         : ['CD', 'Digital Media|File']
-        original_year : yes
+        #original_year : yes
         #countries     : ['US', 'GB|UK']
+
 item_fields:
-	# artist_custom: u'{}'.format(albumartist.lower())
+# artist_custom: u'{}'.format(albumartist.lower())
     album_custom: |
-        smart_month = u'' if (month == '00') else u'_{}'.format(month)
+        prefix = u'0' if month < 10 else u''
+        smart_month = u'' if (month == '00') else u'_{p}{m}'.format(p=prefix, m=month)
         return u'{y}{m}-{al}'.format(y=year, m=smart_month, al=album.lower())
     track_custom: |
         prefix = u'0' if track < 10 else u''
         smart_track = u'{p}{tr}'.format(p=prefix, tr=track)
         return u'{d}_{tr}-{ti}'.format(d=disc, tr=smart_track, ti=title.lower())
+
 paths:
-    default   : %lower{$albumartist}/$album_custom/$track_custom
-    singleton : etc/no-album/$artist/$title_custom
-    comp      : etc/compilations/$album_custom/$track_custom
+    default              : %lower{$albumartist}/$album_custom/$track_custom
+    singleton            : etc/no-album/$artist/$title_custom
+    comp                 : etc/compilations/$album_custom/$track_custom
+    albumtype:soundtrack : etc/soundtracks/$album_custom/$track_custom
+
 replace:
-    '[\\/]'   	   : _
-    '^\.'		   : _
+    '[\\/]'        : _
+    '^\.'          : _
     '[\x00-\x1f]'  : _
     '[<>:"\?\*\|]' : _
-    '\.$' 		   : _
-    '\s+$'  	   : ''
-    '^\s+' 		   : ''
-	'\s'           : '_'
-#musicbrainz:
-#    searchlimit: 5 # default
-plugins   : inline fetchart scrub #lastgenre
+    '[\[\]()&,]'   : ''
+    '\.$'          : _
+    '\s+$'         : ''
+    "['!]"         : ''
+    '^\s+'         : ''
+    '[\s_]{2,}'    : '_'
+    '\s'           : '_'
+
+plugins: inline fetchart scrub lastgenre ipfs
 fetchart:
     minwidth : 600
-    sources: coverart itunes amazon albumart google wikipedia
+    sources  : coverart itunes amazon albumart google wikipedia
 
+#musicbrainz:
+#    searchlimit: 5 # default

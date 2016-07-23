@@ -4,6 +4,8 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+setopt EXTENDED_GLOB
+
 zsh_dir="$HOME/dotfiles/zsh"
 env_files=("profile" "aliases")
 for env_file in $env_files; do
