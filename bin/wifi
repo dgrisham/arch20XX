@@ -66,6 +66,7 @@ wifi_new() {
             echo '    ssid="'"$ssid"'"' | tee -a "$wifi_config"
             echo '    key_mgmt=NONE'    | tee -a "$wifi_config"
             echo '}'                    | tee -a "$wifi_config"
+            echo '\n'                   | tee -a "$wifi_config"
             ;;
         c*|C*)
             echo "enter passphrase..."
@@ -80,6 +81,7 @@ wifi_new() {
 # nice interactive wifi-finder
 # ----------------------------
 wifi_menu() {
+    sudo ip link set "$wifi_card" up
     counter=0
     typeset -A networks
     wifi_scan | while read wifi_network; do

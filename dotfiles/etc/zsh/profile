@@ -10,6 +10,8 @@ export WIFI_CARD="wlp3s0"
 ### Bin
 export BIN="$HOME/bin"
 export PATH="$PATH:$BIN"
+#### Stack (Haskell)
+export PATH="$PATH:$HOME/.local/bin"
 
 ### Directories
 export DOTFILES="$HOME/dotfiles"
@@ -22,7 +24,7 @@ export SCRATCH="$HOME/scratch"
 
 ### Alias files
 export LOCAL_ALIAS="$DOTFILES/zsh/aliases"
-export GLOBAL_ALIAS="/etc/zsh/aliases"
+export GLOBAL_ALIAS="$DOTFILES/etc/zsh/aliases"
 export ALIASES="$DOTFILES/zsh/alias"
 
 ### Defaults

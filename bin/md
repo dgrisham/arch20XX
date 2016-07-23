@@ -81,7 +81,6 @@ md_generate() {
 md_make_doc() {
     src_file="$1"
     dir="$(dirname "$src_file")"
-
     for file in $(md_targets "$src_file"); do
         for output_format in $(md_metadata "$src_file" 'format'); do
             out_ext="$output_format"
@@ -98,8 +97,7 @@ md_make_doc() {
                 pdflatex -output-directory "$dir" "$output_file" \
                     && pdflatex -output-directory "$dir" "$output_file"
 
-                rm -f "${file%md}nav" "${file%md}snm" "${file%md}toc" \
-                        "${file%md}aux" "${file%md}bbl" "${file%md}blg" \
+                rm -f "${file%md}{nav,snm,toc,aux" "${file%md}bbl" "${file%md}blg" \
                         "${file%md}log" "${file%md}out"
             fi
         done

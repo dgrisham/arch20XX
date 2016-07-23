@@ -17,7 +17,7 @@ alias lat="ls -lrtah"
 
 # tmux
 # ----
-alias tmux="tmux -2"
+alias tm="tmux -2 attach"
 
 # convenient cd
 # -------------
@@ -35,6 +35,10 @@ alias head='head -n30'
 alias tarx='tar -xvf'
 tarc() { tar -cvf $1.tar $1 }
 zipd() { zip -rv $1.zip $1 }
+
+# mail
+# ----
+alias imap="offlineimap -c $DOTFILES/mail/offlineimaprc" # sync
 
 
 # Hardware

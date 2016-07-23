@@ -6,8 +6,9 @@
 c() {                       # cd with bookmarks
     dirname="$1"
     case "$dirname" in      # bookmarks
-        web)    dirname="$SCRATCH/flasky"   ;;
+        web)    dirname="$SCRATCH/flasky"       ;;
         dev)    dirname="$SRC/arch20xx"         ;;
+        res)    dirname="$SCRATCH/research"     ;;
         "")     dirname="$HOME"                 ;;
         *)      return 1                        ;;
     esac
@@ -191,4 +192,4 @@ next() {
 # Source additional aliases
 # =========================
 [[ -n "$DISPLAY" ]] && source_alias 'x' > /dev/null
-
+source_alias 'python' > /dev/null
