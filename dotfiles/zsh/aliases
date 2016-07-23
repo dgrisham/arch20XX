@@ -1,9 +1,6 @@
 # Shortcuts
 # =========
 
-<<<<<<< HEAD
-# convenient cd
-=======
 # TEMPORARY: not sure where to put these
 export RESEARCH="$HOME/documents/research"
 export VENVS="$HOME/.venv"
@@ -19,9 +16,18 @@ ssh_ears() {
 
 }
 
+vpn_sns() {
+    sudo pon sensory
+    sleep 8
+    sudo ip route add 10.10.0.0/16 dev ppp0
+}
+
+vpn_off() {
+    sudo poff
+}
+
+
 # exit terminal
->>>>>>> lhillber
-# -------------
 alias x='exit'
 
 # cd to bookmark

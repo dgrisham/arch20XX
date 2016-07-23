@@ -3,7 +3,6 @@
 # X aliases
 # =========
 
-<<<<<<< HEAD
 # general
 # -------
 xb() { xbacklight $1% }
@@ -14,9 +13,7 @@ alias stm='LD_PRELOAD='"'"'/usr/$LIB/libstdc++.so.6 /usr/$LIB/libgcc_s.so.1 /usr
 
 # hdmi
 # ----
-hdmi-on() { xrandr --output HDMI-0 --auto --above DP-0 $@ && $HOME/.fehbg }
-alias hdmi-off="xrandr --output HDMI-0 --off && $HOME/.fehbg"
+alias hdmi-on="xrandr --output HDMI1 --auto --scale-from 1280x720 --above eDP1"
+alias hdmi-off="xrandr --output HDMI1 --off "
 
-=======
 alias stm='~/.local/share/Steam/steam.sh'
->>>>>>> lhillber

@@ -198,7 +198,8 @@ map <leader>h1 VypVr=A
 map <leader>h2 VypVr-A
 map <leader>h3 I### 
 map <leader>cb I```
-map <leader>j :read !date +\%F<cr>kdd<leader>h1
+
+map <leader>d :read !date +\%F<cr>kdd<leader>h1
 
 
 " Other Filetypes
