@@ -24,6 +24,10 @@ pdf() {
     tmux refresh-client
 }
 
+# start existing vim session
+# --------------------------
+alias vs="vim -S"
+
 # `vim <today's_date>.md`
 # -----------------------
 vt() {

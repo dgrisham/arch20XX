@@ -7,6 +7,7 @@ undo
 bundle
 ## netrw history
 .netrwhist
+.netrwhist~
 
 # zsh
 histfile
@@ -21,3 +22,9 @@ w3m*-*
 
 # mutt/msmtp/offlinemap
 mail
+
+# beets
+library.blb
+remotes/
+state.pickle
+

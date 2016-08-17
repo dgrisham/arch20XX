@@ -8,7 +8,6 @@ import:
     incremental        : no
     timid              : no
     detail             : yes
-    threaded           : yes
     per_disc_numbering : yes
     asciify_paths      : yes
     original_date      : yes
