@@ -1,11 +1,11 @@
 #!/bin/bash
 
-BLANK="$HOME/src/cmus/blank.jpg"
+BLANK="$SRC/cmus/blank.jpg"
 COVER_DIR="/tmp/cmus_album_cover"
 COVER="$COVER_DIR/cover.jpg"
-SET_COVER="$HOME/src/cmus/set_cover.sh"
+SET_COVER="$SRC/cmus/set_cover.sh"
 
-mkdir $COVER_DIR
+mkdir -p $COVER_DIR
 
 cp $BLANK $COVER
 
@@ -17,6 +17,5 @@ CUR_WINDOW=$(xdotool getwindowfocus)
 
 while true
 do
-    $SET_COVER
-    xdotool key --window $CUR_WINDOW 0
+    $SET_COVER && xdotool key --window $CUR_WINDOW 0
 done

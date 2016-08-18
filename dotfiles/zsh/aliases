@@ -24,6 +24,10 @@ pdf() {
     tmux refresh-client
 }
 
+# cmus with lyrics and cover art
+# ------------------------------
+alias cf='cmus_full && exit'
+
 # start existing vim session
 # --------------------------
 alias vs="vim -S"

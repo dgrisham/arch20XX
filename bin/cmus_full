@@ -1,0 +1,27 @@
+#!/bin/bash
+
+source $HOME/dotfiles/etc/zsh/profile
+
+# start cmus
+i3-msg exec 'urxvt -e cmus'
+
+sleep 0.1
+
+# start lyvi (lyrics viewer)
+i3-msg 'split h'
+i3-msg exec 'urxvt -e lyvi'
+
+sleep 0.1
+
+# start cover display
+i3-msg 'split v'
+i3-msg exec "$SRC/cmus/display_cover.sh"
+
+sleep 0.1
+
+# resize
+i3-msg 'resize shrink width 10 px or 10 ppt'
+i3-msg 'resize shrink width 8 px or 8 ppt'
+# set focus to cmus
+i3-msg 'focus left'
+
