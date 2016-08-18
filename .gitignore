@@ -24,7 +24,7 @@ w3m*-*
 mail
 
 # beets
-library.blb
-remotes/
-state.pickle
+dotfiles/beets/library.blb
+dotfiles/beets/remotes/
+dotfiles/beets/state.pickle
 
