@@ -144,15 +144,22 @@ alias se='start_environment'
 
 # schedule/events
 # ---------------
-schedule() { sed -n '/schedule/,$p' ~/todo.md && echo && echo }
-events() { sed -n '/events/,/schedule/p' ~/todo.md | head -n-1 }
+schedule() { sed -n '/schedule/,$p' $PERSONAL/todo.md && echo && echo }
+events() { sed -n '/events/,/tasks/p' $PERSONAL/todo.md | head -n-1 }
+assignments() {
+    # TODO
+    format='%Y-%m-%d'
+    sed -n '/assignments/,/schedule/p' $PERSONAL/todo.md | head -n-1
+}
+alias ass='assignments'
+alias assless='assignments | less'
 
 # schedule today
 # --------------
 today() {
     day_offset="$1"
     [[ -z "$day_offset" ]] && day_offset='0'
-    schedule_file="$HOME/todo.md"
+    schedule_file="$PERSONAL/todo.md"
     day="$(date --date="$day_offset days" +%A | awk '{print tolower($0)}')"
     sed -n '/^'"$day"'$/,/^\w/p' $schedule_file | head -n -1
     dated="$(date --date="$day_offset days" +'%b %-d' | awk '{print tolower($0)}')"

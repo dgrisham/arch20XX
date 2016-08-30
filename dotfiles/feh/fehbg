@@ -1,0 +1,2 @@
+#!/bin/sh
+feh --bg-fill '/home/grish/media/pictures/backgrounds/lain.jpg' 

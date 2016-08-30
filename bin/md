@@ -97,8 +97,7 @@ md_make_doc() {
                 pdflatex -output-directory "$dir" "$output_file" \
                     && pdflatex -output-directory "$dir" "$output_file"
 
-                rm -f "${file%md}{nav,snm,toc,aux" "${file%md}bbl" "${file%md}blg" \
-                        "${file%md}log" "${file%md}out"
+                rm -f "${file%md}"{tex,nav,snm,toc,aux,bbl,blg,log,out}
             fi
         done
     done
