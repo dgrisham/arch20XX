@@ -28,3 +28,5 @@ dotfiles/beets/library.blb
 dotfiles/beets/remotes/
 dotfiles/beets/state.pickle
 
+# tshark
+tshark
