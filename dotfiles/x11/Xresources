@@ -8,7 +8,7 @@
 #define t_fg_ceiling   #FEFFFF
 
 URxvt*.transparent: true
-URxvt*.shading: 15
+URxvt*.shading: 17
 URxvt.font:xft:DejaVu Sans Mono:antialias=true:size=15
 URxvt.boldFont:xft:DejaVu Sans Mono:bold:antialias=true:size=15
 

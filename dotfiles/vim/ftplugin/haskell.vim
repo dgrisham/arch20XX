@@ -1,4 +1,9 @@
 
+set shiftwidth=2
+set softtabstop=2
+
+""
+
 let s:width = 80
 
 " section header

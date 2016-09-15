@@ -31,6 +31,8 @@ Plugin 'tpope/vim-obsession'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'rdnetto/YCM-Generator'
 Plugin 'Shougo/vimproc'
+"""" tmux
+Plugin 'jgdavey/tslime.vim'
 """" markdown
 Plugin 'tpope/vim-markdown'
 """" haskell
@@ -68,6 +70,14 @@ nnoremap <Space> i_<Esc>r
 " status bar
 set laststatus=2
 let g:airline_theme='jellybeans'
+
+" tslime
+"" settings
+let g:tslime_always_current_session = 1
+let g:tslime_always_current_window  = 1
+"" keybindings
+vmap <leader>ty <Plug>SendSelectionToTmux
+nmap <leader>ty <Plug>NormalModeSendToTmux
 
 " nerdcommenter
 "" space after comment
@@ -126,7 +136,7 @@ autocmd FileType *.md |
 
 
 " set foldmethod to 'indent' for python files
-"autocmd BufRead,BufNewFile,BufEnter *.py  set foldmethod=indent
+autocmd BufRead,BufNewFile,BufEnter *.tcap  set foldmethod=indent
 
 "autocmd BufRead,BufNewFile *.c,*.cc,*.cpp,*.h let @b=':!make'
 

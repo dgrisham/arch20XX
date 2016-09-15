@@ -8,7 +8,13 @@ c() {                       # cd with bookmarks
     case "$dirname" in      # bookmarks
         web)    dirname="$SCRATCH/flasky"       ;;
         dev)    dirname="$SRC/arch20xx"         ;;
-        res)    dirname="$SCRATCH/research"     ;;
+        res)    dirname="$HOME/work/research"   ;;
+        toc)    dirname="$HOME/work/csci_561"   ;;
+        net)    dirname="$HOME/work/csci_572"   ;;
+        sec)    dirname="$HOME/work/csci_598"   ;;
+        mp)     dirname="$SCRATCH/haskell/mp5"  ;;
+        med)    dirname="$PERSONAL/morning_routine/meditation/headspace/take_series-start_here/take_15" ;;
+        ij|imgjam) dirname="$SCRATCH/imgjam"    ;;
         "")     dirname="$HOME"                 ;;
         *)      return 1                        ;;
     esac
@@ -37,6 +43,15 @@ alias vs="vim -S"
 vt() {
     format='%Y-%m-%d'
     vim "`date +$format`.md"
+}
+# 'journal today'
+# ---------------
+jt() {
+    format='%Y-%m-%d'
+    journal_dir="$PERSONAL/morning_routine/journal/five_minute_journal"
+    cp -n "$journal_dir/template.md" "$journal_dir/`date +$format`.md"
+    cd "$journal_dir"
+    vt
 }
 
 # copy etc
@@ -127,12 +142,15 @@ start_environment() {
     c "$env" &> /dev/null
     case "$env" in
         web)
-            source_alias "python" > /dev/null
+            source_alias 'python' > /dev/null
             flasky_aliases
-            start_venv "flask"
+            start_venv 'flask'
             ;;
         dev)
-            source_alias "git" > /dev/null
+            source_alias 'git' > /dev/null
+            ;;
+        ij|imgjam)
+            start_venv 'networks'
             ;;
     esac
 }
@@ -147,8 +165,6 @@ alias se='start_environment'
 schedule() { sed -n '/schedule/,$p' $PERSONAL/todo.md && echo && echo }
 events() { sed -n '/events/,/tasks/p' $PERSONAL/todo.md | head -n-1 }
 assignments() {
-    # TODO
-    format='%Y-%m-%d'
     sed -n '/assignments/,/schedule/p' $PERSONAL/todo.md | head -n-1
 }
 alias ass='assignments'
@@ -177,6 +193,47 @@ week() {
         today $day
     done
 }
+
+# due today
+# ---------
+due_today() {
+    day_offset="$1"
+    [[ -z "$day_offset" ]] && day_offset='0'
+    format='%m-%d'
+    due_date="$(date --date="$day_offset days" +$format)"
+    schedule_file="$HOME/todo.md"
+    echo "$input" | grep "$due_date" | grep -v "DONE"
+}
+
+# due within the week
+# -------------------
+due_week() {
+    week_offset="$1"
+    [[ -z "$week_offset" ]] && week_offset='0'
+    format='%m-%d'
+    schedule_file="$HOME/todo.md"
+    typeset -A classes
+    assignments=`sed -n '/assignments/,/schedule/p' $PERSONAL/todo.md`
+    class_nums=(561 572 598)
+    classes[561]=`echo "$assignments" | sed -n '/csci 561/,/csci 572/p' | head -n-1`
+    classes[572]=`echo "$assignments" | sed -n '/csci 572/,/csci 598/p' | head -n-1`
+    classes[598]=`echo "$assignments" | sed -n '/csci 598/,/schedule/p' | head -n-1`
+    for k in $class_nums; do
+        echo "\ncsci $k"
+        echo "--------"
+        let day="$week_offset*7"
+        for i in {0..7}; do
+            due_date="$(date --date="$day days" +$format)"
+            let day="$day+1"
+            echo "$classes[$k]" | grep --color=never "$due_date" | grep -v "DONE"
+        done
+    done
+}
+
+# default due function
+# --------------------
+alias due='due_week'
+
 
 # current event
 # -------------

@@ -1,3 +1,15 @@
+install script
+==============
+
+useful commands
+---------------
+
+-   recursively get all links/targets related to arch20xx in `$HOME`
+
+`ls -lRa . | grep "^l" | grep "dotfiles\|arch20xx" |
+awk '{printf "$HOME/%s ", $9} {print $11}' | sed 's|'"$HOME"'|\$HOME|'`
+
+
 music script
 ============
 
