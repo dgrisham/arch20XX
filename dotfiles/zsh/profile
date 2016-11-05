@@ -1,2 +1,2 @@
-export BEETS_DIR="$DOTFILES/beets"
+export BEETSDIR="$DOTFILES/beets"
 

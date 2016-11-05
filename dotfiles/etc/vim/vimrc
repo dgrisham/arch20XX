@@ -66,6 +66,7 @@ map <leader>lc :set list!<cr>
 syntax on
 set number
 MapToggle <leader>rn relativenumber
+MapToggle <leader>nr nonumber
 
 " Enable custom colorscheme
 " -------------------------
@@ -191,6 +192,12 @@ nnoremap <C-p> %
 
 " Markdown
 " ========
+
+" Write and open .md
+" ------------------
+map <leader>w :wa<cr>:!md make doc %<cr><cr>
+map <leader>o :!md view %<cr><cr>
+
 
 " Boilerplate entry
 " -----------------
