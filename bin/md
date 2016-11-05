@@ -83,7 +83,8 @@ md_make_doc() {
     dir="$(dirname "$src_file")"
     for file in $(md_targets "$src_file"); do
         for output_format in $(md_metadata "$src_file" 'format'); do
-            out_ext="$output_format"
+            #template=$(md_metadata "$src_file" 'template')
+            #out_ext="$output_format"
             [[ "$output_format" =~ 'latex|beamer' ]] && out_ext='tex'
             output_file="${file%md}$out_ext"
 
@@ -97,7 +98,7 @@ md_make_doc() {
                 pdflatex -output-directory "$dir" "$output_file" \
                     && pdflatex -output-directory "$dir" "$output_file"
 
-                rm -f "${file%md}"{tex,nav,snm,toc,vrb,aux,bbl,blg,log,out}
+                rm -f "${file%md}"{nav,snm,toc,vrb,aux,bbl,blg,log,out}
             fi
         done
     done

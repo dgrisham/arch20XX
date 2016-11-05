@@ -1,5 +1,7 @@
 #!/bin/bash
 
+pkill display_cover.s && pkill set_cover.sh
+
 source $HOME/dotfiles/etc/zsh/profile
 
 # start cmus

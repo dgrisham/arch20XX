@@ -11,10 +11,12 @@ cp $BLANK $COVER
 
 feh -x. -A ';' --image-bg black $COVER&
 
-CUR_WINDOW=$(xdotool getwindowfocus)
+COVER_WINDOW=`xdotool getactivewindow`
+#COVER_WINDOW=`pidof feh`
+
 
 while true
 do
-    $SET_COVER
-    # xdotool key --window $CUR_WINDOW 0
+    $SET_COVER "$COVER_WINDOW"
+   # xdotool key --window $COVER_WINDOW r
 done

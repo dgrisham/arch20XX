@@ -21,7 +21,7 @@ alias tm="tmux -2 attach"
 
 # convenient cd
 # -------------
-chpwd() { ll } 			  # cd and ls
+chpwd() { ll }                    # cd and ls
 mc() { mv $@ && ${(P)#} } # mv and cd
 cc() { cp $@ && ${(P)#} } # cp and cd
 

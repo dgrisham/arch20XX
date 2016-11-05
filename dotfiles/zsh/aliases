@@ -1,4 +1,4 @@
-# Shortcuts
+
 # =========
 
 # convenient cd
@@ -12,9 +12,9 @@ c() {                       # cd with bookmarks
         toc)    dirname="$HOME/work/csci_561"   ;;
         net)    dirname="$HOME/work/csci_572"   ;;
         sec)    dirname="$HOME/work/csci_598"   ;;
-        mp)     dirname="$SCRATCH/haskell/mp5"  ;;
-        med)    dirname="$PERSONAL/morning_routine/meditation/headspace/take_series-start_here/take_15" ;;
-        ij|imgjam) dirname="$SCRATCH/imgjam"    ;;
+        has)    dirname="$SCRATCH/haskell/calculator" ;;
+        med)    dirname="$PERSONAL/morning_routine/meditation/headspace/take_series-start_here/take_20" ;;
+        dec)    dirname="$SRC/decoy-routing"         ;;
         "")     dirname="$HOME"                 ;;
         *)      return 1                        ;;
     esac
@@ -26,7 +26,8 @@ c() {                       # cd with bookmarks
 # -------------------------------
 pdf() {
     # note: update to check for jfbview
-    $VIEWER "$1"
+    # $VIEWER "$1"
+    jfbview "$1"
     tmux refresh-client
 }
 
@@ -164,6 +165,8 @@ alias se='start_environment'
 # ---------------
 schedule() { sed -n '/schedule/,$p' $PERSONAL/todo.md && echo && echo }
 events() { sed -n '/events/,/tasks/p' $PERSONAL/todo.md | head -n-1 }
+short_term() { sed -n '/short term/,/general/p' $PERSONAL/todo.md | head -n-1 }
+alias st='short_term'
 assignments() {
     sed -n '/assignments/,/schedule/p' $PERSONAL/todo.md | head -n-1
 }
@@ -214,10 +217,11 @@ due_week() {
     schedule_file="$HOME/todo.md"
     typeset -A classes
     assignments=`sed -n '/assignments/,/schedule/p' $PERSONAL/todo.md`
-    class_nums=(561 572 598)
+    class_nums=(561 572 598 'kgd')
     classes[561]=`echo "$assignments" | sed -n '/csci 561/,/csci 572/p' | head -n-1`
     classes[572]=`echo "$assignments" | sed -n '/csci 572/,/csci 598/p' | head -n-1`
-    classes[598]=`echo "$assignments" | sed -n '/csci 598/,/schedule/p' | head -n-1`
+    classes[598]=`echo "$assignments" | sed -n '/csci 598/,/kgd/p'   | head -n-1`
+    classes[kgd]=`echo "$assignments" | sed -n '/kgd/,/schedule/p' | head -n-1`
     for k in $class_nums; do
         echo "\ncsci $k"
         echo "--------"

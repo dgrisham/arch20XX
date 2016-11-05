@@ -5,7 +5,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 zsh_dir="$HOME/dotfiles/zsh"
-env_files=("profile" "aliases")
+env_files=('profile' 'aliases')
 for env_file in $env_files; do
     [[ -f "$zsh_dir/$env_file" ]] && source "$zsh_dir/$env_file"
 done

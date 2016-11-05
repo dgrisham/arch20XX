@@ -1,7 +1,7 @@
 # General
 # =======
 
-alias ipy="ipython"
+alias ipy="ipython3"
 
 # Environment
 # -----------
