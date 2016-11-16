@@ -19,7 +19,7 @@ sleep 0.1
 i3-msg 'split v'
 i3-msg exec "$SRC/cmus/display_cover.sh"
 
-sleep 0.1
+sleep 0.25
 
 # resize
 i3-msg 'resize shrink width 10 px or 10 ppt'

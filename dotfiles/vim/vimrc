@@ -36,6 +36,7 @@ Plugin 'jgdavey/tslime.vim'
 """" markdown
 Plugin 'tpope/vim-markdown'
 """" haskell
+Plugin 'Shougo/vimproc.vim'
 Plugin 'eagletmt/ghcmod-vim'
 Plugin 'eagletmt/neco-ghc'
 "Plugin 'tpope/vim-markdown'

@@ -13,7 +13,7 @@ c() {                       # cd with bookmarks
         net)    dirname="$HOME/work/csci_572"   ;;
         sec)    dirname="$HOME/work/csci_598"   ;;
         has)    dirname="$SCRATCH/haskell/calculator" ;;
-        med)    dirname="$PERSONAL/morning_routine/meditation/headspace/take_series-start_here/take_20" ;;
+        med)    dirname="$PERSONAL/morning_routine/meditation/headspace/discovery_series/1" ;;
         dec)    dirname="$SRC/decoy-routing"         ;;
         "")     dirname="$HOME"                 ;;
         *)      return 1                        ;;

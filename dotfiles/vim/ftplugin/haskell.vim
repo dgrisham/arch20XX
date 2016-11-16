@@ -43,6 +43,12 @@ nmap <silent> --h "=HaskellModuleHeader()<CR>:0put =<CR>
 let g:haskellmode_completion_ghc = 0
 setlocal omnifunc=necoghc#omnifunc
 
+" ghcmod
+map <silent> <leader>htt :GhcModType<cr>
+map <silent> <leader>htc :GhcModTypeClear<cr>
+map <silent> <leader>hi :GhcModTypeInsert<cr>
+map <silent> <leader>hc :GhcModCheck<cr>
+map <silent> <leader>hs :GhcModSplitFunCase<cr>
 
 " tabular (alignment)
 vmap a= :Tabularize /=<cr>
