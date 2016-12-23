@@ -20,8 +20,20 @@ cookie
 history
 w3m*-*
 
+# chrome
+google-chrome
+
+# menus?
+menus
+
+# gtk
+gtk-2.0
+
 # mutt/msmtp/offlinemap
 mail
+
+# cmus
+cmus
 
 # beets
 dotfiles/beets/library.blb

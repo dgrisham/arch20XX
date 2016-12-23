@@ -2,7 +2,7 @@
 # -------------------
 
 ### Terminal
-export TERM=xterm-256color
+[[ $TMUX = "" ]] && export TERM='xterm-256color'
 
 ### Wifi card
 export WIFI_CARD="wlan0"
@@ -28,14 +28,19 @@ export GLOBAL_ALIAS="$DOTFILES/etc/zsh/aliases"
 export ALIASES="$DOTFILES/zsh/alias"
 
 ### Defaults
-export EDITOR="vim"
+export EDITOR="kak"
 export VISUAL="$EDITOR"
 export VIEWER="mupdf"
 export BROWSER="w3m"
 export PUBLISHER="git"
 export PLAYER="mpv"
+#### NeoVim
+export VIM="/etc/nvim"
+export VIMRUNTIME="/usr/share/nvim/runtime"
+# kak?
+export XDG_CONFIG_HOME="$DOTFILES"
 
-### fbterm vs. x
+### open fbterm/x automatically, depending on tty
 virtual_terminal="$( tty | grep -oE ....$ )"
 case "$virtual_terminal" in
     tty1)

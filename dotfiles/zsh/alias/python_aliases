@@ -15,7 +15,7 @@ export VENVS="$HOME/.venv"
 create_venv() {
     venv_name="$1"
     [[ -z "$venv_name" ]] && return 1
-    virtualenv "$VENVS/$venv_name"
+    python -m venv "$VENVS/$venv_name"
     start_venv "$venv_name"
 }
 alias cv='create_venv'

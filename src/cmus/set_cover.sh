@@ -1,8 +1,9 @@
 #!/bin/bash
 
-
-COVER_WINDOW="$1"
-[[ -z "$COVER_WINDOW" ]] && return 1
+if [[ ! -z "$DISPLAY" ]]; then
+    COVER_WINDOW="$1"
+    [[ -z "$COVER_WINDOW" ]] && exit
+fi
 
 BLANK="$HOME/src/cmus/blank.jpg"
 
@@ -26,4 +27,4 @@ mkdir -p $TMP_COVER
 [[ -e $JPG ]] || JPG="$BLANK"
 cp "$JPG" "$TMP_COVER/cover.jpg"
 #echo $COVER_WINDOW >> $HOME/testing
-xdotool key --window $COVER_WINDOW 0
+[[ ! -z "$DISPLAY" ]] && xdotool key --window $COVER_WINDOW 0

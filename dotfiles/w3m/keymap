@@ -67,7 +67,7 @@ keymap ESC-r RESHAPE
 keymap < PREV_TAB
 keymap > NEXT_TAB
 keymap t NEW_TAB
-keymap d CLOSE_TAB
+keymap x CLOSE_TAB
 
 # Hyperlink operation
 # -------------------

@@ -1,10 +1,6 @@
 # ZSH options
 # ===========
 
-# General
-# -------
-export TERM=xterm
-
 # History
 # -------
 HISTFILE=~/dotfiles/zsh/histfile

@@ -177,6 +177,8 @@ mode "resize" {
         # back to normal: Enter or Escape
         bindsym Return mode "default"
         bindsym Escape mode "default"
+
+        bindsym equal resize shrink width 10000px; resize grow width 1000px; resize shrink height 10000px; resize grow height 1000px
 }
 
 bindsym $mod+r mode "resize"

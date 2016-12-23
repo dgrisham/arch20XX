@@ -1,4 +1,4 @@
-
+# Shortcuts
 # =========
 
 # convenient cd
@@ -13,7 +13,8 @@ c() {                       # cd with bookmarks
         net)    dirname="$HOME/work/csci_572"   ;;
         sec)    dirname="$HOME/work/csci_598"   ;;
         has)    dirname="$SCRATCH/haskell/calculator" ;;
-        med)    dirname="$PERSONAL/morning_routine/meditation/headspace/discovery_series/1" ;;
+        med)    dirname="$PERSONAL/morning_routine/meditation/headspace/discovery_series/2" ;;
+        pygame) dirname="$SCRATCH/pygame/doodle_jump"       ;;
         dec)    dirname="$SRC/decoy-routing"         ;;
         "")     dirname="$HOME"                 ;;
         *)      return 1                        ;;
@@ -152,6 +153,9 @@ start_environment() {
             ;;
         ij|imgjam)
             start_venv 'networks'
+            ;;
+        pygame)
+            start_venv 'pygame'
             ;;
     esac
 }
