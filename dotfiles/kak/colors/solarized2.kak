@@ -56,8 +56,8 @@
         face SecondaryCursor    black,${grey_light}
         face LineNumbers        ${base0},${base03}
         face LineNumberCursor   ${yellow},${base03}+b
-        face MenuForeground     ${cyan},${base01}
-        face MenuBackground     ${base02},${base01}
+        face MenuForeground     ${yellow},black
+        face MenuBackground     black,${grey_light}
         face MenuInfo           ${base03}
         face Information        ${base02},${base1}
         face Error              ${white},red
