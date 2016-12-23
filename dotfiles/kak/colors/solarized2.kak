@@ -12,6 +12,8 @@
     base3="rgb:fdf6e3"
 
     white="rgb:cacaff"
+    default_text="rgb:c3c3ff"
+    black="rgb:111111"
     yellow="rgb:cccc00"
     orange="rgb:eb6b2b"
     red="rgb:dc322f"
@@ -49,16 +51,16 @@
         face list       ${yellow}
 
         # and built in faces
-        face Default            ${white}
+        face Default            ${default_text}
         face PrimarySelection   ${yellow},${grey_dark}
         face SecondarySelection black,${grey_medium}
         face PrimaryCursor      black,${white}
         face SecondaryCursor    black,${grey_light}
         face LineNumbers        ${base0},${base03}
-        face LineNumberCursor   ${yellow},${base03}+b
-        face MenuForeground     ${yellow},black
-        face MenuBackground     black,${grey_light}
-        face MenuInfo           ${base03}
+        face LineNumberAbsolute ${yellow},${base03}+b
+        face MenuForeground     ${yellow}+b
+        face MenuBackground     white,${black}
+        face MenuInfo           white,${black}
         face Information        ${base02},${base1}
         face Error              ${white},red
         face StatusLine         default,${base02}
