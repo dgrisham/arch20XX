@@ -51,9 +51,9 @@
         # and built in faces
         face Default            ${white}
         face PrimarySelection   ${yellow},${grey_dark}
-        face SecondarySelection ${orange},${grey_dark}
-        face PrimaryCursor      black,white
-        face SecondaryCursor    black,white
+        face SecondarySelection black,${grey_medium}
+        face PrimaryCursor      black,${white}
+        face SecondaryCursor    black,${grey_light}
         face LineNumbers        ${base0},${base03}
         face LineNumberCursor   ${yellow},${base03}+b
         face MenuForeground     ${cyan},${base01}
