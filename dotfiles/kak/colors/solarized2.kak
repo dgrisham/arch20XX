@@ -51,7 +51,7 @@
         face block      ${violet}
         face link       ${blue_medium}
         face bullet     ${white}
-        face list       ${blue_light}
+        face list       "rgb:cfcfcf"
 
         # and built in faces
         face Default            ${default_text}
