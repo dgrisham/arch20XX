@@ -50,7 +50,7 @@
         face mono       ${magenta}
         face block      ${violet}
         face link       ${blue_medium}
-        face bullet     ${white}
+        face bullet     ${orange}
         face list       ${default_text}
 
         # and built in faces
