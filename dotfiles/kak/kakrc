@@ -15,3 +15,7 @@ hook global WinCreate .* %{ autowrap-enable }
 
 # colors
 colorscheme solarized2
+
+# headers (markdown)
+map global user h xypjxr=\;dlypj
+map global user s xypjxr-\;dlypj
