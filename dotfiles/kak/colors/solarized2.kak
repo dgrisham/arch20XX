@@ -23,6 +23,7 @@
     blue_medium="rgb:7373ca"
     blue_light="rgb:9486ca"
     cyan="rgb:2ac1c0"
+    cyan_light="rgb:2aeaea"
     cyan_dark="rgb:2a99c0"
     green="rgb:6f6f00"
     grey_light="rgb:989898"
@@ -44,7 +45,7 @@
 
         # and markup
         face title      ${white}
-        face header     ${cyan}
+        face header     ${cyan_light}
         face bold       ${cyan_dark}
         face italic     ${cyan}
         face mono       ${magenta}
