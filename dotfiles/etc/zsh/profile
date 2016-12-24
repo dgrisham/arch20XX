@@ -1,19 +1,16 @@
-# General environment
-# -------------------
-
-### Terminal
+# Terminal
 [[ $TMUX = "" ]] && export TERM='xterm-256color'
 
-### Wifi card
+# Wifi card
 export WIFI_CARD="wlan0"
 
-### Bin
+# Bin
 export BIN="$HOME/bin"
 export PATH="$PATH:$BIN"
-#### Stack (Haskell)
+## Stack (Haskell)
 export PATH="$PATH:$HOME/.local/bin"
 
-### Directories
+# Directories
 export DOTFILES="$HOME/dotfiles"
 export DOWNLOADS="$HOME/downloads"
 export SRC="$HOME/src"
@@ -21,24 +18,29 @@ export PERSONAL="$HOME/personal"
 export MEDIA="$HOME/media"
 export MUSIC="$MEDIA/music"
 export SCRATCH="$HOME/scratch"
+## XDG
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CONFIG_HOME="$DOTFILES"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DOWNLOAD_DIR="$DOWNLOADS"
+export XDG_DESKTOP_DIR="/dev/null"
+export XDG_RUNTIME_DIR="/tmp"
 
-### Alias files
+# Alias files
 export LOCAL_ALIAS="$DOTFILES/zsh/aliases"
 export GLOBAL_ALIAS="$DOTFILES/etc/zsh/aliases"
 export ALIASES="$DOTFILES/zsh/alias"
 
-### Defaults
+# Defaults
 export EDITOR="kak"
 export VISUAL="$EDITOR"
 export VIEWER="mupdf"
 export BROWSER="w3m"
 export PUBLISHER="git"
 export PLAYER="mpv"
-#### NeoVim
+## NeoVim
 export VIM="/etc/nvim"
 export VIMRUNTIME="/usr/share/nvim/runtime"
-# kak?
-export XDG_CONFIG_HOME="$DOTFILES"
 
 ### open fbterm/x automatically, depending on tty
 virtual_terminal="$( tty | grep -oE ....$ )"

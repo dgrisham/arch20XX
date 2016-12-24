@@ -90,7 +90,7 @@ music_dl() {
 
     youtube-dl --max-downloads=10 --ignore-errors --restrict-filenames \
         --format "best" --extract-audio --audio-format "vorbis" \
-        --output "$MUSIC/$meta::%(title)s.%(ext)s" "$md_url" \
+        --output "$MUSIC/extra/$meta::%(title)s.%(ext)s" "$md_url" \
         || return 1
     music_cmus reset
 }
@@ -124,7 +124,7 @@ music_search() {
                     | cut --delimiter='/' --field=5 \
                     | shuf | head -n1)"
                 search_site="$site_url/$tags"
-			fi
+	    fi
             ;;
         youtube)
             site_url='https://www.youtube.com/watch?v='
