@@ -20,7 +20,7 @@
     magenta="rgb:c83682"
     violet="rgb:6c71c4"
     blue="rgb:3333d3"
-    blue_medium="rgb:3436ca"
+    blue_medium="rgb:7474ca"
     blue_light="rgb:9486ca"
     cyan="rgb:2ac1c0"
     cyan_dark="rgb:2a99c0"
