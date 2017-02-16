@@ -9,13 +9,13 @@ c() {                       # cd with bookmarks
         web)    dirname="$SCRATCH/flasky"       ;;
         dev)    dirname="$SRC/arch20xx"         ;;
         res)    dirname="$HOME/work/research"   ;;
-        toc)    dirname="$HOME/work/csci_561"   ;;
-        net)    dirname="$HOME/work/csci_572"   ;;
-        sec)    dirname="$HOME/work/csci_598"   ;;
-        has)    dirname="$SCRATCH/haskell/calculator" ;;
-        med)    dirname="$PERSONAL/morning_routine/meditation/headspace/discovery_series/3" ;;
-        pygame) dirname="$SCRATCH/pygame/doodle_jump"       ;;
-        dec)    dirname="$SRC/decoy-routing"         ;;
+        498|game)   dirname="$HOME/work/csci_498B"  ;;
+        564|arch)   dirname="$HOME/work/csci_564"   ;;
+        240)        dirname="$HOME/work/stanford-cs240h/"   ;;
+        ta)     dirname="$HOME/work/ta"      ;;
+        med) dirname="$PERSONAL/schedule/routine/morning/meditation/headspace/mind_series/1" ;;
+        pygame) dirname="$SCRATCH/pygame/doodle_jump" ;;
+        dec)    dirname="$SRC/decoy-routing"    ;;
         "")     dirname="$HOME"                 ;;
         *)      return 1                        ;;
     esac
@@ -31,6 +31,26 @@ pdf() {
     jfbview "$1"
     tmux refresh-client
 }
+# open pdf as plaintext
+# ---------------------
+tdf() {
+    lesspipe.sh "$1" | less
+}
+
+# latex building
+# --------------
+tex() {
+    [[ -z "$1" ]] && return 1
+    file="$1"
+    prefix=${file%.*}
+
+    pdflatex --shell-escape "$file" &&
+    pdflatex --shell-escape "$file" &&
+    bibtex                  "$file" &&
+    pdflatex --shell-escape "$file"
+
+    rm -f $prefix.{out,snm,aux,toc,nav,log}
+}
 
 # cmus with lyrics and cover art
 # ------------------------------
@@ -42,18 +62,18 @@ alias vs="vim -S"
 
 # `vim <today's_date>.md`
 # -----------------------
-vt() {
+kt() {
     format='%Y-%m-%d'
-    vim "`date +$format`.md"
+    kak "`date +$format`.md"
 }
 # 'journal today'
 # ---------------
 jt() {
     format='%Y-%m-%d'
-    journal_dir="$PERSONAL/morning_routine/journal/five_minute_journal"
+    journal_dir="$PERSONAL/routine/morning/journal/five_minute_journal"
     cp -n "$journal_dir/template.md" "$journal_dir/`date +$format`.md"
     cd "$journal_dir"
-    vt
+    kt
 }
 
 # copy etc
@@ -133,6 +153,8 @@ print_aliases() {
 alias gc='git commit -m'
 alias gca='git commit -am'
 alias gs='git status'
+alias gl="git log --pretty=format:'%C(auto)%h %ad %C(green)%s%Creset %C(auto)%d [%an]' --graph --date=format:'%Y-%m-%d %H:%M' --all"
+
 alias gco='git checkout'
 
 # start working environment
@@ -157,6 +179,10 @@ start_environment() {
         pygame)
             start_venv 'pygame'
             ;;
+        ta)
+            start_venv 'ta'
+            unset BROWSER
+            ;;
     esac
 }
 alias se='start_environment'
@@ -167,6 +193,11 @@ alias se='start_environment'
 
 # schedule/events
 # ---------------
+todo() {
+    stuff="$PERSONAL/schedule/daily"
+    format='%Y-%m-%d'
+    cat "$stuff/`date +$format`.md"
+}
 schedule() { sed -n '/schedule/,$p' $PERSONAL/todo.md && echo && echo }
 events() { sed -n '/events/,/tasks/p' $PERSONAL/todo.md | head -n-1 }
 short_term() { sed -n '/short term/,/general/p' $PERSONAL/todo.md | head -n-1 }

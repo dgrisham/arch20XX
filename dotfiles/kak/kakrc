@@ -6,11 +6,14 @@ hook global WinCreate .* %{addhl number_lines}
 # add brackets highlighting
 hook global WinCreate .* %{addhl show_matching}
 
+# scroll offset
+set global scrolloff 12,12
+
 # tabs
-## soft tabs
-hook -group TabExpander global InsertChar \t %{ exec -draft h@}
 ## 4-space tabs
 set global tabstop 4
+## soft tabs
+hook -group TabExpander global InsertChar \t %{ exec -draft h@}
 
 # auto wrap at 80 chars
 set global autowrap_column 80
@@ -19,6 +22,24 @@ hook global WinCreate .* %{ autowrap-enable }
 # colors
 colorscheme solarized2
 
-# headers (markdown)
-map global user h xypjxr=\;dlypj
-map global user s xypjxr-\;dlypj
+# Tmux integration
+# ================
+
+map global user r %{ :send-text <ret> }
+
+# commenting
+# map global user c ':on-key %{ %sh{ case "$kak_key" in; \'c\') echo
+# \':comment-line<ret>\'; ;} }'
+#map global user n :comment-line<ret>
+#map global user c :comment-selection<ret>
+
+# Markdown manipulation
+# =====================
+
+# format text with pandoc
+map global user g %{ | pandoc --from=markdown --to=markdown --columns=80 <ret> }
+
+# custom commands
+map global user h o<esc>kXypjXHr=j<esc>
+map global user s o<esc>kXypjXHr-j<esc>
+#map global user b %{ | pandoc-citeproc --bib2yaml --format=biblatex <ret> }

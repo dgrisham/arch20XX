@@ -38,7 +38,7 @@ zipd() { zip -rv $1.zip $1 }
 
 # mail
 # ----
-alias imap="offlineimap -c $DOTFILES/mail/offlineimaprc" # sync
+alias imap="imapfilter -c $DOTFILES/mail/imapfilter && offlineimap -c $DOTFILES/mail/offlineimaprc" # sync
 
 
 # Hardware

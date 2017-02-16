@@ -24,7 +24,7 @@ export XDG_CONFIG_HOME="$DOTFILES"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DOWNLOAD_DIR="$DOWNLOADS"
 export XDG_DESKTOP_DIR="/dev/null"
-export XDG_RUNTIME_DIR="/tmp"
+#export XDG_RUNTIME_DIR="/tmp"
 
 # Alias files
 export LOCAL_ALIAS="$DOTFILES/zsh/aliases"
