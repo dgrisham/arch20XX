@@ -2,6 +2,8 @@
 
 # add line numbers
 hook global WinCreate .* %{addhl number_lines}
+# highlight characters in 81st column
+hook global WinCreate .* %{addhl regex ^\V{80}(\V) 1:Error}
 
 # add brackets highlighting
 hook global WinCreate .* %{addhl show_matching}
