@@ -57,7 +57,7 @@ let g:airline_theme='jellybeans'
 " nerdcommenter
 "" space after comment
 let g:NERDSpaceDelims = 1
-"" allow comments on otherwise-empty lines
+"" allow comments on otherwise empty lines
 let g:NERDCommentEmptyLines = 1
 "" flush comment delimeter with start of line
 let g:NERDDefaultAlign = 'left'

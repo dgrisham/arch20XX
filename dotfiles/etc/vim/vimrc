@@ -159,6 +159,11 @@ noremap L $
 noremap K {
 noremap J }
 
+" Ctrl+h to toggle highlight
+" --------------------------
+let hlstate=0
+nnoremap <leader>hh :if (hlstate%2 == 0) \| nohlsearch \| else \| set hlsearch \| endif \| let hlstate=hlstate+1<cr>
+
 " Netrw (file explorer)
 " --------------------
 " ### Opening
@@ -175,6 +180,10 @@ autocmd FileType netrw nmap <buffer> l <cr>
 " -----------------------
 map <leader>pp :setlocal paste!<cr>
 map <leader>ss :setlocal spell!<cr>
+
+" Join lines
+" ----------
+vnoremap <leader>j :j!<cr>
 
 " Reformat paragraph
 " ------------------
@@ -194,11 +203,11 @@ nnoremap <C-p> %
 
 " Boilerplate entry
 " -----------------
-map <leader>h1 VypVr=A
-map <leader>h2 VypVr-A
-map <leader>h3 I### 
-map <leader>cb I```
-map <leader>j :read !date +\%F<cr>kdd<leader>h1
+nmap <leader>h1 VypVr=A
+nmap <leader>h2 VypVr-A
+nmap <leader>h3 I### 
+nmap <leader>cb I```
+nmap <leader>j :read !date +\%F<cr>kdd<leader>h1
 
 
 " Other Filetypes

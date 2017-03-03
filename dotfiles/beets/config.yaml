@@ -1,5 +1,6 @@
 library   : /home/grish/.beets/library.blb
 directory : /home/grish/music
+
 import:
     write              : yes
     copy               : no
@@ -12,13 +13,16 @@ import:
     # asciify_paths      : yes
     original_date      : yes
     # threaded           : yes
+
 ui:
     color : yes
+
 match:
     ignored  : missing_tracks unmatched_tracks
     preferred:
         countries     : ['US']
         media         : ['CD', 'Digital Media|File']
+
 item_fields:
 	# artist_custom: u'{}'.format(albumartist.lower())
     album_custom: |
@@ -28,10 +32,7 @@ item_fields:
         prefix = u'0' if track < 10 else u''
         smart_track = u'{p}{tr}'.format(p=prefix, tr=track)
         return u'{d}_{tr}-{ti}'.format(d=disc, tr=smart_track, ti=title.lower())
-paths:
-    default   : %lower{$albumartist}/$album_custom/$track_custom
-    singleton : etc/no-album/$artist/$title_custom
-    comp      : etc/compilations/$album_custom/$track_custom
+
 replace:
     '[\\/]'   	   : _
     '^\.'		   : _
@@ -41,6 +42,13 @@ replace:
     '\s+$'  	   : ''
     '^\s+' 		   : ''
 	'\s'           : '_'
+
+paths:
+    default              : %lower{$albumartist}/$album_custom/$track_custom
+    singleton            : etc/no-album/$artist/$title_custom
+    comp                 : etc/compilations/$album_custom/$track_custom
+    albumtype:soundtrack : etc/soundtracks/$album_custom/$track_custom
+
 plugins   : inline fetchart scrub #lastgenre
 fetchart:
     minwidth : 600
