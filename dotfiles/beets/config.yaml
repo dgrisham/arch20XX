@@ -28,7 +28,7 @@ item_fields:
 # artist_custom: u'{}'.format(albumartist.lower())
     album_custom: |
         prefix = u'0' if month < 10 else u''
-        smart_month = u'' if (month == '00') else u'_{p}{m}'.format(p=prefix, m=month)
+        smart_month = u'_{p}{m}'.format(p=prefix, m=month)
         return u'{y}{m}-{al}'.format(y=year, m=smart_month, al=album.lower())
     track_custom: |
         prefix = u'0' if track < 10 else u''
@@ -47,17 +47,20 @@ replace:
     '[\x00-\x1f]'  : _
     '[<>:"\?\*\|]' : _
     '[\[\]()&,]'   : ''
-    '\.$'          : _
+    '\.$'          : ''
+    "['!.]"        : ''
     '\s+$'         : ''
-    "['!]"         : ''
     '^\s+'         : ''
     '[\s_]{2,}'    : '_'
     '\s'           : '_'
+    '_+$'          : ''
 
-plugins: inline fetchart scrub lastgenre ipfs
+plugins: inline fetchart scrub lastgenre ftintitle ipfs
 fetchart:
     minwidth : 600
     sources  : coverart itunes amazon albumart google wikipedia
+ftintitle:
+    format: '(feat. {0})'
 
 #musicbrainz:
 #    searchlimit: 5 # default
