@@ -7,3 +7,8 @@ export BEETSDIR="$DOTFILES/beets"
 export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig"
 ## latex
 export TEXMFHOME="$DOTFILES/texmf"
+
+# IPFS command completion
+autoload bashcompinit
+bashcompinit
+source $HOME/.ipfs/completion.bash

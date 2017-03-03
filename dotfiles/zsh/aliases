@@ -44,12 +44,12 @@ tex() {
     file="$1"
     prefix=${file%.*}
 
-    pdflatex --shell-escape "$file" &&
-    pdflatex --shell-escape "$file" &&
-    bibtex                  "$file" &&
-    pdflatex --shell-escape "$file"
+    pdflatex --shell-escape "$file".tex &&
+    bibtex                  "$file"     &&
+    pdflatex --shell-escape "$file".tex &&
+    pdflatex --shell-escape "$file".tex
 
-    rm -f $prefix.{out,snm,aux,toc,nav,log}
+    rm -f $prefix.{out,snm,aux,toc,nav,lo?}
 }
 
 # cmus with lyrics and cover art
