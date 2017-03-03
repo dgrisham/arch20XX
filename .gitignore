@@ -24,3 +24,7 @@ gnupg
 
 # rtorrent
 rtorrent.session
+
+# beets
+beets/library.blb
+beets/state.pickle
