@@ -13,7 +13,7 @@ c() {                       # cd with bookmarks
         564|arch)   dirname="$HOME/work/csci_564"   ;;
         240)        dirname="$HOME/work/stanford-cs240h/"   ;;
         ta)     dirname="$HOME/work/ta"      ;;
-        med) dirname="$PERSONAL/schedule/routine/morning/meditation/headspace/mind_series/2" ;;
+        med) dirname="$PERSONAL/schedule/routine/morning/meditation/headspace/mind_series/3" ;;
         pygame) dirname="$SCRATCH/pygame/doodle_jump" ;;
         dec)    dirname="$SRC/decoy-routing"    ;;
         "")     dirname="$HOME"                 ;;
@@ -52,6 +52,16 @@ tex() {
     rm -f $prefix.{out,snm,aux,toc,nav,lo?}
 }
 
+# markdown building
+# -----------------
+md2pdf() {
+    [[ -z "$1" ]] && return 1
+    file="$1"
+    prefix=${file%.*}
+
+    md make doc "$prefix".md
+}
+
 # cmus with lyrics and cover art
 # ------------------------------
 alias cf='cmus_full && exit'
@@ -66,6 +76,7 @@ kt() {
     format='%Y-%m-%d'
     kak "`date +$format`.md"
 }
+
 # 'journal today'
 # ---------------
 jt() {

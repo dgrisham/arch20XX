@@ -12,3 +12,5 @@ export TEXMFHOME="$DOTFILES/texmf"
 autoload bashcompinit
 bashcompinit
 source $HOME/.ipfs/completion.bash
+# Go path
+export GOPATH="$HOME/.go"

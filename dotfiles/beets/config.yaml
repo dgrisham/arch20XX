@@ -53,10 +53,12 @@ replace:
     '[\s_]{2,}'    : '_'
     '\s'           : '_'
 
-plugins: inline fetchart scrub lastgenre
+plugins: inline fetchart scrub lastgenre ftintitle
 fetchart:
-    minwidth : 600
-    sources  : coverart itunes amazon albumart google wikipedia
+    minwidth: 600
+    sources: coverart itunes amazon albumart google wikipedia
+ftintitle:
+    format: (feat. {0})
 
 #musicbrainz:
 #    searchlimit: 5 # default

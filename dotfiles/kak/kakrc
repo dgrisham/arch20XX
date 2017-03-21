@@ -9,13 +9,16 @@ hook global WinCreate .* %{addhl regex ^\V{80}(\V) 1:Error}
 hook global WinCreate .* %{addhl show_matching}
 
 # scroll offset
-set global scrolloff 12,12
+set global scrolloff 12,30
 
 # tabs
 ## 4-space tabs
 set global tabstop 4
-## soft tabs
-hook -group TabExpander global InsertChar \t %{ exec -draft h@}
+#set global indentwidth 4
+## soft tabs (excluding makefiles)
+hook global BufSetOption filetype=(?!makefile).* %{
+    hook buffer InsertChar \t %{ exec -draft h@ }
+}
 
 # auto wrap at 80 chars
 set global autowrap_column 80
@@ -30,7 +33,7 @@ colorscheme solarized2
 map global user r %{ :send-text <ret> }
 
 # commenting
-# map global user c ':on-key %{ %sh{ case "$kak_key" in; \'c\') echo
+# map global user c ':on-key %{ %sh{ case "$kak_key" in; \'c\') echo'
 # \':comment-line<ret>\'; ;} }'
 #map global user n :comment-line<ret>
 #map global user c :comment-selection<ret>
@@ -38,10 +41,13 @@ map global user r %{ :send-text <ret> }
 # Markdown manipulation
 # =====================
 
+# build document
+map global user w %{ :nop "%sh{ md make doc $kak_buffile }" <ret> }
+
 # format text with pandoc
 map global user g %{ | pandoc --from=markdown --to=markdown --columns=80 <ret> }
 
 # custom commands
-map global user h o<esc>kXypjXHr=j<esc>
-map global user s o<esc>kXypjXHr-j<esc>
+map global user h hXypjXHr=A<ret><esc>
+map global user s hXypjXHr-A<ret><esc>XHd
 #map global user b %{ | pandoc-citeproc --bib2yaml --format=biblatex <ret> }
