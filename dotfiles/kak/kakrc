@@ -22,7 +22,7 @@ set global autowrap_column 80
 hook global WinCreate .* %{ autowrap-enable }
 
 # colors
-colorscheme solarized2
+#colorscheme solarized2
 
 # Tmux integration
 # ================

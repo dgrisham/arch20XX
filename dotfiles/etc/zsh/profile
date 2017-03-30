@@ -2,7 +2,7 @@
 # -------------------
 
 ### Terminal
-export TERM='xterm-256color'
+export TERM='screen-256color'
 
 ### Wifi
 export WIFI_CARD='wlp3s0'
