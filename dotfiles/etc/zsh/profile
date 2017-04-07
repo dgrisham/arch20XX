@@ -41,3 +41,7 @@ export BROWSER="w3m"
 export PUBLISHER="git"
 export PLAYER="mpv"
 
+# Go path
+export GOPATH="$HOME/.go"
+# add GOPATH/bin to PATH
+export PATH="$PATH:$GOPATH/bin"

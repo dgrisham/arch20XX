@@ -24,7 +24,7 @@ match:
         media         : ['CD', 'Digital Media|File']
 
 item_fields:
-	# artist_custom: u'{}'.format(albumartist.lower())
+    # artist_custom: u'{}'.format(albumartist.lower())
     album_custom: |
         month_str = u'' if (month == '00') else u'_{}'.format(month)
         return u'{y}{m}-{al}'.format(y=year, m=month_str, al=album.lower())
@@ -34,14 +34,14 @@ item_fields:
         return u'{d}_{tr}-{ti}'.format(d=disc, tr=smart_track, ti=title.lower())
 
 replace:
-    '[\\/]'   	   : _
-    '^\.'		   : _
+    '[\\/]'        : _
+    '^\.'          : _
     '[\x00-\x1f]'  : _
     '[<>:"\?\*\|]' : _
-    '\.$' 		   : _
-    '\s+$'  	   : ''
-    '^\s+' 		   : ''
-	'\s'           : '_'
+    '\.$'          : _
+    '\s+$'         : ''
+    '^\s+'         : ''
+    '\s'           : '_'
 
 paths:
     default              : %lower{$albumartist}/$album_custom/$track_custom
