@@ -24,6 +24,9 @@ URxvt.cursorColor: #B47CAD
 ! disable scrollbar
 URxvt.scrollBar: false
 
+! disable searchable scrollback
+URxvt.perl-ext-common: "default, -searchable-scrollback"
+
 ! ! BLK
 ! URxvt.color0: t_bg_bump
 ! URxvt.color8: t_fg_comment

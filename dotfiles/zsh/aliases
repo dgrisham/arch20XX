@@ -58,7 +58,7 @@ md() {
     pandoc --standalone --filter=pandoc-citeproc \
            --from=markdown --to="$format" \
            --output="${md_doc%.*}.$ext" "$md_doc" \
-           || echo "pandoc error ..." >&2
+        || echo "pandoc error ..."
 }
 
 # latex building

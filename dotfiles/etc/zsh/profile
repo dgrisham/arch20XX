@@ -51,7 +51,7 @@ case "$virtual_terminal" in
     tty2|tty3)
         fbterm-bi "$MEDIA/pictures/backgrounds/current_bg" -- zsh -c 'TERM=fbterm tmux'
     ;;
-    tty4)
+    tty4|tty5)
         fbterm-bi "$MEDIA/pictures/backgrounds/current_bg" -- zsh -c "TERM=fbterm ssh_login"
     ;;
 esac
