@@ -1,0 +1,30 @@
+#!/usr/bin/env zsh
+
+source $HOME/dotfiles/zsh/aliases
+old_md5=""
+new_md5=""
+
+while true; do
+    new_md5="$(git diff --no-index | md5sum)"
+    if [[ "$old_md5" != "$new_md5" ]]; then
+        old_md5="$new_md5"
+        $@
+        if [[ "$?" == '0' ]]; then
+            becho "======= READY ========"
+        else
+            recho "======= READY ========"
+        fi
+        while read -t 0; do :; done
+    fi
+    read -s -k 1 -t 2 input
+    if [[ ! -z "$input" ]]; then
+        tmux resize-pane -Z
+        read -s -k 1
+        tmux resize-pane -Z
+        tmux select-pane -t 0
+        new_md5="$(git diff | md5sum)"
+        old_md5="$new_md5"
+        read -s -t 0
+        input=""
+    fi
+done

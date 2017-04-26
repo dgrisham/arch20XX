@@ -17,7 +17,7 @@ c() {                       # cd with bookmarks
         564|arch)   dirname="$HOME/work/csci_564"   ;;
         240)        dirname="$HOME/work/stanford-cs240h/"   ;;
         ta)     dirname="$HOME/work/ta"      ;;
-        med) dirname="$PERSONAL/schedule/routine/morning/meditation/headspace/mind_series/4" ;;
+        med) dirname="$PERSONAL/schedule/routine/morning/meditation/headspace/creativity_series/1" ;;
         pygame) dirname="$SCRATCH/pygame/doodle_jump" ;;
         dec)    dirname="$SRC/decoy-routing"    ;;
         "")     dirname="$HOME"                 ;;
