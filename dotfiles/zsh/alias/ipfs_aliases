@@ -1,0 +1,42 @@
+# IPFS-related aliases
+
+## ipfs-cluster
+alias ips='ipfs-cluster-service'
+
+cluster() {
+
+    cmd_arg="$1"
+    instance_arg="$2"
+
+    case "$instance_arg" in
+        1)     instance='1' ;;
+        2)     instance='2' ;;
+        a|all) instance='{1,2}' ;;
+        *)     return 1 ;;
+    esac
+
+    case "$cmd_arg" in
+        start)   cmd="start ipfs$instance" ;;
+        stop)    cmd='stop' ;;
+        restart) cmd='restart' ;;
+        stat)    cmd='status' ;;
+        *)       return 1 ;;
+    esac
+
+    eval systemctl --user $cmd ipfs-cluster$instance
+}
+
+ipc() {
+
+    instance_arg="$1"
+    shift
+
+    case "$instance_arg" in
+        1)  config='--host "127.0.0.1:9194"' ;;
+        2)  config='--host "127.0.0.1:9294"' ;;
+        '') config='' ;;
+        *)  return 1 ;;
+    esac
+
+    eval ipfs-cluster-ctl $config $@
+}
