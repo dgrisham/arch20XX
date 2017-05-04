@@ -10,17 +10,19 @@ recho() { echo '\033[0;31m'$@'\033[0m' }
 c() {                       # cd with bookmarks
     dirname="$1"
     case "$dirname" in      # bookmarks
-        web)    dirname="$SCRATCH/flasky"       ;;
-        dev)    dirname="$SRC/arch20xx"         ;;
-        res)    dirname="$HOME/work/research"   ;;
-        498|game)   dirname="$HOME/work/csci_498B"  ;;
-        564|arch)   dirname="$HOME/work/csci_564"   ;;
-        240)        dirname="$HOME/work/stanford-cs240h/"   ;;
-        ta)     dirname="$HOME/work/ta"      ;;
-        med) dirname="$PERSONAL/schedule/routine/morning/meditation/headspace/creativity_series/1" ;;
-        pygame) dirname="$SCRATCH/pygame/doodle_jump" ;;
-        dec)    dirname="$SRC/decoy-routing"    ;;
-        "")     dirname="$HOME"                 ;;
+        ipfs)     dirname="$GOPATH/src/github.com/ipfs/go-ipfs" ;;
+        cluster)  dirname="$GOPATH/src/github.com/ipfs/kubernetes-ipfs/ipfs-cluster" ;;
+        web)      dirname="$SCRATCH/flasky"       ;;
+        dev)      dirname="$SRC/arch20xx"         ;;
+        res)      dirname="$HOME/work/research"   ;;
+        498|game) dirname="$HOME/work/csci_498B"  ;;
+        564|arch) dirname="$HOME/work/csci_564"   ;;
+        240)      dirname="$HOME/work/stanford-cs240h/"   ;;
+        ta)       dirname="$HOME/work/ta"      ;;
+        med)      dirname="$PERSONAL/schedule/routine/morning/meditation/headspace/creativity_series/1" ;;
+        pygame)   dirname="$SCRATCH/pygame/doodle_jump" ;;
+        dec)      dirname="$SRC/decoy-routing"    ;;
+        "")       dirname="$HOME"                 ;;
         *)      return 1                        ;;
     esac
     cd "$dirname"
@@ -195,15 +197,6 @@ start_environment() {
             flasky_aliases
             start_venv 'flask'
             ;;
-        dev)
-            source_alias 'git' > /dev/null
-            ;;
-        ij|imgjam)
-            start_venv 'networks'
-            ;;
-        pygame)
-            start_venv 'pygame'
-            ;;
         ta)
             start_venv 'ta'
             unset BROWSER
@@ -329,4 +322,3 @@ next() {
 # =========================
 [[ -n "$DISPLAY" ]] && source_alias 'x' > /dev/null
 source_alias 'python' > /dev/null
-source_alias 'ipfs' > /dev/null

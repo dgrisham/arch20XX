@@ -1,0 +1,45 @@
+# ipfs-cluster dev aliases
+
+alias ics='ipfs-cluster-service'
+
+# manage clusters through systemd
+cluster() {
+
+    cmd_arg="$1"
+    instance_arg="$2"
+
+    case "$instance_arg" in
+        1)     instance='1'     ;;
+        2)     instance='2'     ;;
+        a|all) instance='{1,2}' ;;
+        *)     instance=''      ;;
+    esac
+
+    case "$cmd_arg" in
+        start)       cmd="start ipfs$instance" ;;
+        stop)        cmd="stop ipfs$instance"  ;;
+        restart)     cmd='restart'             ;;
+        stat|status) cmd='status'              ;;
+        *)           return 1                  ;;
+    esac
+
+    eval systemctl --user $cmd ipfs-cluster$instance
+}
+
+# cluster ctl commands
+icc() {
+
+    instance_arg="$1"
+
+    case "$instance_arg" in
+        1) config='--host "127.0.0.1:9194"'
+           shift
+           ;;
+        2) config='--host "127.0.0.1:9294"'
+           shift
+           ;;
+        *) config='' ;;
+    esac
+
+    eval ipfs-cluster-ctl $config $@
+}
