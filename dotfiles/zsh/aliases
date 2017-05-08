@@ -170,6 +170,7 @@ remove_alias() {
             return 1
         fi
     fi
+
     rm -f "$alias_file"
 }
 alias ra='remove_alias'
