@@ -161,6 +161,7 @@ remove_alias() {
 
     [[ -f "$alias_file" ]] || return 1
 
+    # confirm with user if 'force' flag not provided
     if [[ "$force" = false ]]; then
         echo -n "Remove $alias_file (y/n)? "
         read choice
