@@ -91,6 +91,7 @@ wifi_menu() {
     done
     printf "Which network: "
     read network_num
+    echo $network_num
     if [[ "$network_num" -lt '0' || "$network_num" -gt "${#networks}" ]]; then
         echo "Out of range."
         return 1

@@ -113,15 +113,15 @@ cp_etc() {
     done
 }
 
-# editing alias files
-# -------------------
+# edit alias file
+# ---------------
 edit_alias() {
     if [[ $# -eq 0 ]]; then
         print_aliases
         return 1
     fi
     input_arg="$1"
-    [[ -z "$input_arg" ]] && return 1
+
     case "$input_arg" in
         g|global)
             alias_file="$GLOBAL_ALIAS"
@@ -133,12 +133,48 @@ edit_alias() {
             alias_file="$ALIASES/${input_arg}_aliases"
             ;;
     esac
-    [[ -f "$alias_file" ]] && "$EDITOR" "$alias_file"
+
+    "$EDITOR" "$alias_file"
 }
 alias ea='edit_alias'
 
-# sourcing alias files
-# --------------------
+# remove alias file
+# -----------------
+remove_alias() {
+    if [[ $# -eq 0 ]]; then
+        print_aliases
+        return 1
+    fi
+
+    input_arg="$1"
+    case "$input_arg" in
+        '-f')
+            force=true
+            shift
+            ;;
+        *)
+            force=false
+            ;;
+    esac
+
+    alias_file="$ALIASES/${1}_aliases"
+
+    [[ -f "$alias_file" ]] || return 1
+
+    if [[ "$force" = false ]]; then
+        echo -n "Remove $alias_file (y/n)? "
+        read choice
+       
+        if ! echo "$choice" | grep -iq "^y"; then
+            return 1
+        fi
+    fi
+    rm -f "$alias_file"
+}
+alias ra='remove_alias'
+
+# source alias file
+# -----------------
 source_alias() {
     # if no input, print list of possible inputs and return
     if [[ $# -eq 0 ]]; then
@@ -322,3 +358,4 @@ next() {
 # =========================
 [[ -n "$DISPLAY" ]] && source_alias 'x' > /dev/null
 source_alias 'python' > /dev/null
+source_alias 'cluster' > /dev/null

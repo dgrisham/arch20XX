@@ -20,7 +20,7 @@ hook global BufSetOption filetype=haskell %{
     set buffer indentwidth 2
 }
 ## soft tabs (excluding makefiles)
-hook global BufSetOption filetype=(?!makefile)(?!go).*? %{
+hook global BufSetOption filetype=(?!makefile).*? %{
     hook buffer InsertChar \t %{ exec -draft h@ }
 }
 
@@ -61,7 +61,7 @@ map global user r %{ :send-text <ret> }
 # =====================
 
 # build document
-map global user w %{ :nop "%sh{ alias_call md latex ${kak_buffile}  }" <ret> }
+map global user w %{ :nop "%sh{ alias_call md beamer ${kak_buffile}  }" <ret> }
 
 # format text with pandoc
 map global user g %{ | pandoc --from=markdown --to=markdown --columns=80 <ret> }
