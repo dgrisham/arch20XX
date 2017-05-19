@@ -245,12 +245,13 @@ start_environment() {
             ;;
     esac
 
-    # update prompt
+    # show active env(s) in prompt
     if [[ -z "$ENV" ]]; then
         export ENV="$env"
         export PS1="($ENV) $PS1"
     else
-    if [[ ! $ENV == *"$env"* ]]; then
+    regex="(^|,| )${env}($|,| )"
+    if [[ ! $ENV =~ $regex ]]; then
         export ENV="$ENV, $env"
         export PS1=$(echo "$PS1" | sed -re 's/^\(.*?\) //')
         export PS1="($ENV) $PS1"
