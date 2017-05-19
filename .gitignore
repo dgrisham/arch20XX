@@ -42,3 +42,6 @@ dotfiles/beets/state.pickle
 
 # tshark
 tshark
+
+# pavu
+pavucontrol\.*

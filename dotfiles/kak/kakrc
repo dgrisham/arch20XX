@@ -70,3 +70,71 @@ map global user g %{ | pandoc --from=markdown --to=markdown --columns=80 <ret> }
 map global user h hXypjXHr=A<ret><esc>
 map global user s hXypjXHr-A<ret><esc>XHd
 #map global user b %{ | pandoc-citeproc --bib2yaml --format=biblatex <ret> }
+
+def add-surround %!on-key %@exec %sh&
+  case "$kak_key" in
+  "<lt>") key="<" ;;
+  "<gt>") key=">" ;;
+  "<space>") key=" " ;;
+  \<*\>) echo ":echo<space>no<ret>"; exit 1 ;;
+  *) key="$kak_key" ;;
+  esac
+
+  open="$key"
+  close="$key"
+  case "$key" in
+  "("|")") open="("; close=")" ;;
+  "["|"]") open="["; close="]" ;;
+  "{"|"}") open="{"; close="}" ;;
+  "<"|">") open="<"; close=">" ;;
+  esac
+
+  epilogue=${close//?/H}
+
+  open=${open/</<lt>}
+  close=${close/>/<gt>}
+
+  open=${open/ /<space>}
+  close=${close/ /<space>}
+  
+  echo "i$open<esc>a$close<esc>$epilogue"
+&@!
+
+def delete-surround %!on-key %@exec %sh&
+  case "$kak_key" in
+  "<lt>") key="<" ;;
+  "<gt>") key=">" ;;
+  "<space>") key=" " ;;
+  \<*\>) echo ":echo<space>no<ret>"; exit 1 ;;
+  *) key="$kak_key" ;;
+  esac
+
+  open="$key"
+  close="$key"
+  case "$key" in
+  "("|")") open="\("; close="\)" ;;
+  "["|"]") open="\["; close="\]" ;;
+  "{"|"}") open="{"; close="}"   ;;
+  "<"|">") open="<"; close=">"   ;;
+  esac
+
+  open=${open/</<lt>}
+  close=${close/>/<gt>}
+
+  open=${open/ /<space>}
+  close=${close/ /<space>}
+  
+  echo "<a-a>${kak_key}s${open}|${close}<ret>d<space>"
+&@!
+
+def surround %{
+    on-key %{ %sh{
+        case "$kak_key" in
+            a) echo add-surround
+               ;;
+            d) echo delete-surround
+               ;;
+        esac
+    } }
+}
+map global user e ":surround<ret>"

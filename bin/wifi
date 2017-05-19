@@ -59,7 +59,7 @@ wifi_new() {
     printf "[o]pen or [c]losed network: "
     read network_type
     echo
-    echo "Outputing to '$wifi_config'..."
+    echo "Outputting to '$wifi_config'..."
     case "$network_type" in
         o*|O*)
             echo 'network={'            | tee -a "$wifi_config"
