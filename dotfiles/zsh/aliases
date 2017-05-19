@@ -250,8 +250,7 @@ start_environment() {
         export ENV="$env"
         export PS1="($ENV) $PS1"
     else
-    regex="(^|,| )${env}($|,| )"
-    if [[ ! $ENV =~ $regex ]]; then
+    if [[ ! $ENV =~ (^|,| )${env}($|,| ) ]]; then
         export ENV="$ENV, $env"
         export PS1=$(echo "$PS1" | sed -re 's/^\(.*?\) //')
         export PS1="($ENV) $PS1"
