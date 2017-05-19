@@ -246,18 +246,38 @@ start_environment() {
     esac
 
     # show active env(s) in prompt
-    if [[ -z "$ENV" ]]; then
-        export ENV="$env"
-        export PS1="($ENV) $PS1"
+    if [[ -z "$WENV" ]]; then
+        export WENV="$env"
+        export PS1="($WENV) $PS1"
     else
-    if [[ ! $ENV =~ (^|,| )${env}($|,| ) ]]; then
-        export ENV="$ENV, $env"
+    if [[ ! $WENV =~ (^|,| )${env}($|,| ) ]]; then
+        export WENV="$WENV, $env"
         export PS1=$(echo "$PS1" | sed -re 's/^\(.*?\) //')
-        export PS1="($ENV) $PS1"
+        export PS1="($WENV) $PS1"
     fi
     fi
+
+    [[ -n "$TMUX" ]] && tmux set-environment WENV "$WENV"
 }
-alias se='start_environment'
+
+start_environments() {
+    envs=$@
+    for env in $(echo "$envs" | sed -r 's/, ?/\n/g'); do
+        start_environment "$env"
+    done
+}
+alias se='start_environments'
+
+clear_environment() {
+    unset WENV
+    export PS1=$(echo "$PS1" | sed -re 's/^\(.*?\) //')
+}
+alias ce='clear_environment'
+
+reset_environment() {
+    [[ -n "$TMUX" ]] && tmux set-environment WENV "$WENV"
+}
+alias re='reset_environment'
 
 # Scheduling
 # ==========
