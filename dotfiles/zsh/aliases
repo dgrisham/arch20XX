@@ -10,7 +10,7 @@ recho() { echo '\033[0;31m'$@'\033[0m' }
 c() {                       # cd with bookmarks
     dirname="$1"
     case "$dirname" in      # bookmarks
-        ipfs)     dirname="$GOPATH/src/github.com/ipfs/go-ipfs" ;;
+        ipfs)     dirname="$GOPATH/src/github.com/ipfs/go-ipfs/exchange/bitswap" ;;
         cluster)  dirname="$GOPATH/src/github.com/ipfs/kubernetes-ipfs/ipfs-cluster" ;;
         web)      dirname="$SCRATCH/flasky"       ;;
         dev)      dirname="$SRC/arch20xx"         ;;
@@ -227,9 +227,13 @@ alias gco='git checkout'
 start_environment() {
     env="$1"
     [[ -z "$env" ]] && return 1
+
     source_alias "$env" > /dev/null
     c "$env" &> /dev/null
     case "$env" in
+        cluster)
+            source_alias 'ipfs' > /dev/null
+            ;;
         web)
             source_alias 'python' > /dev/null
             flasky_aliases
@@ -240,9 +244,20 @@ start_environment() {
             unset BROWSER
             ;;
     esac
+
+    # update prompt
+    if [[ -z "$ENV" ]]; then
+        export ENV="$env"
+        export PS1="($ENV) $PS1"
+    else
+    if [[ ! $ENV == *"$env"* ]]; then
+        export ENV="$ENV, $env"
+        export PS1=$(echo "$PS1" | sed -re 's/^\(.*?\) //')
+        export PS1="($ENV) $PS1"
+    fi
+    fi
 }
 alias se='start_environment'
-
 
 # Scheduling
 # ==========
