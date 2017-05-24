@@ -8,9 +8,9 @@
 #define t_fg_ceiling   #FEFFFF
 
 URxvt*.transparent: true
-URxvt*.shading: 15
-URxvt.boldFont:xft:DejaVu Sans Mono:bold:antialias=true:size=12
-URxvt.font    :xft:DejaVu Sans Mono:antialias=true:size=12
+URxvt*.shading: 20
+URxvt.font:xft:DejaVu Sans Mono:antialias=true:size=13
+URxvt.boldFont:xft:DejaVu Sans Mono:bold:antialias=true:size=13
 
 URxvt.background: t_background
 URxvt.foreground: t_foreground
@@ -23,6 +23,9 @@ URxvt.cursorColor: #B47CAD
 
 ! disable scrollbar
 URxvt.scrollBar: false
+
+! disable searchable scrollback
+URxvt.perl-ext-common: "default, -searchable-scrollback"
 
 ! ! BLK
 ! URxvt.color0: t_bg_bump

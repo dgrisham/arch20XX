@@ -3,9 +3,13 @@
 # X aliases
 # =========
 
-# general
+# backlight
 # -------
 xb() { xbacklight $1% }
+
+# change pdf viewer
+# -----------------
+alias pdf='mupdf'
 
 # steam
 # -----

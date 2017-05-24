@@ -6,8 +6,9 @@
 
 # font family names/pixelsize used by fbterm, multiple font family names must be seperated by ','
 # and using a fixed width font as the first is strongly recommended
-font-names=mono
-font-size=26
+
+font-names=Misc Fixed
+font-size=20
 
 # force font width (and/or height), usually for non-fixed width fonts
 # legal value format: n (fw_new = n), +n (fw_new = fw_old + n), -n (fw_new = fw_old - n)
@@ -29,7 +30,8 @@ text-encodings=
 # cursor shape: 0 = underline, 1 = block
 # cursor flash interval in milliseconds, 0 means disable flashing
 cursor-shape=1
-cursor-interval=800
+
+cursor-interval=600
 
 # additional ascii chars considered as part of a word while auto-selecting text, except ' ', 0-9, a-z, A-Z
 word-chars=._-

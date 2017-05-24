@@ -16,13 +16,13 @@ new_float 1pixel
 # remove edge borders
 hide_edge_borders both
 
-set $mod Mod1
+set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:DejaVu Sans Mono 12
+font pango:DejaVu Sans Mono 14
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # The font above is very space-efficient, that is, it looks good, sharp and
@@ -55,13 +55,13 @@ bindsym $mod+m exec mutt
 # for_window [class="Uzbl-core"] focus child, layout stacking, focus
 
 # audio buttons
-#bindsym XF86AudioRaiseVolume exec "amixer set Master 3%+"
-#bindsym XF86AudioLowerVolume exec "amixer set Master 3%-"
-#bindsym XF86AudioMute exec "amixer set Master toggle"
+bindsym XF86AudioRaiseVolume exec "sound up"
+bindsym XF86AudioLowerVolume exec "sound down"
+bindsym XF86AudioMute exec "sound toggle"
 
 # control brightness
-#bindsym XF86MonBrightnessDown exec "xbacklight +10%"
-#bindsym XF86MonBrightnessUp exec "xbacklight -10%"
+bindsym $mod+Prior exec "xbacklight +5%"
+bindsym $mod+Next exec "xbacklight -5%"
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -177,6 +177,8 @@ mode "resize" {
         # back to normal: Enter or Escape
         bindsym Return mode "default"
         bindsym Escape mode "default"
+
+        bindsym equal resize shrink width 10000px; resize grow width 1000px; resize shrink height 10000px; resize grow height 1000px
 }
 
 bindsym $mod+r mode "resize"

@@ -1,8 +1,5 @@
 # Shortcuts
-# =========
-
 # TEMPORARY: not sure where to put these
-export RESEARCH="$HOME/documents/research"
 export VENVS="$HOME/.venv"
 export DIRSTORE="$HOME/.dirstore"
 
@@ -133,15 +130,74 @@ alias sv='start_venv'
 # -------------------------------
 pdf() {
     # note: update to check for jfbview
-    $VIEWER "$1"
+    # $VIEWER "$1"
+    jfbview "$1"
     tmux refresh-client
 }
+# open pdf as plaintext
+# ---------------------
+tdf() {
+    lesspipe.sh "$1" | less
+}
+
+# markdown publishing
+md() {
+    format="$1"
+    md_doc="$2"
+
+    case "$format" in
+        markdown)   ext='md'                    ;;
+        latex)      ext='pdf'                   ;;
+        latex-raw)  ext='tex'; format='latex'   ;;
+        beamer)     ext='pdf'                   ;;
+        beamer-raw) ext='tex'; format='beamer'  ;;
+        *)          ext="$format"               ;;
+    esac
+
+    pandoc --standalone --filter=pandoc-citeproc \
+           --from=markdown --to="$format" \
+           --output="${md_doc%.*}.$ext" "$md_doc" \
+        || echo "pandoc error ..."
+}
+
+# latex building
+# --------------
+tex() {
+    [[ -z "$1" ]] && return 1
+    file="$1"
+    prefix=${file%.*}
+
+    pdflatex --shell-escape "$prefix".tex &&
+    bibtex                  "$prefix"     &&
+    pdflatex --shell-escape "$prefix".tex &&
+    pdflatex --shell-escape "$prefix".tex
+
+    rm -f $prefix.{out,snm,aux,toc,nav,lo?}
+}
+
+# cmus with lyrics and cover art
+# ------------------------------
+alias cf='cmus_full && exit'
+
+# start existing vim session
+# --------------------------
+alias vs="vim -S"
 
 # `vim <today's_date>.md`
 # -----------------------
-vt() {
+kt() {
     format='%Y-%m-%d'
-    vim "`date +$format`.md"
+    kak "`date +$format`.md"
+}
+
+# 'journal today'
+# ---------------
+jt() {
+    format='%Y-%m-%d'
+    journal_dir="$PERSONAL/routine/morning/journal/five_minute_journal"
+    cp -n "$journal_dir/template.md" "$journal_dir/`date +$format`.md"
+    cd "$journal_dir"
+    kt
 }
 
 # copy etc
@@ -154,15 +210,15 @@ cp_etc() {
     done
 }
 
-# editing alias files
-# -------------------
+# edit alias file
+# ---------------
 edit_alias() {
     if [[ $# -eq 0 ]]; then
         print_aliases
         return 1
     fi
     input_arg="$1"
-    [[ -z "$input_arg" ]] && return 1
+
     case "$input_arg" in
         g|global)
             alias_file="$GLOBAL_ALIAS"
@@ -174,12 +230,50 @@ edit_alias() {
             alias_file="$ALIASES/${input_arg}_aliases"
             ;;
     esac
-    [[ -f "$alias_file" ]] && "$EDITOR" "$alias_file"
+
+    "$EDITOR" "$alias_file"
 }
 alias ea='edit_alias'
 
-# sourcing alias files
-# --------------------
+# remove alias file
+# -----------------
+remove_alias() {
+    if [[ $# -eq 0 ]]; then
+        print_aliases
+        return 1
+    fi
+
+    input_arg="$1"
+    case "$input_arg" in
+        '-f')
+            force=true
+            shift
+            ;;
+        *)
+            force=false
+            ;;
+    esac
+
+    alias_file="$ALIASES/${1}_aliases"
+
+    [[ -f "$alias_file" ]] || return 1
+
+    # confirm with user if 'force' flag not provided
+    if [[ "$force" = false ]]; then
+        echo -n "Remove $alias_file (y/n)? "
+        read choice
+       
+        if ! echo "$choice" | grep -iq "^y"; then
+            return 1
+        fi
+    fi
+
+    rm -f "$alias_file"
+}
+alias ra='remove_alias'
+
+# source alias file
+# -----------------
 source_alias() {
     # if no input, print list of possible inputs and return
     if [[ $# -eq 0 ]]; then
@@ -221,23 +315,91 @@ print_aliases() {
 alias gc='git commit -m'
 alias gca='git commit -am'
 alias gco='git checkout'
+alias gl="git log --pretty=format:'%C(auto)%h %ad %C(green)%s%Creset %C(auto)%d [%an]' --graph --date=format:'%Y-%m-%d %H:%M' --all"
 
+# start working environment
+# -------------------------
+start_environment() {
+    env="$1"
+    [[ -z "$env" ]] && return 1
 
+    source_alias "$env" > /dev/null
+    c "$env" &> /dev/null
+    case "$env" in
+        cluster)
+            source_alias 'ipfs' > /dev/null
+            ;;
+        web)
+            source_alias 'python' > /dev/null
+            flasky_aliases
+            start_venv 'flask'
+            ;;
+        ta)
+            start_venv 'ta'
+            unset BROWSER
+            ;;
+    esac
+
+    # show active env(s) in prompt
+    if [[ -z "$WENV" ]]; then
+        export WENV="$env"
+        export PS1="($WENV) $PS1"
+    else
+    if [[ ! $WENV =~ (^|,| )${env}($|,| ) ]]; then
+        export WENV="$WENV, $env"
+        export PS1=$(echo "$PS1" | sed -re 's/^\(.*?\) //')
+        export PS1="($WENV) $PS1"
+    fi
+    fi
+
+    [[ -n "$TMUX" ]] && tmux set-environment WENV "$WENV"
+}
+
+start_environments() {
+    envs=$@
+    for env in $(echo "$envs" | sed -r 's/, ?/\n/g'); do
+        start_environment "$env"
+    done
+}
+alias se='start_environments'
+
+clear_environment() {
+    unset WENV
+    export PS1=$(echo "$PS1" | sed -re 's/^\(.*?\) //')
+}
+alias ce='clear_environment'
+
+reset_environment() {
+    [[ -n "$TMUX" ]] && tmux set-environment WENV "$WENV"
+}
+alias re='reset_environment'
 
 # Scheduling
 # ==========
 
 # schedule/events
 # ---------------
-schedule() { sed -n '/schedule/,$p' ~/todo.md && echo && echo }
-events() { sed -n '/events/,/schedule/p' ~/todo.md | head -n-1 }
+todo() {
+    stuff="$PERSONAL/schedule/daily"
+    format='%Y-%m-%d'
+    cat "$stuff/`date +$format`.md"
+}
+schedule() { sed -n '/schedule/,$p' $PERSONAL/todo.md && echo && echo }
+events() { sed -n '/events/,/tasks/p' $PERSONAL/todo.md | head -n-1 }
+short_term() { sed -n '/short term/,/general/p' $PERSONAL/todo.md | head -n-1 }
+alias st='short_term'
+assignments() {
+    sed -n '/assignments/,/schedule/p' $PERSONAL/todo.md | head -n-1
+}
+alias ass='assignments'
+alias assless='assignments | less'
 
 # schedule today
 # --------------
 today() {
     day_offset="$1"
     [[ -z "$day_offset" ]] && day_offset='0'
-    schedule_file="$HOME/todo.md"
+    schedule_file="$PERSONAL/todo.md"
     day="$(date --date="$day_offset days" +%A | awk '{print tolower($0)}')"
     sed -n '/^'"$day"'$/,/^\w/p' $schedule_file | head -n -1
     dated="$(date --date="$day_offset days" +'%b %-d' | awk '{print tolower($0)}')"
@@ -255,6 +417,48 @@ week() {
         today $day
     done
 }
+
+# due today
+# ---------
+due_today() {
+    day_offset="$1"
+    [[ -z "$day_offset" ]] && day_offset='0'
+    format='%m-%d'
+    due_date="$(date --date="$day_offset days" +$format)"
+    schedule_file="$HOME/todo.md"
+    echo "$input" | grep "$due_date" | grep -v "DONE"
+}
+
+# due within the week
+# -------------------
+due_week() {
+    week_offset="$1"
+    [[ -z "$week_offset" ]] && week_offset='0'
+    format='%m-%d'
+    schedule_file="$HOME/todo.md"
+    typeset -A classes
+    assignments=`sed -n '/assignments/,/schedule/p' $PERSONAL/todo.md`
+    class_nums=(561 572 598 'kgd')
+    classes[561]=`echo "$assignments" | sed -n '/csci 561/,/csci 572/p' | head -n-1`
+    classes[572]=`echo "$assignments" | sed -n '/csci 572/,/csci 598/p' | head -n-1`
+    classes[598]=`echo "$assignments" | sed -n '/csci 598/,/kgd/p'   | head -n-1`
+    classes[kgd]=`echo "$assignments" | sed -n '/kgd/,/schedule/p' | head -n-1`
+    for k in $class_nums; do
+        echo "\ncsci $k"
+        echo "--------"
+        let day="$week_offset*7"
+        for i in {0..7}; do
+            due_date="$(date --date="$day days" +$format)"
+            let day="$day+1"
+            echo "$classes[$k]" | grep --color=never "$due_date" | grep -v "DONE"
+        done
+    done
+}
+
+# default due function
+# --------------------
+alias due='due_week'
+
 
 # current event
 # -------------
@@ -285,4 +489,5 @@ next() {
 # Source additional aliases
 # =========================
 [[ -n "$DISPLAY" ]] && source_alias 'x' > /dev/null
-
+source_alias 'python' > /dev/null
+source_alias 'cluster' > /dev/null

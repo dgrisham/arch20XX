@@ -1,6 +1,8 @@
-# tachikoma
+tachikoma
+=========
 
-## grub
+grub
+====
 
 install command:
 
@@ -57,3 +59,25 @@ menuentry "arch" {
 }
 ```
 
+bluetooth
+---------
+
+```zsh
+sudo pacman -S bluez bluez-utils
+sudo pacman -S pulseaudio-bluetooth [pavucontrol]
+sudo usermod -aG lp grish
+sudo modprobe bluetooth (???)
+sudo systemctl start bluetooth.service
+sudo hciconfig hci0 up
+bluetoothctl
+```
+
+```bluetoothctl
+power on
+scan on
+pair <MAC>
+[trust <MAC>]
+connect <MAC> # fails if hci0 down (see above)
+```
+
+open pavucontrol, select bluetooth output

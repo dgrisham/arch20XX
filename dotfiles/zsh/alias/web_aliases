@@ -3,8 +3,7 @@
 
 # Environment
 # -----------
-export WEB="$SCRATCH/web"
-export FLASKY="$WEB/flasky"
+export FLASKY="$SCRATCH/flasky"
 
 # convenient aliases for flasky
 # -----------------------------

@@ -1,2 +1,9 @@
 export BEETSDIR="$DOTFILES/beets"
+# Directories
+## path
+export PATH="$PATH:$HOME/.cabal/bin"
+## beets config
+export BEETSDIR="$DOTFILES/beets"
+## latex
+# export TEXMFHOME="$DOTFILES/texmf"
 

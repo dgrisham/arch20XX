@@ -88,6 +88,9 @@ zstyle ':prezto:module:editor' key-bindings 'vi'
 # Setting it to 'random' loads a random theme.
 # Auto set to 'off' on dumb terminals.
 zstyle ':prezto:module:prompt' theme 'steeef'
+# themes I like:
+# - giddie (change dark blue)
+# - skwp (no git repo info)
 
 #
 # Ruby

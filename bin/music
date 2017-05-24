@@ -1,0 +1,274 @@
+#!/usr/bin/env zsh
+
+
+# Utilities
+# =========
+
+# print some information
+# ----------------------
+music_print() {
+    header="$1"
+    shift
+    [[ -z "$header" ]] && return 1
+    echo
+    echo
+    echo "$header"
+    for info in $@; do
+        echo "-   $info"
+    done
+    echo
+}
+
+# get links from html
+# -------------------
+music_get_fields() {
+    field="$1"
+    [[ -z "$field" ]] && field='href'
+    grep -oP '(?<='"$field"'=")[^"]*(?=")' \
+        | sort \
+        | uniq
+}
+
+# wget wrapper
+# ------------
+music_wget() {
+    site="$1"
+    [[ -z "$site" ]] && return 1
+    user_agent='Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0'
+    temp_file="$(mktemp --tmpdir)"
+    wget "$site" -k -U "$user_agent" -O "$temp_file"
+    cat "$temp_file"
+    rm "$temp_file"
+}
+
+# grab all potential music links on site
+# --------------------------------------
+music_scrape() {
+    typeset -A sites
+    sites[soundcloud]="soundcloud.com"
+    sites[youtube]="youtube.com/watch\|youtu.be/"
+	sites[all]="$(echo "$sites" | sed -n 's/ /\\|/gp')"
+
+    scrape_site="$1"
+    extractor="$2"
+    [[ -z "$scrape_site" ]] && return 1
+    [[ -z "$extractor" ]] && extractor="all"
+    urls=$sites[$extractor]
+
+    music_wget "$scrape_site" \
+        | music_get_fields 'href' \
+        | grep "$urls"
+}
+
+
+# Base Functionalities
+# ====================
+
+# delete some music (randomly)
+# ----------------------------
+music_del() {
+    number="$1"
+    [[ -z "$number" ]] && number="10"
+    for song in $(ls "$MUSIC" | shuf | head -n $number); do
+        music_print "Deleting" "$song"
+        [[ -n "$DEBUG" ]] && return 0
+        rm "$MUSIC/$song"
+    done
+}
+
+# simple youtube-dl wrapper
+# -------------------------
+music_dl() {
+    md_url="$1"
+    [[ -z "$md_url" ]] && return 1
+    meta="$2"
+    [[ -z "$meta" ]] && meta="url-$md_url"
+    meta="$meta:l"
+
+    music_print "Downloading" "$meta" "$md_url"
+    [[ -n "$DEBUG" ]] && return 0
+
+    youtube-dl --max-downloads=10 --ignore-errors --restrict-filenames \
+        --format "best" --extract-audio --audio-format "vorbis" \
+        --output "$MUSIC/extra/$meta::%(title)s.%(ext)s" "$md_url" \
+        || return 1
+    music_cmus reset
+}
+
+
+# Interface Functionalities
+# =========================
+
+# search for music
+# -----------------
+music_search() {
+    site="$1"
+    tags="$2"
+    number="$3"
+    [[ -z "$site" ]] && return 1
+    [[ -z "$tags" ]] && return 1
+    [[ -z "$number" ]] && number=3
+    ((hop=$RANDOM % 3))
+
+    case "$site" in
+        reddit)
+            site_url='https://www.reddit.com/r'
+			search_site="$site_url/$tags"
+            if [[ "$hop" == '1' ]]; then
+                tags="$(music_wget "$search_site" \
+                    | grep -v 'div id="header"' \
+                    | music_get_fields 'href' \
+                    | grep -v -i "$search_site" \
+                    | grep -v -i 'domain' \
+                    | grep -e "$site_url" \
+                    | cut --delimiter='/' --field=5 \
+                    | shuf | head -n1)"
+                search_site="$site_url/$tags"
+	    fi
+            ;;
+        youtube)
+            site_url='https://www.youtube.com/watch?v='
+            search_site="$(sr -print youtube $(echo "$tags" | tr '_' ' '))"
+            if [[ "$hop" == '1' ]]; then
+                new_vid="$(music_wget "$search_site" \
+                    | music_get_fields 'href' \
+                    | grep -e "$site_url" \
+                    | shuf | head -n1)"
+                tags="$(music_wget "$new_vid" \
+                    | grep -e "$site_url" \
+                    | grep -v -i 'video' \
+                    | music_get_fields 'title' \
+                    | shuf | head -n1 \
+                    | tr ' ' '\n' | shuf | head -n5 \
+                    | tr -d -c '[:alpha:][:space:]' \
+                    | tr '[:space:]' '_' \
+                    | sed -e 's/__\+/_/g' -e 's/_\+$//' -e 's/^_\+//')"
+                search_site="$(sr -print youtube $(echo "$tags" | tr '_' ' '))"
+            fi
+            ;;
+        *)
+            echo "Unrecognized search site: $site" >&2
+            return 1
+            ;;
+    esac
+	
+    search_result=($(music_scrape "$search_site" 'all' \
+                        | shuf | head -n"$number"))
+	[[ -z "$search_result" ]] && return 1
+    for search in $search_result; do
+	    music_dl "$search" "$site-$tags"
+    done
+}
+
+# Control cmus
+# ------------
+music_cmus() {
+    cmus_command="$1"
+    shift
+    case "$cmus_command" in
+        pause)
+            cmus-remote --pause
+            ;;
+        next)
+            cmus-remote --next
+            ;;
+        prev)
+            cmus-remote --prev
+            ;;
+        volume)
+            volume_dir="$1"
+            volume_amt="5"
+            cmus-remote --volume "$volume_dir$volume_amt%"
+            ;;
+        song)
+            cmus-remote -Q | grep file | cut --delimiter=' ' --field=2
+            ;;
+        reset)
+            cmus-remote --clear --library
+            cmus-remote --library "$MUSIC"
+            ;;
+        del-song)
+            song="$(music_cmus song)"
+            rm "$song"
+            music_cmus next
+            music_cmus reset
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+# upvote/downvote music that's playing
+# ------------------------------------
+music_vote() {
+    up_or_down="$1"
+    shift
+    case "$up_or_down" in
+        up)
+            curr_song="$(music_cmus song)"
+            curr_song="${curr_song#$(dirname "$curr_song")}"
+            curr_song_info="${${curr_song%::*}#*/}"
+            song_source="${curr_song_info%-*}"
+            song_key="${curr_song_info#*-}"
+            echo "music_search "$song_source" "$song_key""
+            music_search "$song_source" "$song_key"
+            ;;
+        down)
+            music_cmus del-song
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+
+# Functionality Wrapper
+# =====================
+
+if [[ -z "$MUSIC" ]]; then
+    echo "Must set 'MUSIC' environment variable to library location." >&2
+    exit 1
+fi
+
+music_command="$1"
+shift
+case "$music_command" in
+    print)
+        music_print $@
+        ;;
+    get-fields)
+        music_get_fields $@
+        ;;
+    wget)
+        music_wget $@
+        ;;
+    scrape)
+        music_scrape $@
+        ;;
+    del)
+        music_del $@
+        ;;
+    dl)
+        music_dl $@
+        ;;
+    search)
+        music_search $@
+        ;;
+    cmus)
+        music_cmus $@
+        ;;
+    vote)
+        temp_log=/home/grish/scratch/music_crontab
+        echo "$(date)" >> $temp_log
+        music_vote $@ &>> $temp_log
+        ;;
+    scratch)
+        cp "$(music cmus song)" "$SCRATCH/"
+        ;;
+    *)
+        echo "Unrecognized command: $music_command" >&2
+        exit 1
+        ;;
+esac

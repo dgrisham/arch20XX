@@ -25,12 +25,6 @@ set nocompatible
 set shell=/bin/zsh
 set rtp+=/etc/vim
 
-" Local vimrc
-" -----------
-"" don't active these in global, just personal vimrc
-"set exrc
-"set secure
-
 " Undos
 " -----
 " NOTE: undo folder doesn't exist by default
@@ -102,11 +96,11 @@ set splitright
 " ----
 set autoindent
 set smartindent
-set smarttab
 set shiftwidth=4
-set softtabstop=0
-set tabstop=4
+set softtabstop=4
+set tabstop=8
 set expandtab
+set shiftround
 ":retab applys these rules to the current buffer
 
 " Keep 12 lines above/below, don't go over 80 columns
@@ -144,6 +138,14 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
+" Window resizing
+" ---------------
+nnoremap <silent> <leader>J :exe "resize " . (winheight(0) * 3/2)<cr>
+nnoremap <silent> <leader>K :exe "resize " . (winheight(0) * 2/3)<cr>
+nnoremap <silent> <leader>H :exe "vertical resize " . (winwidth(0) * 5/4)<cr>
+nnoremap <silent> <leader>L :exe "vertical resize " . (winwidth(0) * 4/5)<cr>
+nnoremap <silent> <leader>= <C-W>=
+
 " Buffer movement
 " ---------------
 nnoremap > :bn<cr>
@@ -159,6 +161,11 @@ noremap L $
 " ### Around blocks
 noremap K {
 noremap J }
+
+" Ctrl+h to toggle highlight
+" --------------------------
+let hlstate=0
+nnoremap <leader>hh :if (hlstate%2 == 0) \| nohlsearch \| else \| set hlsearch \| endif \| let hlstate=hlstate+1<cr>
 
 " Netrw (file explorer)
 " --------------------
@@ -212,6 +219,7 @@ map <leader>h1 VypVr=A
 map <leader>h2 VypVr-A
 map <leader>h3 I### 
 map <leader>cb I```
+
 
 " ### Dates
 map <leader>d1 :read !date +\%F<cr>kdd<leader>h1

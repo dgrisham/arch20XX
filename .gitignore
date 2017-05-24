@@ -7,6 +7,7 @@ undo
 bundle
 ## netrw history
 .netrwhist
+.netrwhist~
 
 # zsh
 histfile
@@ -19,6 +20,34 @@ cookie
 history
 w3m*-*
 
+<<<<<<< HEAD
 # gpg
 gnupg
 
+=======
+# chrome
+google-chrome
+
+# menus?
+menus
+
+# gtk
+gtk-2.0
+
+# mutt/msmtp/offlinemap
+mail
+
+# cmus
+cmus
+
+# beets
+dotfiles/beets/library.blb
+dotfiles/beets/remotes/
+dotfiles/beets/state.pickle
+
+# tshark
+tshark
+
+# pavu
+pavucontrol\.*
+>>>>>>> bbdd5f598c0fe8a881576b38731c1e037e03f61d

@@ -1,14 +1,14 @@
-
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
 zsh_dir="$HOME/dotfiles/zsh"
-env_files=("profile" "aliases")
+env_files=('profile' 'aliases')
 for env_file in $env_files; do
     [[ -f "$zsh_dir/$env_file" ]] && source "$zsh_dir/$env_file"
 done
 
 LS_COLORS="$LS_Colors:di=01;36"
 
+eval $ZSH_INIT

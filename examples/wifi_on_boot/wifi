@@ -4,29 +4,27 @@
 # constants
 # ---------
 wifi_file="/etc/wpa_supplicant/wifi_networks"
-wifi_config="$DOTFILES$wifi_file"
-wifi_card="$WIFI_CARD"
+wifi_card="wlan0"
 
 # reconnect using wpa_supplicant
 # ------------------------------
 wifi_connect() {
-
     wifi_disconnect
-    sudo wpa_supplicant -B -Dnl80211 -i"$wifi_card" -c"$wifi_file"
-    sudo dhcpcd "$wifi_card"
+    wpa_supplicant -B -Dnl80211 -i"$wifi_card" -c"$wifi_file"
+    dhcpcd "$wifi_card"
 }
 
 # disconnect
 # ----------
 wifi_disconnect() {
-    sudo pkill wpa_supplicant
-    sudo pkill dhcpcd
+    pkill wpa_supplicant
+    pkill dhcpcd
 }
 
 # scan for networks in area
 # -------------------------
 wifi_scan() {
-    sudo iw dev "$wifi_card" scan \
+    iw dev "$wifi_card" scan \
         | grep 'SSID:' \
         | sed -e 's/^[ \t]*SSID:[ \t]*//' \
         | grep -v '\x00'
@@ -60,14 +58,13 @@ wifi_new() {
     printf "[o]pen or [c]losed network: "
     read network_type
     echo
-    echo "Outputting to '$wifi_config'..."
+    echo "Outputing to '$wifi_config'..."
     case "$network_type" in
         o*|O*)
             echo 'network={'            | tee -a "$wifi_config"
             echo '    ssid="'"$ssid"'"' | tee -a "$wifi_config"
             echo '    key_mgmt=NONE'    | tee -a "$wifi_config"
             echo '}'                    | tee -a "$wifi_config"
-            echo '\n'                   | tee -a "$wifi_config"
             ;;
         c*|C*)
             echo "enter passphrase..."
@@ -82,7 +79,6 @@ wifi_new() {
 # nice interactive wifi-finder
 # ----------------------------
 wifi_menu() {
-    sudo ip link set "$wifi_card" up
     counter=0
     typeset -A networks
     wifi_scan | while read wifi_network; do
@@ -92,7 +88,6 @@ wifi_menu() {
     done
     printf "Which network: "
     read network_num
-    echo $network_num
     if [[ "$network_num" -lt '0' || "$network_num" -gt "${#networks}" ]]; then
         echo "Out of range."
         return 1

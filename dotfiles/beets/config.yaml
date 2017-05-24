@@ -1,6 +1,7 @@
 library   : /home/lhillber/dotfiles/beets/library.blb
 directory : /home/lhillber/media/music
 
+
 import:
     write              : yes
     copy               : no
@@ -57,6 +58,7 @@ plugins: inline fetchart scrub lastgenre ipfs
 fetchart:
     minwidth : 600
     sources  : coverart itunes amazon albumart google wikipedia
+
 
 #musicbrainz:
 #    searchlimit: 5 # default

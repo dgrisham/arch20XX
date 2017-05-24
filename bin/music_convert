@@ -1,0 +1,11 @@
+#!/bin/bash
+
+wav_to_mp3() {
+    input="$1"
+    [[ -f "$input" ]] || return 1
+    echo "hi"
+    output="${input%.*}.flac"
+    ffmpeg -i "$input" -c:a flac -compression_level 5 "$output"
+}
+
+wav_to_mp3 $@

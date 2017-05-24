@@ -38,6 +38,8 @@ xrandr --dpi 100
 
 redshift &
 
+setxkbmap -option caps:ctrl_modifier
+
 exec i3
 
 #twm &
