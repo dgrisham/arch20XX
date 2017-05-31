@@ -436,3 +436,4 @@ next() {
 [[ -n "$DISPLAY" ]] && source_alias 'x' > /dev/null
 source_alias 'python' > /dev/null
 source_alias 'cluster' > /dev/null
+source ~/bin/wenv

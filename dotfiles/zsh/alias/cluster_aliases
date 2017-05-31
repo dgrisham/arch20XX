@@ -1,5 +1,13 @@
 # ipfs-cluster dev aliases
 
+## WENV vars
+
+export WENV_DIR="$GOPATH/src/github.com/ipfs/kubernetes-ipfs"
+export WENV_ALIASES=('ipfs' 'iptl')
+export WENV_PROJECT='kubernetes-ipfs/feat/parameters'
+
+## aliases
+
 alias ics='ipfs-cluster-service'
 
 # manage clusters through systemd
