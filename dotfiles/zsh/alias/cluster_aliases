@@ -2,9 +2,9 @@
 
 ## WENV vars
 
-export WENV_DIR="$GOPATH/src/github.com/ipfs/kubernetes-ipfs"
-export WENV_ALIASES=('ipfs' 'iptl')
-export WENV_PROJECT='kubernetes-ipfs/feat/parameters'
+wenv_dir="$GOPATH/src/github.com/ipfs/kubernetes-ipfs"
+wenv_aliases=('ipfs' 'iptl')
+wenv_project='kubernetes-ipfs/feat/parameters'
 
 ## aliases
 
