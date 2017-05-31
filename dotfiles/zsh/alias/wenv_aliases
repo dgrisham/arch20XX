@@ -13,7 +13,7 @@ wenv_start() {
     export WENV="$1"
 
     source_alias "$WENV"
-    wenv_init
+    wenv_setup
 
     [[ $flag_c -eq 1 ]] && cd "$WENV_DIR" &> /dev/null
     [[ $flag_n -eq 1 ]] && wenv_tasks "$WENV"
@@ -21,6 +21,8 @@ wenv_start() {
     export PS1="($WENV) $ORIGINAL_PS1"
 
     [[ -n "$TMUX" ]] && tmux set-environment WENV "$WENV"
+
+    wenv_init
 }
 
 wenv_clear() {
