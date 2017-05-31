@@ -11,6 +11,7 @@ wenv_start() {
 
     [[ -z "$1" ]] && return 1
     export WENV="$1"
+    source_alias "$WENV"
 
     export WENV_DIR="$wenv_dir"
     export WENV_ALIASES="$wenv_aliases"
