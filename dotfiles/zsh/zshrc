@@ -12,4 +12,6 @@ done
 
 LS_COLORS="$LS_Colors:di=01;36"
 
-eval $ZSH_INIT
+ORIGINAL_PS1="$PS1"
+
+eval "$ZSH_INIT"
