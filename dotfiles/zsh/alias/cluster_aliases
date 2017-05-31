@@ -2,9 +2,11 @@
 
 ## WENV vars
 
-wenv_dir="$GOPATH/src/github.com/ipfs/kubernetes-ipfs"
-wenv_aliases=('ipfs' 'iptl')
-wenv_project='kubernetes-ipfs/feat/parameters'
+wenv_init() {
+    WENV_DIR="$GOPATH/src/github.com/ipfs/kubernetes-ipfs"
+    WENV_ALIASES=('ipfs' 'iptl')
+    WENV_PROJECT='kubernetes-ipfs/feat/parameters'
+}
 
 ## aliases
 

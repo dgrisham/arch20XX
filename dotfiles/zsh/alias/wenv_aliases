@@ -11,11 +11,9 @@ wenv_start() {
 
     [[ -z "$1" ]] && return 1
     export WENV="$1"
-    source_alias "$WENV"
 
-    export WENV_DIR="$wenv_dir"
-    export WENV_ALIASES="$wenv_aliases"
-    export WENV_PROJECT="$wenv_project"
+    source_alias "$WENV"
+    wenv_init
 
     [[ $flag_c -eq 1 ]] && cd "$WENV_DIR" &> /dev/null
     [[ $flag_n -eq 1 ]] && wenv_tasks "$WENV"
@@ -40,7 +38,6 @@ wenv_source_aliases() {
     for wenv_alias in $WENV_ALIASES; do
         source_alias "$wenv_alias" > /dev/null
     done
-
 }
 
 wenv() {
