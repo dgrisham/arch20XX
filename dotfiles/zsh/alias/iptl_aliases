@@ -1,0 +1,30 @@
+# InterPlanetary Test Lab aliases
+# ===============================
+
+kub() {
+    cmd="$1"
+    shift
+    case "$cmd" in
+        "pod") kub_pod $@            ;;
+        "cmd") kub_cmd $@            ;;
+        *)     kubectl "$cmd" $@     ;;
+    esac
+}
+
+kub_pod() {
+    pod_name="$1"
+    [[ -z "$pod_name" ]] && return 1
+    kubectl get pods --namespace=monitoring | grep "$pod_name" | awk '{print $1}'
+}
+
+kub_cmd() {
+    pod_id=$(kub_pod "$1")
+    cmd="$2"
+    [[ -z "$cmd" ]] && return 1
+    kubectl exec --namespace=monitoring "$pod_id" -t -- bash -c "$cmd"
+}
+
+grafana_pf() {
+    grafana_pod=$(kub_pod grafana-core)
+    kubectl port-forward --namespace=monitoring "$grafana_pod" 3000:3000
+}
