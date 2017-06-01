@@ -1,3 +1,25 @@
+wenv() {
+    wenv_command="$1"
+    shift
+    case "$wenv_command" in
+        s|start)
+            wenv_start $@
+            ;;
+        c|clear)
+            wenv_clear $@
+            ;;
+        t|tasks)
+            wenv_tasks $@
+            ;;
+        sa|source_aliases)
+            wenv_source_aliases $@
+            ;;
+        *)
+            echo "Unrecognized command: '$wenv_command'"
+            ;;
+    esac
+}
+
 wenv_start() {
     flag_c=1
     flag_n=1
@@ -40,26 +62,4 @@ wenv_source_aliases() {
     for wenv_alias in $WENV_ALIASES; do
         source_alias "$wenv_alias" > /dev/null
     done
-}
-
-wenv() {
-    wenv_command="$1"
-    shift
-    case "$wenv_command" in
-        s|start)
-            wenv_start $@
-            ;;
-        c|clear)
-            wenv_clear $@
-            ;;
-        t|tasks)
-            wenv_tasks $@
-            ;;
-        sa|source_aliases)
-            wenv_source_aliases $@
-            ;;
-        *)
-            echo "Unrecognized command: '$wenv_command'"
-            ;;
-    esac
 }
