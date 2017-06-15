@@ -1,0 +1,225 @@
+" All system-wide defaults are set in $VIMRUNTIME/archlinux.vim (usually just
+" /usr/share/vim/vimfiles/archlinux.vim) and sourced by the call to :runtime
+" you can find below.  If you wish to change any of those settings, you should
+" do it in this file (/etc/vimrc), since archlinux.vim will be overwritten
+" everytime an upgrade of the vim packages is performed.  It is recommended to
+" make changes after sourcing archlinux.vim since it alters the value of the
+" 'compatible' option.
+"
+" This line should not be removed as it ensures that various options are
+" properly set to work with the Vim-related packages.
+runtime! archlinux.vim
+"
+" If you prefer the old-style vim functionalty, add 'runtime! vimrc_example.vim'
+" Or better yet, read /usr/share/vim/vim74/vimrc_example.vim or the vim manual
+" and configure vim to your own liking!
+
+
+" General
+" =======
+
+" Settings
+" --------
+set nocompatible
+"set viminfo+=n/etc/vim/viminfo
+set shell=/bin/zsh
+set rtp+=/etc/vim
+
+" Undos
+" -----
+" NOTE: undo folder doesn't exist by default
+set undodir=$HOME/dotfiles/vim/undo
+set undofile
+set undolevels=1000
+set undoreload=10000
+
+" Leader
+" ------
+let mapleader=','
+
+" Toggle options
+" --------------
+function MapToggle(key, opt)
+    let cmd = ':set '.a:opt.'! \| set '.a:opt."?\<cr>"
+    exec 'nnoremap '.a:key.' '.cmd
+    exec 'inoremap '.a:key." \<C-O>".cmd
+endfunction
+command -nargs=+ MapToggle call MapToggle(<f-args>)
+
+
+" Display
+" =======
+
+" Display trailing spaces
+" -----------------------
+set list listchars=tab:>\ ,eol:¬,extends:»,precedes:«
+map <leader>lc :set list!<cr>
+
+" Syntax highlighting/numbers in margin
+" -------------------------------------
+syntax on
+set number
+MapToggle <leader>rn relativenumber
+
+" Enable custom colorscheme
+" -------------------------
+"set t_Co=8
+"set background=dark
+autocmd BufEnter * colorscheme custom
+autocmd BufEnter *.md colorscheme custom_md
+
+
+" Behavior
+" ========
+
+" Wild!
+" -----
+set wildmode=list:longest
+set wildmenu
+
+" Search
+" ------
+set incsearch
+set hlsearch
+
+" Autoread external changes
+" -------------------------
+set autoread
+
+" Split Placement
+" ----------------
+set splitbelow
+set splitright
+
+" Tabs
+" ----
+set autoindent
+set smartindent
+set shiftwidth=4
+set softtabstop=4
+set tabstop=8
+set expandtab
+set shiftround
+":retab applys these rules to the current buffer
+
+" Keep 12 lines above/below, don't go over 80 columns
+" ---------------------------------------------------
+set scrolloff=12
+set textwidth=80
+"highlight overlength ctermbg=8
+"match overlength /\%81v.\+/
+
+" Highlight current line lightly
+" ------------------------------
+highlight cursorline cterm=NONE ctermbg=233
+noremap <leader>cl :set cursorline!<cr>
+set cursorline
+
+" Highlight cursor column lightly
+" -------------------------------
+highlight cursorcolumn cterm=NONE ctermbg=233
+noremap <leader>cc :set cursorcolumn!<cr>
+
+" Folding
+" -------
+highlight folded ctermbg=8
+set foldmethod=manual
+set foldnestmax=2
+
+
+" Keybindings
+" ===========
+
+" Window movement
+" ---------------
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+" Window resizing
+" ---------------
+nnoremap <silent> <leader>J :exe "resize " . (winheight(0) * 3/2)<cr>
+nnoremap <silent> <leader>K :exe "resize " . (winheight(0) * 2/3)<cr>
+nnoremap <silent> <leader>H :exe "vertical resize " . (winwidth(0) * 5/4)<cr>
+nnoremap <silent> <leader>L :exe "vertical resize " . (winwidth(0) * 4/5)<cr>
+nnoremap <silent> <leader>= <C-W>=
+
+" Buffer movement
+" ---------------
+nnoremap > :bn<cr>
+nnoremap < :bp<cr>
+set hidden
+set nostartofline
+
+" Text movement
+" -------------
+" ### Beginning/end of line
+noremap H ^
+noremap L $
+" ### Around blocks
+noremap K {
+noremap J }
+
+" Ctrl+h to toggle highlight
+" --------------------------
+let hlstate=0
+nnoremap <leader>hh :if (hlstate%2 == 0) \| nohlsearch \| else \| set hlsearch \| endif \| let hlstate=hlstate+1<cr>
+
+" Netrw (file explorer)
+" --------------------
+" ### Opening
+nmap <C-n>\ :Vexplore!<cr>
+nmap <C-n>- :Hexplore<cr>
+nmap <C-n>n :Explore<cr>
+nmap <C-n>t :Texplore<cr>
+" ### Navigating
+autocmd FileType netrw nmap <buffer> h -
+autocmd FileType netrw nmap <buffer> K -
+autocmd FileType netrw nmap <buffer> l <cr>
+
+" Toggle paste/spellcheck
+" -----------------------
+map <leader>pp :setlocal paste!<cr>
+map <leader>ss :setlocal spell!<cr>
+
+" Reformat paragraph
+" ------------------
+map <leader>g gqip
+
+" Jump to pairs
+" -------------
+nnoremap <C-p> %
+
+" Remove 'select mode' macros
+" ---------------------------
+map gh <nop>
+map gH <nop>
+map g<C-h> <nop>
+
+" Call md_website browser
+" -----------------------
+"command -nargs=* MDW read !md_website <args> 2> /dev/null
+
+
+" Markdown
+" ========
+
+" Boilerplate entry
+" -----------------
+map <leader>h1 VypVr=A
+map <leader>h2 VypVr-A
+map <leader>h3 I### 
+map <leader>cb I```
+" ### Dates
+map <leader>d1 :read !date +\%F<cr>kdd<leader>h1
+map <leader>d2 :read !date +\%F<cr>kdd<leader>h2
+map <leader>d3 :read !date +\%F<cr>kdd<leader>h3
+
+" Other Filetypes
+" ===============
+
+" Makefile don't expand tabs
+" --------------------------
+autocmd filetype make setlocal noexpandtab
+

@@ -17,6 +17,7 @@ export SRC="$HOME/src"
 export PERSONAL="$HOME/personal"
 export MEDIA="$HOME/media"
 export MUSIC="$MEDIA/music"
+export WORK="$HOME/work"
 export SCRATCH="$HOME/scratch"
 ## XDG
 export XDG_DATA_HOME="$HOME/.local/share"

@@ -1,0 +1,8 @@
+{
+  "files": [
+    "discord_voice.node", 
+    "libdiscord.so", 
+    "index.js", 
+    "manifest.json"
+  ]
+}

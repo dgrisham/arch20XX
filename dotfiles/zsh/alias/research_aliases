@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+wenv_setup() {
+    export WENV_DIR="$WORK/research/resources/papers/egt"
+    export WENV_PROJECT='bitswap-research'
+
+    wenv_init() {
+        if [[ -n "$TMUX" ]]; then
+            wenv_tmux_split h
+            tmux send-keys 'c res' 'Enter' 'kak notes.md' 'Enter' '/egt' 'Enter'
+        fi
+    }
+}

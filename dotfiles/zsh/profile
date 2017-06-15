@@ -17,3 +17,6 @@ source $HOME/.ipfs/completion.bash
 export GOPATH="$HOME/.go"
 # add GOPATH/bin to PATH
 export PATH="$PATH:$GOPATH/bin"
+
+# Rust Cargo path
+export PATH="$PATH:$HOME/.cargo/bin"

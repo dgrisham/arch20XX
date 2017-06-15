@@ -3,9 +3,9 @@
 ## WENV vars
 
 wenv_setup() {
-    WENV_DIR="$GOPATH/src/github.com/ipfs/kubernetes-ipfs"
+    WENV_DIR="$GOPATH/src/github.com/ipfs/kubernetes-ipfs/ipfs-cluster"
     WENV_ALIASES=('ipfs' 'iptl')
-    WENV_PROJECT='kubernetes-ipfs/feat/parameters'
+    WENV_PROJECT='run-parameterized-tests'
 
     wenv_init() { }
 }

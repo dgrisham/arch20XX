@@ -225,63 +225,6 @@ alias gl="git log --pretty=format:'%C(auto)%h %ad %C(green)%s%Creset %C(auto)%d 
 
 alias gco='git checkout'
 
-# start working environment
-# -------------------------
-start_environment() {
-    flag_c=1
-    flag_n=1
-    while getopts ":cn" opt; do
-        case $opt in
-            c) flag_c=0 ;;
-            n) flag_n=0 ;;
-        esac
-    done
-    shift $((OPTIND -1))
-
-    env="$1"
-    [[ -z "$env" ]] && return 1
-
-    source_alias "$env" > /dev/null
-    [[ $flag_c -eq 1 ]] && c "$env" &> /dev/null
-
-    case "$env" in
-        sessions)
-            source_alias 'ipfs' > /dev/null
-            source_alias 'iptl' > /dev/null
-            ;;
-        cluster)
-            source_alias 'ipfs' > /dev/null
-            source_alias 'iptl' > /dev/null
-            ;;
-        web)
-            source_alias 'python' > /dev/null
-            flasky_aliases
-            start_venv 'flask'
-            ;;
-        ta)
-            start_venv 'ta'
-            unset BROWSER
-            ;;
-    esac
-
-    [[ $flag_n -eq 1 ]] && project_tasks "$env"
-
-    # show active env(s) in prompt
-    if [[ -z "$WENV" ]]; then
-        export WENV="$env"
-        export PS1="($WENV) $ORIGINAL_PS1"
-    else
-    if [[ ! $WENV =~ (^|,| )${env}($|,| ) ]]; then
-        export WENV="$WENV, $env"
-        # export PS1=$(printf "$PS1" | sed -re 's/^\(.*?\) //')
-        export PS1="($WENV) $ORIGINAL_PS1"
-    fi
-    fi
-
-    [[ -n "$TMUX" ]] && tmux set-environment WENV "$WENV"
-}
-alias se='start_environment'
-
 start_environments() {
     envs=$@
     for env in $(echo "$envs" | sed -r 's/, ?/\n/g'); do
@@ -289,35 +232,6 @@ start_environments() {
     done
 }
 alias ses='start_environments'
-
-clear_environment() {
-    unset WENV
-    export PS1=$(echo -n "$PS1" | sed -re 's/^\(.*?\) //')
-}
-alias ce='clear_environment'
-
-project_tasks() {
-    env="$1"
-    case "$env" in
-        cluster)  PROJECT='kubernetes-ipfs/feat/parameters' ;;
-        sessions) PROJECT='bitswap-sessions'                ;;
-        *)        return 1                                  ;;
-    esac
-
-    current_tasks
-}
-alias pt='project_tasks'
-
-current_tasks() {
-    echo "$PROJECT"
-    task project project:"$PROJECT"
-}
-alias ct='current_tasks'
-
-reset_environment() {
-    [[ -n "$TMUX" ]] && tmux set-environment WENV "$WENV"
-}
-alias re='reset_environment'
 
 # Scheduling
 # ==========
