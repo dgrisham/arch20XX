@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 wenv_setup() {
     unset WENV_DIR
@@ -21,17 +21,23 @@ wenv() {
         r|reset)
             wenv_reset $@
             ;;
-        t|tasks)
+        t|task|tasks) # TODO: "tasks?"
             wenv_tasks $@
             ;;
         c|'cd')
             wenv_cd $@
+            ;;
+        e|edit)
+            wenv_edit @@
             ;;
         sa|source_aliases)
             wenv_source_aliases $@
             ;;
         exec)
             wenv_exec $@
+            ;;
+        mv|rename)
+            wenv_rename $@
             ;;
         *)
             echo "Unrecognized command: '$wenv_command'"
@@ -69,15 +75,38 @@ wenv_exec() {
     export WENV="$1"
 
     wenv_load "$WENV"
+    wenv_source_aliases
 
-    [[ $flag_c -eq 1 ]] && cd "$WENV_DIR" &> /dev/null
-    [[ $flag_n -eq 1 ]] && wenv_tasks "$WENV"
+    if [[ $flag_c -eq 1 ]]; then
+        cd "$WENV_DIR" &> /dev/null
+        [[ ! -z "$WENV_BRANCH" ]] && gco "$WENV_BRANCH" &> /dev/null | grep -v '^Already'
+    fi
+    [[ $flag_n -eq 1 ]] && wenv_tasks_show
 
     export PS1="($WENV) $ORIGINAL_PS1"
 }
 
+wenv_stop() {
+    [[ -z "$WENV" ]] && return 1
+
+    wenv_cd
+    [[ ! -z "$WENV_BRANCH" ]] && git checkout master
+
+    unset WENV
+    unset WENV_{DIR,ALIASES,PROJECT,BRANCH}
+
+    if [[ -n "$TMUX" ]]; then
+        tmux set-environment WENV ''
+        tmux rename-window ''
+    fi
+    export PS1="$ORIGINAL_PS1"
+}
+
 wenv_cd() {
-    [[ -z "$1" ]] && cd "$WENV_DIR" &> /dev/null
+    if [[ -z "$1" ]]; then
+        cd "$WENV_DIR" &> /dev/null
+        return 1
+    fi
     wenv="$1"
 
     wenv_load "$wenv"
@@ -94,14 +123,9 @@ wenv_load() {
     wenv_setup
 }
 
-wenv_stop() {
-    unset WENV
-    unset WENV_{DIR,ALIASES,PROJECT}
-    if [[ -n "$TMUX" ]]; then
-        tmux set-environment WENV ''
-        tmux rename-window ''
-    fi
-    export PS1="$ORIGINAL_PS1"
+wenv_edit() {
+    [[ -z "$WENV" ]] && return 1
+    edit_alias "$WENV"
 }
 
 wenv_reset() {
@@ -109,9 +133,9 @@ wenv_reset() {
 }
 
 wenv_tasks() {
-    task_command="$1"
+    arg="$1"
     shift 2> /dev/null
-    case "$task_command" in
+    case "$arg" in
         s|show)
             wenv_tasks_show $@
             ;;
@@ -119,14 +143,17 @@ wenv_tasks() {
             wenv_tasks_add $@
             ;;
         *)
-            wenv_tasks_show $@
+            wenv_tasks_show "$arg" $@
             ;;
     esac
 }
 
 wenv_tasks_show() {
+    report="$1"
+    [[ -z "$report" ]] && report="project"
+
     echo "$WENV_PROJECT"
-    task project project:"$WENV_PROJECT"
+    task "$report" project:"$WENV_PROJECT"
 }
 
 wenv_tasks_add() {
@@ -140,6 +167,14 @@ wenv_source_aliases() {
     for wenv_alias in $WENV_ALIASES; do
         source_alias "$wenv_alias" > /dev/null
     done
+}
+
+wenv_rename() {
+    [[ $# != 2 ]] && return 1
+    old="$1_aliases"
+    new="$2_aliases"
+
+    mv "$ALIASES/$old" "$ALIASES/$new"
 }
 
 wenv_tmux_split() {

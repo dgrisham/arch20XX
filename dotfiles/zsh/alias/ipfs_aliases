@@ -1,9 +1,24 @@
-# IPFS aliases
-# ============
+#!/bin/zsh
 
 wenv_setup() {
-    WENV_DIR="$GOPATH/src/github.com/ipfs/go-ipfs/exchange/bitswap/decision"
+    WENV_DIR="$GOPATH/src/github.com/ipfs/go-ipfs"
     WENV_ALIASES=()
-    WENV_PROJECT='bitswap-research'
+    WENV_PROJECT=''
+    WENV_BRANCH='master'
     wenv_init() { }
+}
+
+ipfs() {
+    case "$1" in
+        'public')  config='--config ~/.ipfs'
+                   shift
+                   ;;
+        'private') config='--config ~/.ipfs-private'
+                   shift
+                   ;;
+        *)         config=''
+                   ;;
+    esac
+
+    eval $GOPATH/bin/ipfs "$config" $@
 }

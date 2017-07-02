@@ -10,7 +10,7 @@ recho() { echo '\033[0;31m'$@'\033[0m' }
 c() {                       # cd with bookmarks
     dirname="$1"
     case "$dirname" in      # bookmarks
-        ipfs)     dirname="$GOPATH/src/github.com/ipfs/go-ipfs/exchange/bitswap/decision" ;;
+        ipfs)     dirname="$GOPATH/src/github.com/ipfs/go-ipfs" ;;
         iptl)     dirname="$GOPATH/src/github.com/ipfs/kubernetes-ipfs" ;;
         cluster)  dirname="$GOPATH/src/github.com/ipfs/kubernetes-ipfs" ;;
         sessions) dirname="$GOPATH/src/github.com/ipfs/kubernetes-ipfs/bitswap-sessions" ;;
@@ -233,117 +233,10 @@ start_environments() {
 }
 alias ses='start_environments'
 
-# Scheduling
-# ==========
+# Task Warrior
+# ============
 
-# schedule/events
-# ---------------
-todo() {
-    stuff="$PERSONAL/schedule/daily"
-    format='%Y-%m-%d'
-    cat "$stuff/`date +$format`.md"
-}
-schedule() { sed -n '/schedule/,$p' $PERSONAL/todo.md && echo && echo }
-events() { sed -n '/events/,/tasks/p' $PERSONAL/todo.md | head -n-1 }
-short_term() { sed -n '/short term/,/general/p' $PERSONAL/todo.md | head -n-1 }
-alias st='short_term'
-assignments() {
-    sed -n '/assignments/,/schedule/p' $PERSONAL/todo.md | head -n-1
-}
-alias ass='assignments'
-alias assless='assignments | less'
-
-# schedule today
-# --------------
-today() {
-    day_offset="$1"
-    [[ -z "$day_offset" ]] && day_offset='0'
-    schedule_file="$PERSONAL/todo.md"
-    day="$(date --date="$day_offset days" +%A | awk '{print tolower($0)}')"
-    sed -n '/^'"$day"'$/,/^\w/p' $schedule_file | head -n -1
-    dated="$(date --date="$day_offset days" +'%b %-d' | awk '{print tolower($0)}')"
-    sed -n '/^'"$dated"'$/,/^\w/p' $schedule_file | head -n -1
-}
-
-# schedule for week
-# -----------------
-week() {
-    week_offset="$1"
-    [[ -z "$week_offset" ]] && week_offset='0'
-    let day="$week_offset*7"
-    for i in {0..6}; do
-        let day="$day+$i"
-        today $day
-    done
-}
-
-# due today
-# ---------
-due_today() {
-    day_offset="$1"
-    [[ -z "$day_offset" ]] && day_offset='0'
-    format='%m-%d'
-    due_date="$(date --date="$day_offset days" +$format)"
-    schedule_file="$HOME/todo.md"
-    echo "$input" | grep "$due_date" | grep -v "DONE"
-}
-
-# due within the week
-# -------------------
-due_week() {
-    week_offset="$1"
-    [[ -z "$week_offset" ]] && week_offset='0'
-    format='%m-%d'
-    schedule_file="$HOME/todo.md"
-    typeset -A classes
-    assignments=`sed -n '/assignments/,/schedule/p' $PERSONAL/todo.md`
-    class_nums=(561 572 598 'kgd')
-    classes[561]=`echo "$assignments" | sed -n '/csci 561/,/csci 572/p' | head -n-1`
-    classes[572]=`echo "$assignments" | sed -n '/csci 572/,/csci 598/p' | head -n-1`
-    classes[598]=`echo "$assignments" | sed -n '/csci 598/,/kgd/p'   | head -n-1`
-    classes[kgd]=`echo "$assignments" | sed -n '/kgd/,/schedule/p' | head -n-1`
-    for k in $class_nums; do
-        echo "\ncsci $k"
-        echo "--------"
-        let day="$week_offset*7"
-        for i in {0..7}; do
-            due_date="$(date --date="$day days" +$format)"
-            let day="$day+1"
-            echo "$classes[$k]" | grep --color=never "$due_date" | grep -v "DONE"
-        done
-    done
-}
-
-# default due function
-# --------------------
-alias due='due_week'
-
-
-# current event
-# -------------
-tasks() {
-    #event_offset=$1+1
-    #[[ -z "$event_offset" ]] && event_offset=1
-    schedule_file="$HOME/todo.md"
-    curr_event="$(today 0 | grep '^-   ')"
-    [[ -z "$curr_event" ]] && return 1
-    curr_event=$(echo "$curr_event" | sed 's/.*\?-\([0-9:]\+\)/\1/')
-    curr_time="$(date +'%H:%M') {NOW}"
-    curr_event="$(echo "$curr_event\n$curr_time" | sort | grep -A1 "{NOW}" | tail -n1)"
-    curr_event="$(echo "$curr_event" | sed 's/.*\?\s\{4\}\(.*\)/\1/' | awk '{print tolower($0)}')"
-    sed -n '/^'"$curr_event"'$/,/^\w/p' $schedule_file | head -n -1
-}
-
-# next event
-# ----------
-next() {
-    next_event="$(today 0 | grep '^-   ' | cut --characters=5-)"
-    [[ -z "$next_event" ]] && return 1
-    curr_time="$(date +'%H:%M') {NOW}"
-    next_event="$(echo "$next_event\n$curr_time" | sort)"
-    echo "$next_event" | grep -A1 "{NOW}" | tail -n1
-}
-
+alias ta='task active'
 
 # Source additional aliases
 # =========================
