@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR="/home/grish/scratch/test"
+    WENV_ALIASES=()
+    WENV_PROJECT=''
+    WENV_BRANCH='test'
+    wenv_init() { }
+    wenv_shutdown() { }
+}

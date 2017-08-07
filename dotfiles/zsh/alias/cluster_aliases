@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+wenv_setup() {
+    WENV_DIR="$GOPATH/src/github.com/ipfs/ipfs-cluster"
+    WENV_ALIASES=('ipfs' 'iptl')
+    WENV_PROJECT='ipfs-cluster'
+    unset WENV_BRANCH
+
+    wenv_init() { }
+    wenv_shutdown() { }
+}

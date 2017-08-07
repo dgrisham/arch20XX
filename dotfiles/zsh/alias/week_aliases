@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR=""
+    WENV_ALIASES=""
+    WENV_PROJECT='current-week'
+    unset WENV_BRANCH
+    wenv_init() { }
+}

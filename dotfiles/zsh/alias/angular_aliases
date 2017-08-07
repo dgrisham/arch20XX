@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR="/home/grish/scratch/webdev/angular-tour-of-heroes"
+    WENV_ALIASES=()
+    WENV_PROJECT='webdev'
+    unset WENV_BRANCH
+    wenv_init() {
+        wenv_tmux_layout 'dev' 'yarn start'
+        cd src
+        kak main.ts app/app.{component,module}.ts
+    }
+}

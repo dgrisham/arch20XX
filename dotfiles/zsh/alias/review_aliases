@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR="$WORK/research/resources/papers/other"
+    unset WENV_ALIASES=()
+    WENV_PROJECT='crowdsourcing-paper-review'
+    unset WENV_BRANCH
+    wenv_init() {
+        pdf data_centric_mobile_crowdsensing-jiang-gao-duan-huang.pdf &
+    }
+}

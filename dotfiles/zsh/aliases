@@ -89,11 +89,11 @@ alias cf='cmus_full && exit'
 # --------------------------
 alias vs="vim -S"
 
-# `vim <today's_date>.md`
+# `$EDITOR <today's_date>.md`
 # -----------------------
-kt() {
+et() {
     format='%Y-%m-%d'
-    kak "`date +$format`.md"
+    $EDITOR "`date +$format`.md"
 }
 
 # 'journal today'
@@ -243,4 +243,4 @@ alias ta='task active'
 [[ -n "$DISPLAY" ]] && source_alias 'x' > /dev/null
 source_alias 'wenv' > /dev/null
 source_alias 'python' > /dev/null
-source_alias 'cluster' > /dev/null
+source_alias 'ipfs' > /dev/null

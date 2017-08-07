@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR="/home/grish/personal"
+    WENV_ALIASES=()
+    WENV_PROJECT=''
+    WENV_BRANCH=''
+    wenv_init() {
+        [[ -z "$TMUX" ]] && return 1
+        wenv_tmux_split h
+        tmux send-keys 'kak goals.md' 'Enter'
+    }
+}

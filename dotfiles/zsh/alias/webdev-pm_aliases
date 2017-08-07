@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR="$SCRATCH/webdev/pm"
+    WENV_ALIASES=()
+    WENV_PROJECT='webdev-pm'
+    WENV_BRANCH='master'
+    wenv_init() { }
+    wenv_shutdown() { }
+}

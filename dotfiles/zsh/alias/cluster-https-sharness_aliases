@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+wenv_setup() {
+    WENV_DIR="/home/grish/.go/src/github.com/ipfs/ipfs-cluster/sharness"
+    WENV_ALIASES=('ipfs' 'iptl')
+    WENV_PROJECT='ipfs-cluster'
+    WENV_BRANCH='test/sharness-https-api'
+
+    wenv_init() { }
+}

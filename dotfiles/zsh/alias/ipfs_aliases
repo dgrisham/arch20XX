@@ -10,14 +10,14 @@ wenv_setup() {
 
 ipfs() {
     case "$1" in
-        'public')  config='--config ~/.ipfs'
-                   shift
-                   ;;
-        'private') config='--config ~/.ipfs-private'
-                   shift
-                   ;;
-        *)         config=''
-                   ;;
+        'public')      config='--config ~/.ipfs'
+                       shift
+                       ;;
+        'p'|'private') config='--config ~/.ipfs-private'
+                       shift
+                       ;;
+        *)             config=''
+                       ;;
     esac
 
     eval $GOPATH/bin/ipfs "$config" $@

@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+wenv_setup() {
+    WENV_DIR="$GOPATH/src/github.com/ipfs/ipfs-cluster"
+    WENV_ALIASES=('ipfs' 'iptl')
+    WENV_PROJECT='free-space-allocation-metric'
+    WENV_BRANCH='feat/free-space-allocation-metric'
+
+    wenv_init() { }
+    wenv_shutdown() { }
+}

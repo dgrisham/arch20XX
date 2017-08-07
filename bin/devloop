@@ -1,31 +1,39 @@
 #!/usr/bin/env zsh
 
-source $HOME/dotfiles/zsh/aliases
+source $DOTFILES/zsh/aliases
 old_md5=""
 new_md5=""
+
+run() {
+    $@ &
+    wait
+    if [[ "$?" == '0' ]]; then
+        becho "======= READY ========"
+    else
+        recho "======= READY ========"
+    fi
+}
 
 while true; do
     new_md5="$(git diff | md5sum)"
     if [[ "$old_md5" != "$new_md5" ]]; then
         clear
         old_md5="$new_md5"
-        $@
-        if [[ "$?" == '0' ]]; then
-            becho "======= READY ========"
-        else
-            recho "======= READY ========"
-        fi
+        run $@ &
         while read -t 0; do :; done
     fi
     read -s -k 1 -t 2 input
     if [[ ! -z "$input" ]]; then
         tmux resize-pane -Z
+        #tmux copy-mode
         read -s -k 1
         tmux resize-pane -Z
-        tmux select-pane -t 0
+        tmux select-pane -U
         new_md5="$(git diff | md5sum)"
         old_md5="$new_md5"
         read -s -t 0
         input=""
     fi
 done
+# kill backgrounded process if still running
+kill $! &> /dev/null

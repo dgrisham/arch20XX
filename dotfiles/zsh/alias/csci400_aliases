@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR="$WORK/csci400"
+    WENV_ALIASES=()
+    WENV_PROJECT='programming_languages'
+    unset WENV_BRANCH
+    wenv_init() { }
+    wenv_shutdown() { }
+}
