@@ -1,9 +1,6 @@
 ## Hooks
-
 # add line numbers
 hook global WinCreate .* %{addhl number_lines}
-# highlight characters in 81st column
-hook global WinCreate .* %{addhl regex ^\V{80}(\V) 1:Error}
 
 # add brackets highlighting
 hook global WinCreate .* %{addhl show_matching}
@@ -14,38 +11,69 @@ set global scrolloff 12,0
 # tabs
 ## 4-space tabs
 set global tabstop 4
+set global indentwidth 4
+
 ## 2-space tabs for Haskell
 hook global BufSetOption filetype=haskell %{
     set buffer tabstop 2
     set buffer indentwidth 2
 }
+
 ## soft tabs (excluding makefiles)
 hook global BufSetOption filetype=(?!makefile).*? %{
     hook buffer InsertChar \t %{ exec -draft h@ }
+}
+
+## backspace a whole tab
+map global insert <backspace> '<a-;>:insert-bs<ret>'
+def -hidden insert-bs %{
+    try %{
+        # delete indentwidth spaces before cursor
+        exec -draft -no-hooks h %opt{indentwidth}H <a-k>\A<space>+\Z<ret> <esc>d
+    } catch %{
+        exec <backspace>
+    }
 }
 
 # auto wrap at 80 chars
 set global autowrap_column 80
 hook global WinCreate .* %{ autowrap-enable }
 
+hook -group PythonJediAutostart global WinSetOption filetype=python %{
+    jedi-enable-autocomplete
+}
+
+hook global WinSetOption filetype=(?!python).* %{
+    jedi-disable-autocomplete
+}
+
+# show all trailing whispaces red
+hook -group TrailingWhitespaces global WinCreate .* %{
+    addhl regex '\h+$' 0:default,red
+}
+
+# highlight characters in 81st column
+hook global WinCreate .* %{addhl regex ^\V{80}(\V) 1:Error}
+
 # colors
 colorscheme solarized2
+
 
 # Tmux integration
 # ================
 
 def tmux-new %{
-    on-key %{ %sh{
-        case "$kak_key" in
-            \\) echo tmux-new-horizontal
-               ;;
-            "<minus>") echo tmux-new-vertical
-               ;;
-        esac
-    } }
+     on-key %{ %sh{
+         case "$kak_key" in
+             \\) echo tmux-new-horizontal
+                ;;
+             "<minus>") echo tmux-new-vertical
+                ;;
+         esac
+     } }
 }
-map global user t :tmux-new<ret>
-map global user r %{ :send-text <ret> }
+##map global user t :tmux-new<ret>
+##map global user r %{ :send-text <ret> }
 
 # commenting
 # map global user c ':on-key %{ %sh{ case "$kak_key" in; \'c\') echo'
@@ -56,21 +84,45 @@ map global user r %{ :send-text <ret> }
 # Haskell
 # =======
 
-
 # Markdown manipulation
 # =====================
 
 # build document
-map global user w %{ :nop "%sh{ alias_call md beamer ${kak_buffile}  }" <ret> }
+#map global user w %{ :nop "%sh{ alias_call md beamer ${kak_buffile}  }" <ret> }
+
 
 # format text with pandoc
 map global user g %{ | pandoc --from=markdown --to=markdown --columns=80 <ret> }
-
-# custom commands
-map global user h hXypjXHr=A<ret><esc>
-map global user s hXypjXHr-A<ret><esc>XHd
 #map global user b %{ | pandoc-citeproc --bib2yaml --format=biblatex <ret> }
 
+# custom commands
+map global user = XypjXHr=A<ret><esc>XHd
+map global user <minus> hXypjXHr-A<ret><esc>XHd
+
+map global user w '<esc>:w<ret>; :echo -color Information "Written"<ret>'
+
+map global user s '<esc>:spell<ret>'
+map global user y 'y<a-|>xclip -i<ret>; :echo -color Information "copied
+ selection to X11 clipboard"<ret>'
+map global user p '!xclip -o<ret>'
+map global user x 'Xd'
+map global user c 'Xy'
+
+map global user a '<a-i>ps=<ret>&<space>gl'
+
+map global normal <ret> 'i<ret><esc>'
+map global normal <backspace> 'i<backspace><esc>'
+
+map global normal <a-j> '<a-a>pgh'
+map global normal <a-k> '<a-a>p<a-;>kk'
+map global insert <a-j> '<c-n>'
+map global insert <a-k> '<c-p>'
+
+map global user r '%<a-|>python<ret>;'
+
+
+
+#
 def add-surround %!on-key %@exec %sh&
   case "$kak_key" in
   "<lt>") key="<" ;;
@@ -96,7 +148,7 @@ def add-surround %!on-key %@exec %sh&
 
   open=${open/ /<space>}
   close=${close/ /<space>}
-  
+
   echo "i$open<esc>a$close<esc>$epilogue"
 &@!
 
@@ -108,6 +160,7 @@ def delete-surround %!on-key %@exec %sh&
   \<*\>) echo ":echo<space>no<ret>"; exit 1 ;;
   *) key="$kak_key" ;;
   esac
+
 
   open="$key"
   close="$key"
@@ -123,7 +176,7 @@ def delete-surround %!on-key %@exec %sh&
 
   open=${open/ /<space>}
   close=${close/ /<space>}
-  
+
   echo "<a-a>${kak_key}s${open}|${close}<ret>d<space>"
 &@!
 
@@ -138,3 +191,4 @@ def surround %{
     } }
 }
 map global user e ":surround<ret>"
+

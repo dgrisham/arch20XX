@@ -54,7 +54,7 @@ replace:
     '[\s_]{2,}'    : '_'
     '\s'           : '_'
 
-plugins: inline fetchart scrub lastgenre ipfs
+plugins: inline fetchart scrub lastgenre
 fetchart:
     minwidth : 600
     sources  : coverart itunes amazon albumart google wikipedia

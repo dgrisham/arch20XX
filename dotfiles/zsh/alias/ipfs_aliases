@@ -1,10 +1,12 @@
 # IPFS aliases
 # ============
 
-# Test Lab
-# --------
-
-grafana_pf() {
-    pod=$(kubectl get pods --namespace=monitoring | grep grafana-core | awk '{print $1}')
-    kubectl port-forward --namespace=monitoring $pod 3000:3000
+get_song() {
+    ipfs private pubsub sub 'grish_now_playing' &
+    DONE=false
+    until $DONE; do
+        read -t 0 hash || DONE=true
+        ipfs private get "$hash"
+    done
 }
+

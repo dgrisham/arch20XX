@@ -18,12 +18,14 @@ export PERSONAL="$HOME/personal"
 export MEDIA="$HOME/media"
 export MUSIC="$MEDIA/music"
 export SCRATCH="$HOME/scratch"
+
 ## XDG
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CONFIG_HOME="$DOTFILES"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DOWNLOAD_DIR="$DOWNLOADS"
-export XDG_DESKTOP_DIR="/dev/null"
+#export XDG_DESKTOP_DIR="/dev/null"
+export XDG_DESKTOP_DIR="/home/username"
 #export XDG_RUNTIME_DIR="/tmp"
 
 # Alias files
@@ -55,10 +57,3 @@ case "$virtual_terminal" in
         fbterm-bi "$MEDIA/pictures/backgrounds/current_bg" -- zsh -c "TERM=fbterm ssh_login"
     ;;
 esac
-
-### XDG
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_CONFIG_HOME="$DOTFILES"
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_DOWNLOAD_DIR="$DOWNLOADS"
-export XDG_DESKTOP_DIR="$HOME/"

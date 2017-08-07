@@ -3,6 +3,106 @@
 export VENVS="$HOME/.venv"
 export DIRSTORE="$HOME/.dirstore"
 
+
+ipfs() {
+    case "$1" in
+        'public')      config='--config ~/.ipfs'
+                       shift
+                       ;;
+        'p'|'private') config='--config ~/.ipfs-private'
+                       shift
+                       ;;
+        *)             config=''
+                       ;;
+    esac
+
+    eval /usr/bin/ipfs "$config" $@
+}
+
+playlist_get() {
+    [[ -z "$1" ]] && return 1
+    playlist_hash="$1"
+    is_first_line=true
+    IFS=$'\n'
+    for line in `ipfs private cat "$playlist_hash"`; do
+        if [[ "$is_first_line" = true ]]; then
+            playlist_name="$line"
+            playlist_dir="$MUSIC/playlists/$playlist_name"
+            playlist_file="$playlist_dir/playlist.pl"
+            mkdir "$playlist_dir"
+            rm -f "$playlist_file" && touch "$playlist_file"
+            is_first_line=false
+            continue
+        fi
+        song_map=("${(@s/ /)line}")
+        ipfs private pin add "/ipfs/$song_map[1]"
+        ln -sf "/ipfs/$song_map[1]" "$playlist_dir/$song_map[2]"
+        echo "$playlist_dir/$song_map[2]" >> "$playlist_file"
+   done
+}
+
+
+playlist_menu() {
+
+    #playlists_global=($(awk '{print $1}' =(echo $playlist_index)))
+    #playlists_hash=($(awk '{print $2}' =(echo $playlist_index)))
+    #playlist_options=(`echo ${playlists_local[@]} ${playlists_global[@]} | \
+    #    tr ' ' '\n' | sort | uniq -u `)
+    #echo ${playlists_hash[1]}
+
+
+
+    playlist_index=$(ipfs private cat \
+        /ipns/QmYzX4jvZT2iUDPVdG1MCJ8bX5Q2pca66QsPgDYWU4mUGZ)
+    playlists_local=($(ls $MUSIC/playlists))
+    counter=0
+    typeset -A playlist_hash
+    IFS=$'\n'
+    for pl_index in `echo $playlist_index`; do
+        pl_name=$(awk '{print $1}' =(echo $pl_index))
+        pl_hash=$(awk '{print $2}' =(echo $pl_index))
+        exists=false
+        for pl_local in $playlists_local; do
+            if [[ "$pl_local" == "$pl_name" ]]; then
+                exists=true
+                break
+            fi
+        done
+        if [[ "$exists" == false ]]; then
+                echo "$counter: $pl_name"
+                counter="$(($counter + 1))"
+                playlist_hash[$counter]=$pl_hash
+        fi
+    done
+
+    printf "Which playlist: "
+    read playlist_num
+    if [[ "$playlist_num" -lt '0' || "$playlist_num" -gt "${#playlists}" ]]; then
+        echo "Out of range."
+        return 1
+    fi
+
+    playlist_get "${playlist_hash[$(($playlist_num+1))]}"
+}
+
+
+playlist_add() {
+    [[ -z "$1" ]] && return 1
+    playlist="$1"
+    playlist_name="${playlist%.*}"
+    rm -f /tmp/pl && touch /tmp/pl
+    i=1
+    for song in `cat "$playlist"`; do
+        hash=$(ipfs private add -q "$song")
+        song_name=$(sed 's/^[0-9]_[0-9]\+-//' =(echo "${song:t}"))
+        song_pl=$(printf "$playlist_name/%02d-$song_name" $i)
+        ((i = i + 1))
+        echo "$hash $song_pl" >> /tmp/pl
+    done
+    ipfs private add -Q /tmp/pl
+}
+
+
 # log into Sensory vpn and ssh into ears
 # --------------------------------------
 ssh_ears() {

@@ -1,4 +1,3 @@
-export BEETSDIR="$DOTFILES/beets"
 # Directories
 ## path
 export PATH="$PATH:$HOME/.cabal/bin"

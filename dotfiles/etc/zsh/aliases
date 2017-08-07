@@ -27,8 +27,8 @@ cc() { cp $@ && ${(P)#} } # cp and cd
 
 # tail/head
 # ---------
-alias tail='tail -n30'
-alias head='head -n30'
+#alias tail='tail -n30'
+#alias head='head -n30'
 
 # compression
 # -----------
