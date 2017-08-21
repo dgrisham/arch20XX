@@ -1,3 +1,5 @@
+#!/bin/zsh
+
 # Shortcuts
 # =========
 
@@ -236,7 +238,7 @@ alias ses='start_environments'
 # Task Warrior
 # ============
 
-alias ta='task active'
+alias ta='unbuffer task active | sed \$d'
 
 # Source additional aliases
 # =========================

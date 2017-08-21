@@ -5,6 +5,7 @@ wenv_setup() {
     WENV_ALIASES=('ipfs' 'iptl')
     WENV_PROJECT='ipfs-cluster'
     unset WENV_BRANCH
+    WENV_TASK=73
 
     wenv_init() { }
     wenv_shutdown() { }

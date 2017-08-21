@@ -5,7 +5,5 @@ wenv_setup() {
     WENV_ALIASES=()
     WENV_PROJECT='webdev'
     WENV_BRANCH='master'
-    wenv_init() {
-        wenv_tmux_layout 'dev'
-    }
+    wenv_init() { }
 }

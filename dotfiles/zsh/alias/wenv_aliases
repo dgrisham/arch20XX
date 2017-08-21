@@ -78,13 +78,14 @@ wenv_exec() {
             n) flag_n=0 ;;
         esac
     done
-    shift $((OPTIND -1))
+    shift $((OPTIND - 1))
 
     [[ -z "$1" ]] && return 1
     export WENV="$1"
 
     wenv_load "$WENV"
     wenv_source_aliases
+    [[ -n "$WENV_TASK" ]] && task start "$WENV_TASK" >/dev/null 2>&1
 
     if [[ $flag_c -eq 1 ]]; then
         cd "$WENV_DIR" &> /dev/null
@@ -99,6 +100,7 @@ wenv_stop() {
     [[ -z "$WENV" ]] && return 1
 
     wenv_cd
+    [[ -n "$WENV_TASK" ]] && task "$WENV_TASK" stop
 
     if [[ -n "$WENV_BRANCH" ]]; then
         git commit -am "$WENV_BRANCH: rebase me"
@@ -245,13 +247,19 @@ wenv_rename() {
 }
 
 wenv_tmux_layout() {
-    dev_cmd="$2"
-    case "$1" in
+    layout="$1"
+    shift
+    dev_cmd="$@"
+    echo "dev_cmd $dev_cmd"
+    case "$layout" in
         dev)
-            tmux split-window -v
+            wenv_tmux_split v
             tmux resize-pane -y 7
-            [[ -n "$dev_cmd" ]] && tmux send-keys "devloop $dev_cmd" 'Enter'
+            [[ -n "$dev_cmd" ]] && tmux send-keys "$dev_cmd" 'Enter'
             tmux select-pane -U
+            ;;
+        devloop)
+            wenv_tmux_layout 'dev' "devloop $dev_cmd"
             ;;
         *)
             return 1

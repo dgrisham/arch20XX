@@ -28,17 +28,13 @@ hook global BufSetOption filetype=(?!(makefile)|(go)).*? %{
     hook buffer InsertChar \t %{ exec -draft -itersel h@ }
 }
 
-hook global BufCreate .*[.](ts) %{
-    set buffer filetype javascript
-}
-
-hook global BufSetOption filetype=javascript %{
-    map global user h 'i<lt><gt><lt>/<gt><esc>hh/<gt><ret>HHHHs<lt>/?<ret>\'a'
-}
-
 hook global InsertKey <backspace> %{ try %{
   exec -draft hGh<a-k>\A\h+\Z<ret>gihyp<lt>
-}} 
+}}
+
+#hook global BufCreate .*[.](ts|tsx) %{
+    #set buffer filetype typescript
+#}
 
 map global user f '/%opt{function_start}<a-n>?%opt{function_end}<ret>'
 
@@ -105,8 +101,15 @@ hook global BufSetOption filetype=markdown %{
     map global user g %{ | pandoc --from=markdown --to=markdown --columns=80 <ret> }
 
     # custom commands
-    map global user h hXypjXHr=A<ret><esc>
-    map global user s hXypjXHr-A<ret><esc>XHd
+    def header %{
+        on-key %{ %sh{
+            case "$kak_key" in
+                '1') echo 'exec hXypjXHr=A<ret><esc>' ;;
+                '2') echo 'exec hXypjXHr-A<ret><esc>' ;;
+            esac
+        } }
+    }
+    map global user h :header<ret>
     #map global user b %{ | pandoc-citeproc --bib2yaml --format=biblatex <ret> }
 }
 
@@ -145,6 +148,7 @@ def delete-surround %!on-key %@exec %sh&
       "<gt>") key=">" ;;
       "<space>") key=" " ;;
       \<*\>) echo ":echo<space>no<ret>"; exit 1 ;;
+      "*"|"."|"?") key="\\$kak_key" ;;
       *) key="$kak_key" ;;
   esac
 

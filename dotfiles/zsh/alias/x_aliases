@@ -9,7 +9,7 @@ xb() { xbacklight $1% }
 
 # change pdf viewer
 # -----------------
-alias pdf='mupdf'
+alias pdf='zathura'
 
 # steam
 # -----
@@ -17,6 +17,18 @@ alias stm='LD_PRELOAD='"'"'/usr/$LIB/libstdc++.so.6 /usr/$LIB/libgcc_s.so.1 /usr
 
 # hdmi
 # ----
-hdmi-on() { xrandr --output HDMI-0 --auto --above DP-0 $@ && $HOME/.fehbg }
+hdmi-on() {
+    arg="$1"
+    shift
+    case "$arg" in
+        'home'|'insignia'|'tv')
+            opts="--right-of DP-0 --scale 1.2x1.2 $@"
+            ;;
+        *)
+            opts="--auto --above DP-0 $@"
+            ;;
+    esac
+    xrandr --output HDMI-0 `echo "$opts"` && $HOME/.fehbg
+}
 alias hdmi-off="xrandr --output HDMI-0 --off && $HOME/.fehbg"
 

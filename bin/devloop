@@ -4,6 +4,14 @@ source $DOTFILES/zsh/aliases
 old_md5=""
 new_md5=""
 
+file=""
+while getopts ":f:" opt; do
+    case $opt in
+        f) file="$OPTARG"
+    esac
+done
+shift $((OPTIND - 1))    
+
 run() {
     $@ &
     wait
@@ -15,7 +23,7 @@ run() {
 }
 
 while true; do
-    new_md5="$(git diff | md5sum)"
+    new_md5="$(git diff $file | md5sum)"
     if [[ "$old_md5" != "$new_md5" ]]; then
         clear
         old_md5="$new_md5"
