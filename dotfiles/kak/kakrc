@@ -6,7 +6,7 @@ map global user s '/(?i)'
 # add line numbers
 hook global WinCreate .* %{addhl number_lines}
 # highlight characters in 81st column
-hook global WinCreate .* %{addhl regex ^\V{80}(\V) 1:Error}
+#hook global WinCreate .* %{addhl regex ^\V{80}(\V) 1:Error}
 
 # add brackets highlighting
 hook global WinCreate .* %{addhl show_matching}
@@ -39,8 +39,8 @@ hook global InsertKey <backspace> %{ try %{
 map global user f '/%opt{function_start}<a-n>?%opt{function_end}<ret>'
 
 # auto wrap at 80 chars
-set global autowrap_column 80
-hook global WinCreate .* %{ autowrap-enable }
+#set global autowrap_column 80
+#hook global WinCreate .* %{ autowrap-enable }
 
 # colors
 colorscheme solarized2
@@ -148,7 +148,7 @@ def delete-surround %!on-key %@exec %sh&
       "<gt>") key=">" ;;
       "<space>") key=" " ;;
       \<*\>) echo ":echo<space>no<ret>"; exit 1 ;;
-      "*"|"."|"?") key="\\$kak_key" ;;
+      "*"|"."|"?"|"\\") key="\\$kak_key" ;;
       *) key="$kak_key" ;;
   esac
 

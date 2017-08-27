@@ -199,6 +199,49 @@ music_cmus() {
     esac
 }
 
+# Control mpd
+# -----------
+music_mpd() {
+    mpd_command="$1"
+    shift
+    case "$mpd_command" in
+        pause)
+            if [[ -n $(mpc status | grep -o paused) ]]; then
+                mpc play > /dev/null
+            else
+                mpc pause > /dev/null
+            fi
+            ;;
+        next)
+            mpc next > /dev/null
+            ;;
+        prev)
+            mpc prev > /dev/null
+            ;;
+        volume)
+            volume_dir="$1"
+            volume_amt="2"
+            mpc volume "$volume_dir$volume_amt" > /dev/null
+            ;;
+        song)
+            mpc | head -n1
+            ;;
+        #reset)
+            #mpc remote --clear --library
+            #mpc remote --library "$MUSIC"
+            #;;
+        #del-song)
+            #song="$(music_mpc song)"
+            #rm "$song"
+            #music_mpc next
+            #music_mpc reset
+            #;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
 # upvote/downvote music that's playing
 # ------------------------------------
 music_vote() {
@@ -258,6 +301,9 @@ case "$music_command" in
         ;;
     cmus)
         music_cmus $@
+        ;;
+    mpd)
+        music_mpd $@
         ;;
     vote)
         temp_log=/home/grish/scratch/music_crontab

@@ -186,9 +186,41 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+# colors for bar
+
+set_from_resource $darkred     color1  #000000
+set_from_resource $red         color9  #000000
+set_from_resource $darkgreen   color2  #000000
+set_from_resource $green       color10 #000000
+set_from_resource $darkyellow  color3  #000000
+set_from_resource $yellow      color11 #000000
+set_from_resource $darkblue    color4  #000000
+set_from_resource $blue        color12 #000000
+set_from_resource $darkmagenta color5  #000000
+set_from_resource $magenta     color13 #000000
+set_from_resource $darkcyan    color6  #000000
+set_from_resource $cyan        color14 #000000
+set_from_resource $darkwhite   color7  #000000
+set_from_resource $white       color15 #000000
+
+# Use custom colors for black
+set $black       #282828
+set $darkblack   #1d2021
+set $transparent #000000c3
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
+    status_command ~/.config/conky/json.sh
     i3bar_command i3bar -t
-    status_command    i3status
+    colors {
+        statusline         $white
+        background         $transparent
+        #separator          $transparent
+    }
+    #status_command i3status --config ~/.i3status
+    #status_command conky -c ~/.config/conky/conkyrc.lua
 }
+
+exec_always --no-startup-id $HOME/.fehbg
+exec --no-startup-id compton -b --config ~/.config/compton.conf

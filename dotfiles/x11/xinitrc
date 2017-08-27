@@ -34,7 +34,7 @@ fi
 
 xrandr --dpi 100
 
-~/.fehbg
+# ~/.fehbg
 
 redshift &
 

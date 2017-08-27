@@ -36,6 +36,7 @@ c() {                       # cd with bookmarks
 
 # open pdf, refresh tmux on close
 # -------------------------------
+unalias pdf 2>/dev/null
 pdf() {
     # note: update to check for jfbview
     # $VIEWER "$1"
@@ -52,6 +53,7 @@ tdf() {
 md() {
     format="$1"
     md_doc="$2"
+    shift 2
 
     case "$format" in
         markdown)   ext='md'                    ;;
@@ -64,8 +66,23 @@ md() {
 
     pandoc --standalone --filter=pandoc-citeproc \
            --from=markdown --to="$format" \
+           --latex-engine=xelatex --highlight-style breezedark $@ \
            --output="${md_doc%.*}.$ext" "$md_doc" \
         || echo "pandoc error ..."
+}
+
+md_dev() {
+    [[ -z "$1" ]] && return 1
+    md_file="$1"
+    shift
+    devloop -f "$md_file" md latex "$md_file" $@
+}
+
+beamer_dev() {
+    [[ -z "$1" ]] && return 1
+    md_file="$1"
+    shift
+    devloop -f "$md_file" md beamer "$md_file" $@
 }
 
 # latex building

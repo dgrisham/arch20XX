@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/bin/zsh
 
 source $DOTFILES/zsh/aliases
 old_md5=""
@@ -37,7 +37,7 @@ while true; do
         read -s -k 1
         tmux resize-pane -Z
         tmux select-pane -U
-        new_md5="$(git diff | md5sum)"
+        new_md5="$(git diff $file | md5sum)"
         old_md5="$new_md5"
         read -s -t 0
         input=""

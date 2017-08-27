@@ -19,7 +19,10 @@ alias stm='LD_PRELOAD='"'"'/usr/$LIB/libstdc++.so.6 /usr/$LIB/libgcc_s.so.1 /usr
 # ----
 hdmi-on() {
     arg="$1"
-    shift
+    if [[ ! -z "$arg" ]]; then
+        arg=""
+        shift
+    fi
     case "$arg" in
         'home'|'insignia'|'tv')
             opts="--right-of DP-0 --scale 1.2x1.2 $@"
