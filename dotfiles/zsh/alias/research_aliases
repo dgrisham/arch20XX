@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 wenv_setup() {
-    export WENV_DIR="$WORK/research/resources/papers/egt"
+    export WENV_DIR="$WORK/research/resources/papers/"
     export WENV_PROJECT='bitswap-research'
     export WENV_TASK=72
 
@@ -11,8 +11,8 @@ wenv_setup() {
             tmux split-window -h
             tmux send-keys 'c res' 'Enter' 'kak notes.md' 'Enter' '/egt' 'Enter'
             tmux select-pane -L
-            tmux send-keys 'pdf rational_learning_leads_to_nash_equlibrium-kalai-lehrer.pdf >/dev/null 2>&1 &' 'Enter'
-            tmux send-keys 'clear' 'Enter'
+            #tmux send-keys 'pdf rational_learning_leads_to_nash_equlibrium-kalai-lehrer.pdf >/dev/null 2>&1 &' 'Enter'
+            #tmux send-keys 'clear' 'Enter'
         fi
     }
 }

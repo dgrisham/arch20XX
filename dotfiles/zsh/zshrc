@@ -4,6 +4,9 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+# start mdpas (enabling via systemd not working)
+systemctl --user start mpdas
+
 zsh_dir="$HOME/dotfiles/zsh"
 env_files=('profile' 'aliases')
 for env_file in $env_files; do

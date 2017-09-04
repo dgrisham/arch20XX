@@ -15,6 +15,9 @@ alias pdf='zathura'
 # -----
 alias stm='LD_PRELOAD='"'"'/usr/$LIB/libstdc++.so.6 /usr/$LIB/libgcc_s.so.1 /usr/$LIB/libxcb.so.1 /usr/$LIB/libgpg-error.so'"'"' steam'
 
+# ncmpcpp (for album art)
+alias ncmpcpp='urxvt --shading 0 -e zsh -c "/bin/ncmpcpp ; zsh -i" &; exit'
+
 # hdmi
 # ----
 hdmi-on() {

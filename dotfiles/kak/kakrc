@@ -6,7 +6,7 @@ map global user s '/(?i)'
 # add line numbers
 hook global WinCreate .* %{addhl number_lines}
 # highlight characters in 81st column
-#hook global WinCreate .* %{addhl regex ^\V{80}(\V) 1:Error}
+hook global WinCreate .* %{addhl regex ^\V{80}(\V) 1:Error}
 
 # add brackets highlighting
 hook global WinCreate .* %{addhl show_matching}
@@ -32,15 +32,16 @@ hook global InsertKey <backspace> %{ try %{
   exec -draft hGh<a-k>\A\h+\Z<ret>gihyp<lt>
 }}
 
-#hook global BufCreate .*[.](ts|tsx) %{
-    #set buffer filetype typescript
-#}
+hook global BufCreate .*[.](ts|tsx|html) %{
+    set buffer tabstop 2
+    set buffer indentwidth 2
+}
 
 map global user f '/%opt{function_start}<a-n>?%opt{function_end}<ret>'
 
 # auto wrap at 80 chars
-#set global autowrap_column 80
-#hook global WinCreate .* %{ autowrap-enable }
+set global autowrap_column 80
+hook global WinCreate .* %{ autowrap-enable }
 
 # colors
 colorscheme solarized2
@@ -89,6 +90,13 @@ map global user c :comment<ret>
 # Haskell
 # =======
 
+# Typescript
+# ==========
+
+# html tags
+hook global BufSetOption filetype=typescript %{
+    map global user h 'i<lt><gt><lt>/<gt><esc>hh/<gt><ret>HHHHs<lt>/?<ret>\'a'
+}
 
 # Markdown manipulation
 # =====================
@@ -106,6 +114,7 @@ hook global BufSetOption filetype=markdown %{
             case "$kak_key" in
                 '1') echo 'exec hXypjXHr=A<ret><esc>' ;;
                 '2') echo 'exec hXypjXHr-A<ret><esc>' ;;
+                '3') echo 'exec I###<space><esc>A<ret><esc>' ;;
             esac
         } }
     }

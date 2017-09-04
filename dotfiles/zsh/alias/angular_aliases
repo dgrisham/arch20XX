@@ -8,6 +8,6 @@ wenv_setup() {
     wenv_init() {
         wenv_tmux_layout 'devloop' 'yarn start'
         cd src/app
-        kak app.{component,module}.ts hero{,.service}.ts hero-detail.component.ts
+        kak app.{component,module}.ts hero{,.service}.ts {hero-detail,heroes,dashboard}.component.ts
     }
 }

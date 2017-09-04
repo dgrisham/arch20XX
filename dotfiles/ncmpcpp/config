@@ -83,13 +83,13 @@ visualizer_sync_interval = 30
 visualizer_type = spectrum
 #
 #visualizer_look = ●▮
-visualizer_look = <|
+visualizer_look = -|
 #
-visualizer_color = blue, cyan, green, yellow, magenta, red
+#visualizer_color = white, red, green, blue, white, red, green, blue
 #
 ## Alternative subset of 256 colors for terminals that support it.
 ##
-#visualizer_color = 41, 83, 119, 155, 185, 215, 209, 203, 197, 161
+visualizer_color = 235, 237, 239, 241, 243, 245, 247, 249, 251, 253
 #
 ##### system encoding #####
 ##
@@ -271,7 +271,7 @@ alternative_header_second_line_format = {{$4$b%a$/b$9}{ - $7%b$9}{ ($3%y$9)}}|{%
 ## Note: Custom command that will be executed each time song changes. Useful for
 ## notifications etc.
 ##
-#execute_on_song_change = ""
+execute_on_song_change = "/home/grish/bin/mnuc"
 #
 ##
 ## Note: Custom command that will be executed each time player state

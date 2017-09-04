@@ -216,7 +216,7 @@ bar {
     colors {
         statusline         $white
         background         $transparent
-        #separator          $transparent
+        separator          $transparent
     }
     #status_command i3status --config ~/.i3status
     #status_command conky -c ~/.config/conky/conkyrc.lua

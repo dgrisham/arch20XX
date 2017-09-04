@@ -64,9 +64,10 @@ md() {
         *)          ext="$format"               ;;
     esac
 
-    pandoc --standalone --filter=pandoc-citeproc \
+    pandoc --standalone \
            --from=markdown --to="$format" \
-           --latex-engine=xelatex --highlight-style breezedark $@ \
+           --highlight-style breezedark \
+           --latex-engine=pdflatex $@ \
            --output="${md_doc%.*}.$ext" "$md_doc" \
         || echo "pandoc error ..."
 }
