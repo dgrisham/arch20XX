@@ -10,3 +10,13 @@ wenv_setup() {
     wenv_init() { }
     wenv_shutdown() { }
 }
+
+sharness() {
+    systemctl --user stop ipfs 2>/dev/null
+    sudo systemctl restart docker
+    docker rm ipfs 2>/dev/null
+    lib_dir="$GOPATH/src/github.com/ipfs/ipfs-cluster/sharness/lib"
+    if [[ ! -d "$lib_dir/sharness" ]]; then
+        ln -s "$GOPATH/src/github.com/chriscool/sharness" "$lib_dir"
+    fi
+}

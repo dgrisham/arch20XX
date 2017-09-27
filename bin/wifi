@@ -1,6 +1,5 @@
 #!/usr/bin/env zsh
 
-
 # constants
 # ---------
 wifi_file="/etc/wpa_supplicant/wifi_networks"
@@ -62,11 +61,11 @@ wifi_new() {
     echo "Outputting to '$wifi_config'..."
     case "$network_type" in
         o*|O*)
-            echo 'network={'            | tee -a "$wifi_config"
-            echo '    ssid="'"$ssid"'"' | tee -a "$wifi_config"
-            echo '    key_mgmt=NONE'    | tee -a "$wifi_config"
-            echo '}'                    | tee -a "$wifi_config"
-            echo '\n'                   | tee -a "$wifi_config"
+            echo 'network={'            | sudo tee -a "$wifi_config"
+            echo '    ssid="'"$ssid"'"' | sudo tee -a "$wifi_config"
+            echo '    key_mgmt=NONE'    | sudo tee -a "$wifi_config"
+            echo '}'                    | sudo tee -a "$wifi_config"
+            echo '\n'                   | sudo tee -a "$wifi_config"
             ;;
         c*|C*)
             echo "enter passphrase..."

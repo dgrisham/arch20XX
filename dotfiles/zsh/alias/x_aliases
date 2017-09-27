@@ -24,13 +24,13 @@ fi
 # ----
 hdmi-on() {
     arg="$1"
-    if [[ ! -z "$arg" ]]; then
-        arg=""
-        shift
-    fi
+    shift
     case "$arg" in
         'home'|'insignia'|'tv')
             opts="--right-of DP-0 --scale 1.2x1.2 $@"
+            ;;
+        'class')
+            opts="--mode 1920x1080 --same-as DP-0 $@"
             ;;
         *)
             opts="--auto --above DP-0 $@"

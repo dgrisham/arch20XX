@@ -9,30 +9,30 @@ recho() { echo '\033[0;31m'$@'\033[0m' }
 
 # convenient cd
 # -------------
-c() {                       # cd with bookmarks
-    dirname="$1"
-    case "$dirname" in      # bookmarks
-        ipfs)     dirname="$GOPATH/src/github.com/ipfs/go-ipfs" ;;
-        iptl)     dirname="$GOPATH/src/github.com/ipfs/kubernetes-ipfs" ;;
-        cluster)  dirname="$GOPATH/src/github.com/ipfs/kubernetes-ipfs" ;;
-        sessions) dirname="$GOPATH/src/github.com/ipfs/kubernetes-ipfs/bitswap-sessions" ;;
-        web)      dirname="$SCRATCH/flasky"       ;;
-        dev)      dirname="$SRC/arch20xx"         ;;
-        res)      dirname="$HOME/work/research"   ;;
-        egt)      dirname="$HOME/work/research/resources/papers/egt"   ;;
-        498|game) dirname="$HOME/work/csci_498B"  ;;
-        564|arch) dirname="$HOME/work/csci_564"   ;;
-        240)      dirname="$HOME/work/stanford-cs240h/"   ;;
-        ta)       dirname="$HOME/work/ta"      ;;
-        med)      dirname="$PERSONAL/schedule/routine/morning/meditation/headspace/creativity_series/1" ;;
-        pygame)   dirname="$SCRATCH/pygame/doodle_jump" ;;
-        dec)      dirname="$SRC/decoy-routing"    ;;
-        "")       dirname="$HOME"                 ;;
-        *)        return 1                        ;;
-    esac
-    cd "$dirname"
-    unset dirname           # for dir displayed in prompt
-}
+#c() {                       # cd with bookmarks
+    #dirname="$1"
+    #case "$dirname" in      # bookmarks
+        #ipfs)     dirname="$GOPATH/src/github.com/ipfs/go-ipfs" ;;
+        #iptl)     dirname="$GOPATH/src/github.com/ipfs/kubernetes-ipfs" ;;
+        #cluster)  dirname="$GOPATH/src/github.com/ipfs/kubernetes-ipfs" ;;
+        #sessions) dirname="$GOPATH/src/github.com/ipfs/kubernetes-ipfs/bitswap-sessions" ;;
+        #web)      dirname="$SCRATCH/flasky"       ;;
+        #dev)      dirname="$SRC/arch20xx"         ;;
+        #res)      dirname="$HOME/work/research"   ;;
+        #egt)      dirname="$HOME/work/research/resources/papers/egt"   ;;
+        #498|game) dirname="$HOME/work/csci_498B"  ;;
+        #564|arch) dirname="$HOME/work/csci_564"   ;;
+        #240)      dirname="$HOME/work/stanford-cs240h/"   ;;
+        #ta)       dirname="$HOME/work/ta"      ;;
+        #med)      dirname="$PERSONAL/schedule/routine/morning/meditation/headspace/creativity_series/1" ;;
+        #pygame)   dirname="$SCRATCH/pygame/doodle_jump" ;;
+        #dec)      dirname="$SRC/decoy-routing"    ;;
+        #"")       dirname="$HOME"                 ;;
+        #*)        return 1                        ;;
+    #esac
+    #cd "$dirname"
+    #unset dirname           # for dir displayed in prompt
+#}
 
 # open pdf, refresh tmux on close
 # -------------------------------
@@ -79,7 +79,7 @@ md_dev() {
     devloop -f "$md_file" md latex "$md_file" $@
 }
 
-beamer_dev() {
+beamer_loop() {
     [[ -z "$1" ]] && return 1
     md_file="$1"
     shift

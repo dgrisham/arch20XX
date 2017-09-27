@@ -52,15 +52,22 @@ colorscheme solarized2
 def tmux-new %{
     on-key %{ %sh{
         case "$kak_key" in
-            \\) echo tmux-new-horizontal
-               ;;
-            "<minus>") echo tmux-new-vertical
-               ;;
+            \\) echo tmux-new-horizontal ;;
+            "<minus>") echo tmux-new-vertical ;;
         esac
     } }
 }
 map global user t :tmux-new<ret>
-map global user r %{ :send-text <ret> }
+
+def repl-send %{
+    on-key %{ %sh{
+        case "$kak_key" in
+            's') echo 'send-text' ;;
+            'l') echo 'exec hxH:send-text<ret>;exec ";"<ret>' ;;
+        esac
+    } }
+}
+map global user r :repl-send<ret>
 
 # Git
 # ===
@@ -122,14 +129,25 @@ hook global BufSetOption filetype=markdown %{
     def header %{
         on-key %{ %sh{
             case "$kak_key" in
-                '1') echo 'exec hXypjXHr=A<ret><esc>' ;;
-                '2') echo 'exec hXypjXHr-A<ret><esc>' ;;
+                '1') echo 'exec hxypjxHr=A<ret><esc>' ;;
+                '2') echo 'exec hxypjxHr-A<ret><esc>' ;;
                 '3') echo 'exec I###<space><esc>A<ret><esc>' ;;
             esac
         } }
     }
     map global user h :header<ret>
     #map global user b %{ | pandoc-citeproc --bib2yaml --format=biblatex <ret> }
+
+    def inline_code_helper %{ exec ',ea`f`a{.}<esc>;i' }
+    def inline_code %{
+        on-key %{ %sh{
+            case "$kak_key" in
+                'i') echo inline_code_helper ;;
+                'r') echo 'inline_code_helper;exec ruby<esc><ret>' ;;
+            esac
+        } }
+    }
+    map global user i :inline_code<ret>
 }
 
 def add-surround %!on-key %@exec %sh&

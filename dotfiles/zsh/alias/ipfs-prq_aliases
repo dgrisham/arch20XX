@@ -5,10 +5,15 @@ wenv_setup() {
     WENV_ALIASES=()
     WENV_PROJECT='round-robin-prq'
     WENV_BRANCH='impl/bitswap/round-robin-prq'
-    WENV_TASK=71
+    WENV_TASK=76
     wenv_init() {
-        tmux send-keys 'kak peer_request_queue{_test,}.go' 'Enter'
-        wenv_tmux_layout 'dev' 'ta'
+        edit_project
+        wenv_tmux_layout 'dev' 'wenv t'
     }
     wenv_shutdown() { }
+}
+
+edit_project() {
+    [[ ! $(pwd) = "$WENV_DIR" ]] && wenv c
+    kak peer_request_queue{_test,}.go strategy_prq.go
 }

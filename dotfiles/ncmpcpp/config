@@ -80,12 +80,14 @@ visualizer_sync_interval = 30
 #
 ## Available values: spectrum, wave, wave_filled, ellipse.
 ##
-visualizer_type = wave_filled
+visualizer_type = spectrum
 #
 #visualizer_look = ●▮
 visualizer_look = -|
 #
-visualizer_color = blue, magenta, red, yellow
+visualizer_color = 240, 25, 26, 27, 28, 34, 40, 46, 12
+#visualizer_color = 2, 162, 163, 164, 165, 166, 14
+#visualizer_color = blue, magenta, red, yellow, white
 #visualizer_color = white, red, green, blue, white, red, green, blue
 #
 ## Alternative subset of 256 colors for terminals that support it.

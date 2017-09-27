@@ -7,7 +7,7 @@ wenv_setup() {
 
     wenv_init() {
         if [[ -n "$TMUX" ]]; then
-            wenv_tmux_layout 'dev' 'ta'
+            wenv_tmux_layout 'dev' 'wenv t'
             tmux split-window -h
             tmux send-keys 'c res' 'Enter' 'kak notes.md' 'Enter' '/egt' 'Enter'
             tmux select-pane -L

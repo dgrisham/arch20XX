@@ -147,18 +147,19 @@ wenv_load() {
 
 wenv_new() {
     flag_d=0
-    while getopts ":d" opt; do
+    src="$SRC/arch20xx/src/wenv_template"
+    while getopts ":di:" opt; do
         case $opt in
             d) flag_d=1 ;;
+            i) [[ ! -z "$OPTARG" ]] && src="$ALIASES/${OPTARG}_aliases" ;;
+            --) break ;;
+            *) echo "invalid flag: $1" ; exit 1 ;;
         esac
     done
-    shift $((OPTIND -1))
+    shift $((OPTIND-1))
 
     [[ -z "$1" ]] && return 1
     wenv="$1"
-
-    src="$SRC/arch20xx/src/wenv_template"
-    [[ ! -z "$2" ]] && src="$ALIASES/${2}_aliases"
 
     # generalize/clean this up
     if [[ $flag_d -eq 1 ]]; then
@@ -226,10 +227,12 @@ wenv_tasks_show() {
 }
 
 wenv_tasks_add() {
-    [[ -z "$1" ]] && return 1
-    desc="$1"
-    shift
-    task add project:"$WENV_PROJECT" tags:"$WENV" description:"$desc" $@
+    [[ -z "$@" ]] && return 1
+    # last passed argument is description (usually quoted string)
+    desc="${@[$#]}"
+    # all other args are passed to task warrior (yeah, this is ugly)
+    task_args=${@:1:$(($# - 1))}
+    task add project:"$WENV_PROJECT" tags:"$WENV" "$task_args" -- "$desc"
 }
 
 wenv_source_aliases() {  
