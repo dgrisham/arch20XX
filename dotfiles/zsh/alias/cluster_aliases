@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/zsh
 
 wenv_setup() {
     WENV_DIR="$GOPATH/src/github.com/ipfs/ipfs-cluster"
@@ -11,7 +11,14 @@ wenv_setup() {
     wenv_shutdown() { }
 }
 
-sharness() {
+sharness_setup() {
+    while getopts ":r" opt; do
+        case $opt in
+            r) sharness_reset ;;
+            *) echo "Invalid flag"; return 1 ;;
+        esac
+    done
+
     systemctl --user stop ipfs 2>/dev/null
     sudo systemctl restart docker
     docker rm ipfs 2>/dev/null
@@ -19,4 +26,21 @@ sharness() {
     if [[ ! -d "$lib_dir/sharness" ]]; then
         ln -s "$GOPATH/src/github.com/chriscool/sharness" "$lib_dir"
     fi
+    wenv cd
+    cd sharness
+}
+
+sharness_run() {
+    [[ ! -f "$1" ]] && return 1
+    # kill ipfs-cluster-service (shortened name for some reason)
+    pkill ipfs-cluster-se
+    $@
+}
+alias run='sharness_run'
+
+sharness_reset() {
+    wenv cd
+    make clean
+    make install
+    pkill ipfs-cluster-se
 }

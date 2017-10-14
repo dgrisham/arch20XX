@@ -97,8 +97,8 @@ then
     bright="$(get_bright)"
     email="$(get_email)"
     TS_OUTPUT=""
-    [[ -n "$bright" ]] && TS_OUTPUT="Brightness: $bright    |"
-    [[ -n "$email" ]]  && TS_OUTPUT="$TS_OUTPUT Email: $email                                        "
+    #[[ -n "$bright" ]] && TS_OUTPUT="Brightness: $bright    |"
+    #[[ -n "$email" ]]  && TS_OUTPUT="$TS_OUTPUT Email: $email                                        "
 fi
 
 echo "$TS_OUTPUT"

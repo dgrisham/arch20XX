@@ -66,10 +66,11 @@ md() {
 
     pandoc --standalone \
            --from=markdown --to="$format" \
-           --highlight-style breezedark \
+           --highlight-style tango \
            --latex-engine=pdflatex $@ \
            --output="${md_doc%.*}.$ext" "$md_doc" \
         || echo "pandoc error ..."
+    # tango, espresso
 }
 
 md_dev() {

@@ -127,17 +127,22 @@ wenv_stop() {
 wenv_cd() {
     if [[ -z "$1" ]]; then
         cd "$WENV_DIR" &> /dev/null
-        return 1
+        return 0
     fi
     wenv="$1"
 
+    # TODO: need a better way to do this
+    # load and cd to input wenv
     wenv_load "$wenv"
     cd "$WENV_DIR"
 
+    # reload the wenv that was previously running
     wenv_load "$WENV"
-    unset wenv_init
+    unset -f wenv_init
 }
 
+# Loads the aliases associated with the input wenv, and runs its wenv_setup
+# function. wenv_setup defines the wenv's environment variables and functions.
 wenv_load() {
     [[ -z "$1" ]] && return 1
     wenv="$1"
@@ -146,8 +151,8 @@ wenv_load() {
 }
 
 wenv_new() {
-    flag_d=0
     src="$SRC/arch20xx/src/wenv_template"
+    flag_d=0
     while getopts ":di:" opt; do
         case $opt in
             d) flag_d=1 ;;

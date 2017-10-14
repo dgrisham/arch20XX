@@ -1,8 +1,5 @@
 ## Hooks
 
-# case-insensitive search
-map global user s '/(?i)'
-
 # add line numbers
 hook global WinCreate .* %{addhl number_lines}
 # highlight characters in 81st column
@@ -28,15 +25,19 @@ hook global BufSetOption filetype=(?!(makefile)|(go)).*? %{
     hook buffer InsertChar \t %{ exec -draft -itersel h@ }
 }
 
-hook global InsertKey <backspace> %{ try %{
-  exec -draft hGh<a-k>\A\h+\Z<ret>gihyp<lt>
-}}
-
-hook global BufCreate .*[.](ts|tsx|html) %{
-    set buffer tabstop 2
-    set buffer indentwidth 2
+hook global BufCreate .*[.](ts) %{
+    set buffer filetype javascript
 }
 
+hook global BufSetOption filetype=javascript %{
+    map global user h 'i<lt><gt><lt>/<gt><esc>hh/<gt><ret>HHHHs<lt>/?<ret>\'a'
+}
+
+hook global InsertKey <backspace> %{ try %{
+  exec -draft hGh<a-k>\A\h+\Z<ret>gihyp<lt>
+}} 
+
+hook global BufSetOption filety
 map global user f '/%opt{function_start}<a-n>?%opt{function_end}<ret>'
 
 # auto wrap at 80 chars
@@ -52,33 +53,18 @@ colorscheme solarized2
 def tmux-new %{
     on-key %{ %sh{
         case "$kak_key" in
-            \\) echo tmux-new-horizontal ;;
-            "<minus>") echo tmux-new-vertical ;;
+            \\) echo tmux-new-horizontal
+               ;;
+            "<minus>") echo tmux-new-vertical
+               ;;
         esac
     } }
 }
 map global user t :tmux-new<ret>
-
-def repl-send %{
-    on-key %{ %sh{
-        case "$kak_key" in
-            's') echo 'send-text' ;;
-            'l') echo 'exec hxH:send-text<ret>;exec ";"<ret>' ;;
-        esac
-    } }
-}
-map global user r :repl-send<ret>
-
-# Git
-# ===
-
-hook global WinSetOption filetype=diff %{
-    map window normal '@' /^@@<ret>
-    map window normal '#' /^diff\><ret>
-}
+map global user r %{ :send-text <ret> }
 
 # X11 (copy/paste)
-# ===============
+# ---------------
 map global user y 'y<a-|>xclip -i<ret>; :echo -color Information "copied
  selection to X11 clipboard"<ret>'
 map global user p '!xclip -o <ret>'
@@ -97,28 +83,11 @@ map global user c :comment<ret>
 # Haskell
 # =======
 
-# Typescript
-# ==========
-
-# html tags
-hook global BufSetOption filetype=typescript %{
-    map global user h 'i<lt><gt><lt>/<gt><esc>hh/<gt><ret>HHHHs<lt>/?<ret>\'a'
-}
 
 # Markdown manipulation
 # =====================
 
 hook global BufSetOption filetype=markdown %{
-    #def build %{
-        #on-key %{ %sh{
-            #case "$kak_key" in
-                #'d') echo 'nop "%sh{ alias_call md latex ${kak_buffile}  }" <ret>' ;;
-                #'b') echo 'nop "%sh{ alias_call md beamer ${kak_buffile}  }" <ret>' ;;
-            #esac
-        #} }
-    #}
-    #map global user b :build<ret>
-
     # build document
     map global user w %{ :nop "%sh{ alias_call md beamer ${kak_buffile}  }" <ret> }
 
@@ -126,29 +95,9 @@ hook global BufSetOption filetype=markdown %{
     map global user g %{ | pandoc --from=markdown --to=markdown --columns=80 <ret> }
 
     # custom commands
-    def header %{
-        on-key %{ %sh{
-            case "$kak_key" in
-                '1') echo 'exec hxypjxHr=A<ret><esc>' ;;
-                '2') echo 'exec hxypjxHr-A<ret><esc>' ;;
-                '3') echo 'exec I###<space><esc>A<ret><esc>' ;;
-            esac
-        } }
-    }
-    map global user h :header<ret>
+    map global user h hXypjXHr=A<ret><esc>
+    map global user s hXypjXHr-A<ret><esc>XHd
     #map global user b %{ | pandoc-citeproc --bib2yaml --format=biblatex <ret> }
-
-    def inline_code_helper %{ exec ',ea`f`a{.}<esc>;i' }
-    def inline_code %{
-        on-key %{ %sh{
-            case "$kak_key" in
-                'i') echo inline_code_helper ;;
-                'r') echo 'inline_code_helper;exec ruby<esc><ret>' ;;
-                'h') echo 'inline_code_helper;exec hs<esc><ret>' ;;
-            esac
-        } }
-    }
-    map global user i :inline_code<ret>
 }
 
 def add-surround %!on-key %@exec %sh&
@@ -186,7 +135,6 @@ def delete-surround %!on-key %@exec %sh&
       "<gt>") key=">" ;;
       "<space>") key=" " ;;
       \<*\>) echo ":echo<space>no<ret>"; exit 1 ;;
-      "*"|"."|"?"|"\\") key="\\$kak_key" ;;
       *) key="$kak_key" ;;
   esac
 
