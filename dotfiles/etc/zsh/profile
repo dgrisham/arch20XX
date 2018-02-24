@@ -1,9 +1,6 @@
 # Terminal
 [[ $TMUX = "" ]] && export TERM='xterm-256color'
 
-# Wifi card
-export WIFI_CARD="wlan0"
-
 # Bin
 export BIN="$HOME/bin"
 export PATH="$PATH:$BIN"
@@ -12,11 +9,7 @@ export PATH="$PATH:$HOME/.local/bin"
 
 # Directories
 export DOTFILES="$HOME/dotfiles"
-export DOWNLOADS="$HOME/downloads"
 export SRC="$HOME/src"
-export PERSONAL="$HOME/personal"
-export MEDIA="$HOME/media"
-export MUSIC="$MEDIA/music"
 export WORK="$HOME/work"
 export SCRATCH="$HOME/scratch"
 ## XDG
@@ -35,34 +28,5 @@ export ALIASES="$DOTFILES/zsh/alias"
 # Defaults
 export EDITOR="kak"
 export VISUAL="$EDITOR"
-export VIEWER="mupdf"
 export BROWSER="w3m"
 export PUBLISHER="git"
-export PLAYER="mpv"
-## NeoVim
-export VIM="/etc/nvim"
-export VIMRUNTIME="/usr/share/nvim/runtime"
-
-### open fbterm/x automatically, depending on tty
-virtual_terminal="$( tty | grep -oE ....$ )"
-case "$virtual_terminal" in
-    tty1)
-        if ! startx; then
-            current=$(ls -l /etc/X11/xorg.conf | rev | cut -f1 -d' ' | cut -f1 -d'.' | rev)
-            if [[ "$current" = 'discrete' ]]; then
-                sudo ln -sf /etc/X11/xorg.conf.hybrid /etc/X11/xorg.conf
-                startx
-            elif [[ "$current" = 'hybrid' ]]; then
-                sudo ln -sf /etc/X11/xorg.conf.discrete /etc/X11/xorg.conf
-                startx
-            fi
-        fi
-    ;;
-    tty2|tty3)
-        fbterm-bi "$MEDIA/pictures/backgrounds/current_bg" -- zsh -c 'TERM=fbterm tmux'
-    ;;
-    tty4|tty5)
-        fbterm-bi "$MEDIA/pictures/backgrounds/current_bg" -- zsh -c "TERM=fbterm ssh_login"
-    ;;
-esac
-

@@ -1,25 +1,9 @@
-# Directories
-## path
-export PATH="$PATH:$HOME/.cabal/bin"
-## beets config
-export BEETSDIR="$DOTFILES/beets"
-## cbgp (libgds)
-export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig"
-## latex
-export TEXMFHOME="$DOTFILES/texmf"
-
-# IPFS command completion
+# command completion
 autoload bashcompinit
 bashcompinit
-source $HOME/.ipfs/completion.bash
+for comp in $DOTFILES/zsh/completion/*.bash; do source $comp; done
 
 # Go path
 export GOPATH="$HOME/.go"
 # add GOPATH/bin to PATH
 export PATH="$PATH:$GOPATH/bin"
-
-# Rust Cargo path
-export PATH="$PATH:$HOME/.cargo/bin"
-
-# yarn
-export PATH="$PATH:$HOME/.config/yarn/global/node_modules/.bin"
