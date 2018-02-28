@@ -1,5 +1,0 @@
-#!/bin/sh
-
-notedown "notebook.md" -o "notebook.ipynb"
-jupyter nbconvert --to slides "notebook.ipynb" --post serve
-
