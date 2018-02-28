@@ -1,42 +1,45 @@
 #!/usr/bin/zsh
 
 wenv_setup() {
-    unset WENV_DIR
-    unset WENV_ALIASES
+    WENV_DIR=''
+    WENV_ALIASES=''
     WENV_PROJECT='wenv'
+    WENV_TASK=''
+    WENV_BRANCH='master'
 
     wenv_init() { }
+    wenv_shutdown() { }
 }
 
 wenv() {
     wenv_command="$1"
     shift
     case "$wenv_command" in
-        s|start)
+        start)
             wenv_start $@
             ;;
-        st|stop)
+        stop)
             wenv_stop $@
             ;;
-        r|reset)
+        reset)
             wenv_reset $@
             ;;
-        t|task|tasks) # TODO: "tasks?"
+        task) # TODO: "tasks?"
             wenv_tasks $@
             ;;
-        c|'cd')
+        'cd')
             wenv_cd $@
             ;;
-        n|new)
+        new)
             wenv_new $@
             ;;
-        e|edit)
+        edit)
             wenv_edit $@
             ;;
-        rm|remove)
+        remove)
             wenv_remove $@
             ;;
-        sa|source_aliases)
+        source_aliases)
             wenv_source_aliases $@
             ;;
         exec)
@@ -52,13 +55,19 @@ wenv() {
 }
 
 wenv_start() {
-    if [[ $# == 0 ]]; then
+    if [[ $# == 0 || ! -f "$ALIASES/$1_aliases" ]]; then
         print_aliases
         return 1
     fi
 
+    if [[ -z "$TMUX" ]]; then
+        printf "Most WENVs use TMUX. Start anyway? y/N: "
+        read -q choice
+        [[ "$choice" == 'n' ]] && return 1
+    fi
+
     wenv_stop
-    wenv_exec $@
+    wenv_exec $@ || return 1
 
     if [[ -n "$TMUX" ]]; then
         tmux set-environment WENV "$WENV"
@@ -66,7 +75,7 @@ wenv_start() {
     fi
 
     wenv_init
-    unset -f wenv_init
+    unset_quiet -f wenv_init
 }
 
 wenv_exec() {
@@ -84,13 +93,32 @@ wenv_exec() {
     export WENV="$1"
 
     wenv_load "$WENV"
-    wenv_source_aliases
-    [[ -n "$WENV_TASK" ]] && task start "$WENV_TASK" >/dev/null 2>&1
 
     if [[ $flag_c -eq 1 ]]; then
-        cd "$WENV_DIR" &> /dev/null
-        [[ ! -z "$WENV_BRANCH" ]] && git checkout "$WENV_BRANCH" &> /dev/null
+        if [[ -n "$WENV_GIT_DIR" ]]; then
+            # cd into git repo base dir if available. this option is available to
+            # avoid trying to cd into a dir that's only in the WENV's branch of
+            # the repo (which will fail if we're not in the branch)
+            cd "$WENV_GIT_DIR" &> /dev/null
+        else
+            cd "$WENV_DIR" &> /dev/null
+        fi
+        if [[ -n "$WENV_BRANCH" ]]; then
+            current_branch=$(git branch | grep '*' | sed 's/* //')
+            if [[ ! -z "$current_branch" && "$WENV_BRANCH" != "$current_branch" ]]; then
+                git diff-index --quiet HEAD -- 2>/dev/null
+                # more scalable solution to the below line? don't want to just say -ne 1 because other errors may matter.
+                # also, checking for value in zsh array is ugly
+                [[ $? -ne 0 ]] && [[ $? -ne 128 ]] && { warn_uncommitted_changes "$WENV_BRANCH" ; wenv_clean_up ; return 1 }
+            fi
+            git checkout "$WENV_BRANCH"
+        fi
+        # if we previously cd'd into git repo dir, go to project dir now
+        [[ -n "$WENV_GIT_DIR" ]] && cd "$WENV_DIR" &> /dev/null
     fi
+
+    wenv_source_aliases "$WENV_ALIASES"
+    [[ -n "$WENV_TASK" ]] && task start "$WENV_TASK" >/dev/null 2>&1
     [[ $flag_n -eq 1 ]] && wenv_tasks_show
 
     export PS1="($WENV) $ORIGINAL_PS1"
@@ -99,23 +127,44 @@ wenv_exec() {
 wenv_stop() {
     [[ -z "$WENV" ]] && return 1
 
-    wenv_cd
-    [[ -n "$WENV_TASK" ]] && task "$WENV_TASK" stop
+    flag_f=0
+    while getopts ":f" opt; do
+        case $opt in
+            f) flag_f=1 ;;
+        esac
+    done
+    shift $((OPTIND - 1))
 
-    if [[ -n "$WENV_BRANCH" ]]; then
-        git commit -am "$WENV_BRANCH: rebase me"
-        if [[ `git log -2 | grep "$WENV_BRANCH: rebase me" | wc -l` == '2' ]]; then
-            git reset --soft HEAD~2
-            git commit -am "$WENV_BRANCH: rebase me"
-        fi
-        git checkout master
+    # -f -> force stop, regardless of working tree state
+    if [[ $flag_f -ne 1 ]]; then
+        git diff-index --quiet HEAD -- 2>/dev/null
+        [[ $? -ne 0 ]] && [[ $? -ne 128 ]] && { echo "Error: Dirty working tree. Please clean up and try again." ; return 1 }
     fi
 
-    wenv_shutdown &> /dev/null # TODO: decide when is best to run this
-    unset -f wenv_shutdown
+    wenv_cd
 
-    unset WENV
-    unset WENV_{DIR,ALIASES,PROJECT,BRANCH}
+    [[ -n "$WENV_TASK" ]] && task "$WENV_TASK" stop
+
+    # disabling this for now
+    #if [[ -n "$WENV_BRANCH" ]]; then
+        #git commit -am "$WENV_BRANCH: rebase me"
+        #if [[ `git log -2 | grep "$WENV_BRANCH: rebase me" | wc -l` == '2' ]]; then
+            #git reset --soft HEAD~2
+            #git commit -am "$WENV_BRANCH: rebase me"
+        #fi
+        #git checkout master
+    #fi
+
+    wenv_shutdown &> /dev/null # TODO: decide when is best to run this
+    wenv_clean_up
+}
+
+wenv_clean_up() {
+    [[ -z "$WENV" ]] && return 1
+    unset_quiet -f wenv_{init,shutdown}
+
+    unset_quiet WENV
+    unset_quiet WENV_{DIR,ALIASES,PROJECT,BRANCH}
 
     if [[ -n "$TMUX" ]]; then
         tmux set-environment WENV ''
@@ -126,7 +175,7 @@ wenv_stop() {
 
 wenv_cd() {
     if [[ -z "$1" ]]; then
-        cd "$WENV_DIR" &> /dev/null
+        [[ ! -z "$WENV_DIR" ]] && cd "$WENV_DIR" &> /dev/null
         return 0
     fi
     wenv="$1"
@@ -138,7 +187,7 @@ wenv_cd() {
 
     # reload the wenv that was previously running
     wenv_load "$WENV"
-    unset -f wenv_init
+    unset_quiet -f wenv_init
 }
 
 # Loads the aliases associated with the input wenv, and runs its wenv_setup
@@ -148,6 +197,12 @@ wenv_load() {
     wenv="$1"
     source_alias "$wenv" > /dev/null
     wenv_setup
+}
+
+warn_uncommitted_changes() {
+    [[ -z "$1" ]] && return 1
+    WENV_BRANCH="$1"
+    echo "Error: Uncommitted changes, cannot switch to branch $WENV_BRANCH. Please clean up and try again."
 }
 
 wenv_new() {
@@ -224,24 +279,51 @@ wenv_tasks() {
 }
 
 wenv_tasks_show() {
+    wenv="$WENV_PROJECT"
+    flag_w=0
+    while getopts ":w:" opt; do
+        case $opt in
+            w) [[ ! -z "$OPTARG" ]] && wenv="$OPTARG" ;;
+            --) break ;;
+            *) echo "invalid flag: $1" ; return 1 ;;
+        esac
+    done
+    shift $((OPTIND-1))
+
     report="$1"
     [[ -z "$report" ]] && report="project"
 
-    echo "$WENV_PROJECT"
-    task "$report" project:"$WENV_PROJECT"
+    echo "$wenv"
+    task "$report" project:"$wenv"
+
+    unset wenv
 }
 
 wenv_tasks_add() {
     [[ -z "$@" ]] && return 1
+
+    wenv="$WENV_PROJECT"
+    flag_w=0
+    while getopts ":w:" opt; do
+        case $opt in
+            w) [[ ! -z "$OPTARG" ]] && wenv="$OPTARG" ;;
+            --) break ;;
+            *) echo "invalid flag: $1" ; return 1 ;;
+        esac
+    done
+    shift $((OPTIND-1))
+
     # last passed argument is description (usually quoted string)
     desc="${@[$#]}"
     # all other args are passed to task warrior (yeah, this is ugly)
     task_args=${@:1:$(($# - 1))}
-    task add project:"$WENV_PROJECT" tags:"$WENV" "$task_args" -- "$desc"
+    task add project:"$wenv" tags:"$WENV" "$task_args" -- "$desc"
+
+    unset wenv
 }
 
 wenv_source_aliases() {  
-    for wenv_alias in $WENV_ALIASES; do
+    for wenv_alias in $@; do
         source_alias "$wenv_alias" > /dev/null
     done
 }
@@ -257,17 +339,28 @@ wenv_rename() {
 wenv_tmux_layout() {
     layout="$1"
     shift
-    dev_cmd="$@"
-    echo "dev_cmd $dev_cmd"
     case "$layout" in
         dev)
             wenv_tmux_split v
             tmux resize-pane -y 7
-            [[ -n "$dev_cmd" ]] && tmux send-keys "$dev_cmd" 'Enter'
+            [[ -n "$@" ]] && tmux send-keys "$@" 'Enter'
             tmux select-pane -U
             ;;
         devloop)
-            wenv_tmux_layout 'dev' "devloop $dev_cmd"
+            watch='git'
+            [[ "$1" == '-w' ]] && watch="$2" && shift 2
+            wenv_tmux_layout 'dev' "monitor $watch $*"
+            ;;
+        dev-tasks)
+            watch='git'
+            [[ "$1" == '-w' ]] && watch="$2" && shift 2
+            wenv_tmux_split v
+            tmux resize-pane -y 7
+            [[ -n "$@" ]] && tmux send-keys "monitor $watch $@" 'Enter'
+            wenv_tmux_split h
+            tmux send-keys 'wenv task show' 'Enter'
+            tmux select-pane -L
+            tmux select-pane -U
             ;;
         *)
             return 1
@@ -276,16 +369,26 @@ wenv_tmux_layout() {
 }
 
 wenv_tmux_split() {
-    cmd='ZSH_INIT="unset WENV; wenv exec -cn \"$WENV\"" zsh -i'
+    wenv_init_cmd='ZSH_INIT="unset WENV; wenv exec -cn \"$WENV\"" zsh -i'
+    user_cmd=$@
     case "$1" in
         h)
-            tmux split-window -h -c "#{pane_current_path}" "$cmd"
+            tmux split-window -h -c "#{pane_current_path}" "$wenv_init_cmd"
             ;;
         v)
-            tmux split-window -c "#{pane_current_path}" "$cmd"
+            tmux split-window -c "#{pane_current_path}" "$wenv_init_cmd"
+            ;;
+        c)
+            tmux new-window -c "#{pane_current_path}" "$wenv_init_cmd"
             ;;
         *)
             return 1
             ;;
     esac
+
+    tmux send-keys "$user_cmd" 'Enter'
+}
+
+unset_quiet() {
+    unset $@ &>/dev/null
 }

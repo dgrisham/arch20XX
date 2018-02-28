@@ -7,33 +7,6 @@ becho() { echo '\033[0;34m'$@'\033[0m' }
 gecho() { echo '\033[0;32m'$@'\033[0m' }
 recho() { echo '\033[0;31m'$@'\033[0m' }
 
-# convenient cd
-# -------------
-#c() {                       # cd with bookmarks
-    #dirname="$1"
-    #case "$dirname" in      # bookmarks
-        #ipfs)     dirname="$GOPATH/src/github.com/ipfs/go-ipfs" ;;
-        #iptl)     dirname="$GOPATH/src/github.com/ipfs/kubernetes-ipfs" ;;
-        #cluster)  dirname="$GOPATH/src/github.com/ipfs/kubernetes-ipfs" ;;
-        #sessions) dirname="$GOPATH/src/github.com/ipfs/kubernetes-ipfs/bitswap-sessions" ;;
-        #web)      dirname="$SCRATCH/flasky"       ;;
-        #dev)      dirname="$SRC/arch20xx"         ;;
-        #res)      dirname="$HOME/work/research"   ;;
-        #egt)      dirname="$HOME/work/research/resources/papers/egt"   ;;
-        #498|game) dirname="$HOME/work/csci_498B"  ;;
-        #564|arch) dirname="$HOME/work/csci_564"   ;;
-        #240)      dirname="$HOME/work/stanford-cs240h/"   ;;
-        #ta)       dirname="$HOME/work/ta"      ;;
-        #med)      dirname="$PERSONAL/schedule/routine/morning/meditation/headspace/creativity_series/1" ;;
-        #pygame)   dirname="$SCRATCH/pygame/doodle_jump" ;;
-        #dec)      dirname="$SRC/decoy-routing"    ;;
-        #"")       dirname="$HOME"                 ;;
-        #*)        return 1                        ;;
-    #esac
-    #cd "$dirname"
-    #unset dirname           # for dir displayed in prompt
-#}
-
 # open pdf, refresh tmux on close
 # -------------------------------
 unalias pdf 2>/dev/null
@@ -48,6 +21,27 @@ pdf() {
 tdf() {
     lesspipe.sh "$1" | less
 }
+
+mdImport() {
+    [[ -z "$1" ]] && return 1
+    [[ -f ".${1}.bak" ]] && rm -f ".${1}.bak"
+    pandoc --from=gfm --to=markdown --columns=80 "$1" > ".${1}.bak" &&
+    cp -f ".${1}.bak" "$1"
+}
+
+mdExport() {
+    [[ -z "$1" ]] && return 1
+    [[ -f ".${1}.bak" ]] && rm -f ".${1}.bak"
+    pandoc --from=markdown --to=gfm --wrap=none "$1" > ".${1}.bak" &&
+    cp -f ".${1}.bak" "$1"
+}
+
+#wkak() {
+    #kak -e 'exec \%,z<a-\;>\;' "$1" &&
+    #cp "$1" "${1}.bak" &&
+    #rm -f "$1" &&
+    #rm -f "${1}.bak"
+#}
 
 # markdown publishing
 md() {
@@ -67,7 +61,7 @@ md() {
     pandoc --standalone \
            --from=markdown --to="$format" \
            --highlight-style tango \
-           --latex-engine=pdflatex $@ \
+           --pdf-engine=pdflatex $@ \
            --output="${md_doc%.*}.$ext" "$md_doc" \
         || echo "pandoc error ..."
     # tango, espresso
@@ -77,14 +71,14 @@ md_dev() {
     [[ -z "$1" ]] && return 1
     md_file="$1"
     shift
-    devloop -f "$md_file" md latex "$md_file" $@
+    monitor file "$md_file" md latex "$md_file" $@
 }
 
 beamer_loop() {
     [[ -z "$1" ]] && return 1
     md_file="$1"
     shift
-    devloop -f "$md_file" md beamer "$md_file" $@
+    monitor file "$md_file" md beamer "$md_file" $@
 }
 
 # latex building
@@ -240,7 +234,8 @@ print_aliases() {
 # general git (more in git_aliases)
 # ---------------------------------
 alias gc='git commit -m'
-alias gca='git commit -am'
+alias gca='git commit -a'
+alias gcam='git commit -am'
 alias gs='git status'
 alias gl="git log --pretty=format:'%C(auto)%h %ad %C(green)%s%Creset %C(auto)%d [%an]' --graph --date=format:'%Y-%m-%d %H:%M' --all"
 

@@ -8,10 +8,17 @@ export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig"
 ## latex
 export TEXMFHOME="$DOTFILES/texmf"
 
-# IPFS command completion
+# command completion
 autoload bashcompinit
 bashcompinit
+## IPFS
 source $HOME/.ipfs/completion.bash
+## WENV
+source $DOTFILES/zsh/wenv_completion.bash
+## aws-cli
+source aws_zsh_completer.sh
+## keybase command completion
+source $SRC/keybase-completion/keybase
 
 # Go path
 export GOPATH="$HOME/.go"
@@ -23,3 +30,6 @@ export PATH="$PATH:$HOME/.cargo/bin"
 
 # yarn
 export PATH="$PATH:$HOME/.config/yarn/global/node_modules/.bin"
+
+# pass settings
+export PASSWORD_STORE_CLIP_TIME=15

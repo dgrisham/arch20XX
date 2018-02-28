@@ -1,19 +1,26 @@
 #!/bin/zsh
 
 wenv_setup() {
-    WENV_DIR="$GOPATH/src/github.com/ipfs/go-ipfs/exchange/bitswap/decision"
+    #WENV_DIR="$GOPATH/src/github.com/ipfs/go-ipfs/exchange/bitswap/decision"
+    WENV_DIR="$HOME/scratch/ipfs/research-bitswap/strategy-impl"
     WENV_ALIASES=()
     WENV_PROJECT='round-robin-prq'
-    WENV_BRANCH='impl/bitswap/round-robin-prq'
-    WENV_TASK=76
+    WENV_BRANCH='docs/strategy_impl'
+    unset WENV_TASK
     wenv_init() {
+        wenv_tmux_layout 'dev-tasks' './tangle'
+
+        # open source in ipfs repo
+        wenv_tmux_split c 'source_alias wenv ; wenv cd ipfs ; cd exchange/bitswap/decision ;\
+                           wenv_tmux_layout devloop "go test -v -run TestSPRQ" ;\
+                           kak strategy_prq{,_test}.go round_robin_queue{,_test}.go'
+
         edit_project
-        wenv_tmux_layout 'dev' 'wenv t'
     }
     wenv_shutdown() { }
 }
 
 edit_project() {
     [[ ! $(pwd) = "$WENV_DIR" ]] && wenv c
-    kak peer_request_queue{_test,}.go strategy_prq.go
+    kak strategy_prq{_test,}.md round_robin_queue{,_test}.md
 }

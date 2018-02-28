@@ -1,9 +1,0 @@
-#!/bin/zsh
-
-wenv_setup() {
-    WENV_DIR="/home/grish/.go/src/github.com/ipfs/go-ipfs"
-    WENV_ALIASES=()
-    WENV_PROJECT=''
-    WENV_BRANCH='master'
-    wenv_init() { }
-}
