@@ -212,7 +212,7 @@ source_alias() {
             alias_file="$LOCAL_ALIAS"
             ;;
         *)
-            alias_file="$ALIASES/${input_arg}_aliases"
+            alias_file="$ALIASES/${input_arg}"
             ;;
     esac
     if [[ -f "$alias_file" ]]; then
