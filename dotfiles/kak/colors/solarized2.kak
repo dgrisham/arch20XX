@@ -73,7 +73,7 @@
         face StatusLineValue    ${green}
         face StatusCursor       ${base00},${base3}
         face Prompt             yellow
-        face MatchingChar       default+b
+        face MatchingChar       ${white},${grey_dark}
         face BufferPadding      ${base01}
     "
 }
