@@ -1,0 +1,100 @@
+# [Created by task 2.5.1 3/14/2017 13:34:33]
+# Taskwarrior program configuration file.
+# For more documentation, see http://taskwarrior.org or try 'man task', 'man task-color',
+# 'man task-sync' or 'man taskrc'
+
+# Here is an example of entries that use the default, override and blank values
+#   variable=foo   -- By specifying a value, this overrides the default
+#   variable=      -- By specifying no value, this means no default
+#   #variable=foo  -- By commenting out the line, or deleting it, this uses the default
+
+# Use the command 'task show' to see all defaults and overrides
+
+# Files
+data.location=~/.task
+
+# Color theme (uncomment one to use)
+#include /usr/share/doc/task/rc/light-16.theme
+#include /usr/share/doc/task/rc/light-256.theme
+#include /usr/share/doc/task/rc/dark-16.theme
+#include /usr/share/doc/task/rc/dark-256.theme
+#include /usr/share/doc/task/rc/dark-red-256.theme
+#include /usr/share/doc/task/rc/dark-green-256.theme
+#include /usr/share/doc/task/rc/dark-blue-256.theme
+#include /usr/share/doc/task/rc/dark-violets-256.theme
+#include /usr/share/doc/task/rc/dark-yellow-green.theme
+#include /usr/share/doc/task/rc/dark-gray-256.theme
+#include /usr/share/doc/task/rc/dark-gray-blue-256.theme
+#include /usr/share/doc/task/rc/solarized-dark-256.theme
+#include /usr/share/doc/task/rc/solarized-light-256.theme
+#include /usr/share/doc/task/rc/no-color.theme
+
+report.project.columns=id,description.desc,priority
+report.project.labels=ID,Desc,Priority
+report.project.sort=entry+
+report.project.filter=(status:pending or status:waiting)
+
+report.protocol_labs.description=Protocol Labs work
+report.protocol_labs.columns=id,project,description.desc,due,priority
+report.protocol_labs.labels=ID,Project,Desc,Due,Priority
+report.protocol_labs.sort=project+\/,due+
+report.protocol_labs.filter=(+protocol_labs or +pl) and (status:pending or status:waiting)
+alias.pl=protocol_labs
+
+report.ipfs.description=Personal IPFS projects
+report.ipfs.columns=id,project,description.desc
+report.ipfs.labels=ID,Project,Desc
+report.ipfs.sort=project+\/,entry+
+report.ipfs.filter=+ipfs and (status:pending or status:waiting)
+
+report.etc.description=Etc
+report.etc.columns=id,project,description.desc
+report.etc.labels=ID,Project,Desc
+report.etc.sort=project+\/,entry+
+report.etc.filter=+etc and (status:pending or status:waiting)
+
+report.research.description=Research tasks
+report.research.columns=id,project,description.desc,due,priority
+report.research.labels=ID,Project,Desc,Due,Priority
+report.research.sort=urgency+
+report.research.filter=(+research or +rs) and (status:pending or status:waiting)
+alias.rs=research
+
+report.haskell.description=Gotta learn me dat Haskell
+report.haskell.columns=id,project,description.desc
+report.haskell.labels=ID,Project,Desc
+report.haskell.sort=project+\/,entry+
+report.haskell.filter=(+haskell or +hs) and (status:pending or status:waiting)
+alias.hs=haskell
+
+report.workflow.description=Workflow\/Metawork tasks
+report.workflow.columns=id,project,description.desc
+report.workflow.labels=ID,Project,Desc
+report.workflow.sort=entry+
+report.workflow.filter=(+workflow or +wf) and (status:pending or status:waiting)
+alias.wf=workflow
+
+report.ta.description=TA
+report.ta.columns=id,project,description.desc
+report.ta.labels=ID,Project,Desc
+report.ta.sort=priority+\/,entry+
+report.ta.filter=+ta and (status:pending or status:waiting)
+alias.rs=research
+
+report.arch.description=CSCI 564
+report.arch.columns=id,project,description.desc,due,priority
+report.arch.labels=ID,Project,Desc,Due,Priority
+report.arch.sort=due+\/,priority-
+report.arch.filter=+arch and (status:pending or status:waiting)
+
+report.game.description=CSCI 498
+report.game.columns=id,project,description.desc,due,priority
+report.game.labels=ID,Project,Desc,Due,Priority
+report.game.sort=due+\/,priority-
+report.game.filter=(+game or +gamedev) and (status:pending or status:waiting)
+
+report.other.description=Other important things
+report.other.columns=id,project,description.desc
+report.other.labels=ID,Project,Desc
+report.other.sort=urgency-\/,entry+\/project+
+report.other.filter=+other and (status:pending or status:waiting)
