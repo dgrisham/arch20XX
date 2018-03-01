@@ -39,4 +39,3 @@ hdmi-on() {
     xrandr --output HDMI-0 `echo "$opts"` && $HOME/.fehbg
 }
 alias hdmi-off="xrandr --output HDMI-0 --off && $HOME/.fehbg"
-

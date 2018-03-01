@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR="/home/grish/src/haskell-calculator-0.1.0.0"
+    WENV_ALIASES=()
+    WENV_PROJECT='haskell-calculator'
+    unset WENV_BRANCH
+    wenv_init() { }
+    wenv_shutdown() { }
+}

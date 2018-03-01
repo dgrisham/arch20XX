@@ -14,7 +14,7 @@ bashcompinit
 ## IPFS
 source $HOME/.ipfs/completion.bash
 ## WENV
-source $DOTFILES/zsh/wenv_completion.bash
+source $DOTFILES/zsh/completion/wenv.bash
 ## aws-cli
 source aws_zsh_completer.sh
 ## keybase command completion

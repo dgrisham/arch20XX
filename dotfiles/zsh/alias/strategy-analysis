@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR="/home/grish/scratch/ipfs/research-bitswap/analysis"
+    WENV_ALIASES=('md')
+    WENV_PROJECT=''
+    WENV_TASK=73
+    WENV_BRANCH='docs/strategy_analysis'
+    wenv_init() {
+        doc_dev 'prelim_strategy_analysis.md' --number-sections
+    }
+    wenv_shutdown() { }
+}

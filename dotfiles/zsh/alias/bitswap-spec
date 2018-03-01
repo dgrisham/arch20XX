@@ -1,0 +1,19 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR="/home/grish/scratch/ipfs/specs/bitswap"
+    WENV_ALIASES=()
+    WENV_PROJECT='bitswap-spec'
+    WENV_BRANCH='master'
+    WENV_TASK=78
+    wenv_init() {
+        wenv_tmux_layout 'dev' 'wenv t'
+        [[ ! $(pwd) = "$WENV_DIR" ]] && wenv c
+        yes | mdImport README.md
+        tmux send-keys 'kak README.md' 'Enter' '/continue' 'Enter'
+    }
+    wenv_shutdown() {
+        [[ ! $(pwd) = "$WENV_DIR" ]] && wenv c
+        yes | mdExport README.md
+    }
+}

@@ -1,0 +1,30 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR=""
+    WENV_ALIASES=()
+    WENV_PROJECT=''
+    WENV_BRANCH=''
+    wenv_init() { }
+    wenv_shutdown() { }
+}
+
+INSTANCE_ID='i-02ee6c7435f38ea79'
+
+aws_start() {
+    aws ec2 start-instances --instance-ids $INSTANCE_ID
+}
+
+aws_stop() {
+    aws ec2 stop-instances --instance-ids $INSTANCE_ID
+}
+
+aws_status() {
+    aws ec2 describe-instance-status --instance-ids $INSTANCE_ID
+}
+
+aws_ssh() {
+    addr=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID |
+           jq --raw-output '.Reservations[0] | .Instances[0] | .PublicIpAddress')
+    ssh aws -o Hostname=$addr
+}

@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR="/home/grish/work/research/resources/papers/other"
+    WENV_ALIASES=()
+    WENV_PROJECT='pl-research-call'
+    WENV_BRANCH=''
+    wenv_init() {
+        foxitreader ./versum-annotated.pdf 2>&1 >/dev/null &
+        clear
+        kak versum_notes.md
+    }
+    wenv_shutdown() { }
+}

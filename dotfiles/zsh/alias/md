@@ -1,0 +1,35 @@
+#!/bin/zsh
+
+doc_dev() {
+    md_file="$1"
+    [[ -z "$md_file" ]] && return 
+    shift
+    prefix=${md_file%.*}
+
+    wenv_tmux_layout 'dev' "md_dev $prefix.md $@"
+    until [[ -f "$prefix.pdf" ]]; do
+        sleep 0.1
+    done
+
+    pdf "$prefix.pdf" &
+    kak "$prefix.md"
+
+}
+
+slides_dev() {
+    md_file="$1"
+    if [[ -z "$md_file" ]]; then
+        md_file='slides.md'
+    else
+        shift
+    fi
+    prefix=${md_file%.*}
+
+    wenv_tmux_layout 'dev' "beamer_loop $prefix.md -H header.tex"
+    until [[ -f "$prefix.pdf" ]]; do
+        sleep 0.1
+    done
+
+    pdf "$prefix.pdf" &
+    kak "$prefix.md" header.tex
+}

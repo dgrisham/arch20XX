@@ -148,7 +148,7 @@ edit_alias() {
             alias_file="$LOCAL_ALIAS"
             ;;
         *)
-            alias_file="$ALIASES/${input_arg}_aliases"
+            alias_file="$ALIASES/${input_arg}"
             ;;
     esac
 
@@ -175,7 +175,7 @@ remove_alias() {
             ;;
     esac
 
-    alias_file="$ALIASES/${1}_aliases"
+    alias_file="$ALIASES/${1}"
 
     [[ -f "$alias_file" ]] || return 1
 
@@ -228,7 +228,7 @@ print_aliases() {
         echo "options:"
         echo "  - global (g)"
         echo "  - local (l)"
-        ls -lh "$ALIASES" | tail -n +2 | awk '{ print $9 }' | sed -e "s/\([^_ ]\+\)_aliases/  - \1/"
+        ls -lh "$ALIASES" | tail -n +2 | awk '{ print $9 }'
 }
 
 # general git (more in git_aliases)

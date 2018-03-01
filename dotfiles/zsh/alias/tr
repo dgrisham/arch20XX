@@ -1,0 +1,19 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR="/home/grish/work/stanford-cs240h/labs/1/tr"
+    WENV_ALIASES=()
+    WENV_PROJECT='tr-project'
+    WENV_BRANCH='master'
+    wenv_init() {
+        #wenv_tmux_split c
+        #tmux select-window -t 2
+        #cd ../tr-0.1.0.0
+        #kak 'src/Lib.hs' 'app/Tr.hs'
+        #wenv_tmux_split c
+        #tmux select-window -t 3
+        #cd ../original
+        #kak 'src/Lib.hs' 'app/Tr.hs'
+    }
+    wenv_shutdown() { }
+}

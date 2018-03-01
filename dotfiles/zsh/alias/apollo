@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR="/home/grish/scratch/webdev/apollo-angular-app/"
+    WENV_ALIASES=()
+    WENV_PROJECT='webdev'
+    WENV_BRANCH='master'
+    wenv_init() { }
+    wenv_shutdown() { }
+}

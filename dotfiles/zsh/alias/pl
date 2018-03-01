@@ -1,0 +1,19 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR="/home/grish/work/csci400/materials"
+    WENV_ALIASES=('md')
+    WENV_PROJECT='csci400'
+    WENV_BRANCH='master'
+    wenv_init() { }
+    wenv_shutdown() {
+        unset -f slides_dev
+    }
+}
+
+pkg_src() {
+    name=$(pwd | rev | cut -f1 -d'-' | rev)
+    cp -r src $name
+    zip -r $name.zip $name
+    rm -rf $name
+}
