@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR="$SRC/strategy_sim"
+    WENV_ALIASES=('python')
+    WENV_PROJECT='strategy_sim'
+    WENV_BRANCH='master'
+    WENV_TASK=2
+    wenv_init() {
+        wenv_tmux_layout split-tasks 'pipenv shell --fancy'
+        $EDITOR src/strategy_sim/sim.py
+    }
+    wenv_shutdown() {
+        # TODO: how to do this?
+        #[[ $PIPENV_ACTIVE -eq 1 ]] && echo 'hi' && exit
+    }
+}
