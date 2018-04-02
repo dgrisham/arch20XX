@@ -6,7 +6,7 @@ wenv_setup() {
     WENV_PROJECT=''
     WENV_BRANCH='master'
     wenv_init() {
-        mendeleydesktop paper.pdf &
+        mendeleydesktop &
         slides_dev 'presentation.md'
     }
     wenv_shutdown() { }

@@ -125,4 +125,3 @@ case "$wifi_command" in
         echo "Unrecognized command: '$wifi_command'"
         ;;
 esac
-
