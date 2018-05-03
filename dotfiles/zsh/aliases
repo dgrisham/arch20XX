@@ -120,6 +120,7 @@ print_aliases() {
 # general git (more in git_aliases)
 # ---------------------------------
 alias gc='git commit -m'
+alias gcm='git commit -m'
 alias gca='git commit -a'
 alias gcam='git commit -am'
 alias gs='git status'

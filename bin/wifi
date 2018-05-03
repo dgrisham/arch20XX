@@ -1,0 +1,127 @@
+#!/usr/bin/env zsh
+
+# constants
+# ---------
+wifi_file="/etc/wpa_supplicant/wifi_networks"
+wifi_config="$DOTFILES$wifi_file"
+wifi_card="$WIFI_CARD"
+
+# reconnect using wpa_supplicant
+# ------------------------------
+wifi_connect() {
+    wifi_disconnect
+    sudo wpa_supplicant -B -Dnl80211 -i"$wifi_card" -c"$wifi_file"
+    sudo dhcpcd "$wifi_card"
+}
+
+# disconnect
+# ----------
+wifi_disconnect() {
+    sudo pkill wpa_supplicant
+    sudo pkill dhcpcd
+}
+
+# scan for networks in area
+# -------------------------
+wifi_scan() {
+    sudo iw dev "$wifi_card" scan \
+        | grep 'SSID:' \
+        | sed -e 's/^[ \t]*SSID:[ \t]*//' \
+        | grep -v '\x00'
+}
+
+# get network status
+# ------------------
+wifi_list() {
+    net_card="$1"
+    [[ -z "$net_card" ]] && net_card="$wifi_card"
+    ip route | grep 'default' | cut --delimiter=' ' --fields='5,8' \
+        |   case "$net_card" in
+                first)
+                    head -n1
+                    ;;
+                second)
+                    head -n2 | tail -n1
+                    ;;
+                *)
+                    grep "$net_card"
+                    ;;
+            esac \
+        | cut --delimiter=' ' --field='2'
+}
+
+# create new network connection
+# -----------------------------
+wifi_new() {
+    ssid="$1"
+    [[ -z "$ssid" ]] && return 1
+    printf "[o]pen or [c]losed network: "
+    read network_type
+    echo
+    echo "Outputting to '$wifi_config'..."
+    case "$network_type" in
+        o*|O*)
+            echo 'network={'            | sudo tee -a "$wifi_config"
+            echo '    ssid="'"$ssid"'"' | sudo tee -a "$wifi_config"
+            echo '    key_mgmt=NONE'    | sudo tee -a "$wifi_config"
+            echo '}'                    | sudo tee -a "$wifi_config"
+            echo '\n'                   | sudo tee -a "$wifi_config"
+            ;;
+        c*|C*)
+            echo "enter passphrase..."
+            wpa_passphrase "$ssid" | tee -a "$wifi_config"
+            ;;
+        *)
+            echo "Unrecognized network type: '$network_type'"
+            ;;
+    esac
+}
+
+# nice interactive wifi-finder
+# ----------------------------
+wifi_menu() {
+    sudo ip link set "$wifi_card" up
+    counter=0
+    typeset -A networks
+    wifi_scan | while read wifi_network; do
+        networks[$counter]="$wifi_network"
+        echo "$counter: $wifi_network"
+        counter="$(($counter + 1))"
+    done
+    printf "Which network: "
+    read network_num
+    echo $network_num
+    if [[ "$network_num" -lt '0' || "$network_num" -gt "${#networks}" ]]; then
+        echo "Out of range."
+        return 1
+    fi
+    wifi_new "${networks[$network_num]}" $@
+}
+
+# interface
+# ---------
+wifi_command="$1"
+shift
+case "$wifi_command" in
+    c|connect)
+        wifi_connect $@
+        ;;
+    d|disconnect)
+        wifi_disconnect $@
+        ;;
+    s|scan)
+        wifi_scan $@
+        ;;
+    n|new)
+        wifi_new $@
+        ;;
+    m|menu)
+        wifi_menu $@
+        ;;
+    l|list)
+        wifi_list $@
+        ;;
+    *)
+        echo "Unrecognized command: '$wifi_command'"
+        ;;
+esac
