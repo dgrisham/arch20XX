@@ -61,7 +61,7 @@ md() {
     pandoc --standalone \
            --from=markdown --to="$format" \
            --highlight-style tango \
-           --pdf-engine=pdflatex $@ \
+           --pdf-engine=pdflatex $* \
            --output="${md_doc%.*}.$ext" "$md_doc" \
         || echo "pandoc error ..."
     # tango, espresso
@@ -234,6 +234,7 @@ print_aliases() {
 # general git (more in git_aliases)
 # ---------------------------------
 alias gc='git commit -m'
+alias gcm='git commit -m'
 alias gca='git commit -a'
 alias gcam='git commit -am'
 alias gs='git status'
