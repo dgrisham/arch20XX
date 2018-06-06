@@ -15,6 +15,10 @@ wenv_setup() {
                            wenv_tmux_layout devloop "\"gx-go rewrite --fix; gx-go rewrite; go test -v -run TestSPRQ\"" ;\
                            kak strategy_prq{,_test}.go round_robin_queue{,_test}.go'
 
+        sleep 1
+        wenv_tmux_split c 'source_alias wenv ; wenv cd ipfs ;\
+                           wenv_tmux_layout devloop "make test"'
+
         edit_project
     }
     wenv_shutdown() { }
