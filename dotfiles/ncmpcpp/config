@@ -85,7 +85,10 @@ visualizer_type = spectrum
 #visualizer_look = ●▮
 visualizer_look = -|
 #
-visualizer_color = 240, 25, 26, 27, 28, 34, 40, 46, 12
+# ocean
+#visualizer_color = 240, 25, 26, 27, 28, 34, 40, 46, white
+# fire
+visualizer_color = 161, 10, 197, 203, 173, 179, 185, 12
 #visualizer_color = 2, 162, 163, 164, 165, 166, 14
 #visualizer_color = blue, magenta, red, yellow, white
 #visualizer_color = white, red, green, blue, white, red, green, blue

@@ -6,7 +6,7 @@ doc_dev() {
     shift
     prefix=${md_file%.*}
 
-    wenv_tmux_layout 'dev' "md_dev $prefix.md $@"
+    wenv_tmux_layout 'dev' "md_dev $prefix.md" $*
     until [[ -f "$prefix.pdf" ]]; do
         sleep 0.1
     done

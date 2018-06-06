@@ -6,18 +6,30 @@ map global user s '/(?i)'
 # add line numbers
 hook global WinCreate .* %{addhl global number_lines -relative}
 # highlight characters in 81st column
-hook global BufCreate .*[.](md|tex) %{
-    set buffer autowrap_column 80
-    addhl regex ^\V{80}(\V) 1:Error
-}
+#hook global BufCreate .*[.](md|tex) %{
+    #set buffer autowrap_column 80
+    #addhl regex ^\V{80}(\V) 1:Error
+#}
 hook global WinCreate .*[.](md|tex) %{
     set buffer autowrap_column 80
     autowrap-enable
-    #addhl regex ^\V{80}(\V) 1:Error
+    ##addhl regex ^\V{80}(\V) 1:Error
 }
 
 # add brackets highlighting
 hook global WinCreate .* %{addhl global show_matching}
+
+# colors
+colorscheme solarized2
+
+# highlighters
+%sh{
+localconfdir="$XDG_CONFIG_HOME/kak"
+
+for highlighter in "$localconfdir"/hl/*.kak; do
+    cat "$highlighter"
+done
+}
 
 # scroll offset
 set global scrolloff 12,0
@@ -32,8 +44,8 @@ hook global BufSetOption filetype=haskell %{
     set buffer indentwidth 2
 }
 hook global InsertChar \t %{ exec -draft -itersel h@ }
-## soft tabs (excluding makefiles and Go)
 
+## soft tabs (excluding makefiles and Go)
 #hook global BufSetOption filetype=.*?(go|makefile) %{
     #hook buffer InsertChar \t %{ exec -draft -itersel h@ }
 #}
@@ -52,9 +64,6 @@ map global user f '/%opt{function_start}<a-n>?%opt{function_end}<ret>'
 # auto wrap at 80 chars
 #set global autowrap_column 80
 #hook global WinCreate .* %{ autowrap-enable }
-
-# colors
-colorscheme solarized2
 
 # Tmux integration
 # ================

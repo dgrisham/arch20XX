@@ -36,7 +36,7 @@ item_fields:
 
 paths:
     default              : %lower{$albumartist}/$album_custom/$track_custom
-    singleton            : etc/no-album/$artist/$title_custom
+    singleton            : %lower{$albumartist}/$album_custom/$track_custom
     comp                 : etc/compilations/$album_custom/$track_custom
     albumtype:soundtrack : etc/soundtracks/$album_custom/$track_custom
 

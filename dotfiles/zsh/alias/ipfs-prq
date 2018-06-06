@@ -12,7 +12,7 @@ wenv_setup() {
 
         # open source in ipfs repo
         wenv_tmux_split c 'source_alias wenv ; wenv cd ipfs ; cd exchange/bitswap/decision ;\
-                           wenv_tmux_layout devloop "go test -v -run TestSPRQ" ;\
+                           wenv_tmux_layout devloop "\"gx-go rewrite --fix; gx-go rewrite; go test -v -run TestSPRQ\"" ;\
                            kak strategy_prq{,_test}.go round_robin_queue{,_test}.go'
 
         edit_project

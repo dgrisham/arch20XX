@@ -106,10 +106,19 @@ alias vs="vim -S"
 
 # `$EDITOR <today's_date>.md`
 # -----------------------
-et() {
+edit_today() {
     format='%Y-%m-%d'
     $EDITOR "`date +$format`.md"
 }
+alias et='edit_today'
+
+edit_week() {
+    format='%Y-%m-%d'
+    which_monday='last-monday'
+    [[ $(date +%a) == 'Mon' ]] && which_monday='this-monday'
+    $EDITOR "`date -d$which_monday +$format`.md"
+}
+alias ew='edit_week'
 
 # 'journal today'
 # ---------------
