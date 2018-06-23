@@ -14,10 +14,12 @@ alias pdf='mupdf'
 # steam
 # -----
 alias stm='LD_PRELOAD='"'"'/usr/$LIB/libstdc++.so.6 /usr/$LIB/libgcc_s.so.1 /usr/$LIB/libxcb.so.1 /usr/$LIB/libgpg-error.so'"'"' steam'
+alias stm='~/.local/share/Steam/steam.sh'
+# ?? which stm to use?
 
 # hdmi
 # ----
 alias hdmi-on="xrandr --output HDMI1 --auto --scale-from 1280x720 --above eDP1"
 alias hdmi-off="xrandr --output HDMI1 --off "
 
-alias stm='~/.local/share/Steam/steam.sh'
+

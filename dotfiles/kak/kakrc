@@ -1,144 +1,186 @@
 ## Hooks
+
+# case-insensitive search
+map global user s '/(?i)'
+
 # add line numbers
-hook global WinCreate .* %{addhl number_lines}
+hook global WinCreate .* %{addhl global number_lines -relative}
+# highlight characters in 81st column
+hook global BufCreate .*[.](md|tex) %{
+    set buffer autowrap_column 80
+    addhl regex ^\V{80}(\V) 1:Error
+}
+hook global WinCreate .*[.](md|tex) %{
+    set buffer autowrap_column 80
+    autowrap-enable
+    #addhl regex ^\V{80}(\V) 1:Error
+}
 
 # add brackets highlighting
-hook global WinCreate .* %{addhl show_matching}
+hook global WinCreate .* %{addhl global show_matching}
 
 # scroll offset
 set global scrolloff 12,0
 
 # tabs
 ## 4-space tabs
-set global tabstop 4
 set global indentwidth 4
-
+set global tabstop 4
 ## 2-space tabs for Haskell
 hook global BufSetOption filetype=haskell %{
     set buffer tabstop 2
     set buffer indentwidth 2
 }
+hook global InsertChar \t %{ exec -draft -itersel h@ }
+## soft tabs (excluding makefiles and Go)
 
-## soft tabs (excluding makefiles)
-hook global BufSetOption filetype=(?!makefile).*? %{
-    hook buffer InsertChar \t %{ exec -draft h@ }
+#hook global BufSetOption filetype=.*?(go|makefile) %{
+    #hook buffer InsertChar \t %{ exec -draft -itersel h@ }
+#}
+
+hook global InsertKey <backspace> %{ try %{
+  exec -draft hGh<a-k>\A\h+\Z<ret>gihyp<lt>
+}}
+
+hook global BufCreate .*[.](ts|tsx|html) %{
+    set buffer tabstop 2
+    set buffer indentwidth 2
 }
 
-## backspace a whole tab
-map global insert <backspace> '<a-;>:insert-bs<ret>'
-def -hidden insert-bs %{
-    try %{
-        # delete indentwidth spaces before cursor
-        exec -draft -no-hooks h %opt{indentwidth}H <a-k>\A<space>+\Z<ret> <esc>d
-    } catch %{
-        exec <backspace>
-    }
-}
+map global user f '/%opt{function_start}<a-n>?%opt{function_end}<ret>'
 
 # auto wrap at 80 chars
-set global autowrap_column 80
-hook global WinCreate .* %{ autowrap-enable }
-
-hook -group PythonJediAutostart global WinSetOption filetype=python %{
-    jedi-enable-autocomplete
-}
-
-hook global WinSetOption filetype=(?!python).* %{
-    jedi-disable-autocomplete
-}
-
-# show all trailing whispaces red
-hook -group TrailingWhitespaces global WinCreate .* %{
-    addhl regex '\h+$' 0:default,red
-}
-
-# highlight characters in 81st column
-hook global WinCreate .* %{addhl regex ^\V{80}(\V) 1:Error}
+#set global autowrap_column 80
+#hook global WinCreate .* %{ autowrap-enable }
 
 # colors
 colorscheme solarized2
-
 
 # Tmux integration
 # ================
 
 def tmux-new %{
-     on-key %{ %sh{
-         case "$kak_key" in
-             \\) echo tmux-new-horizontal
-                ;;
-             "<minus>") echo tmux-new-vertical
-                ;;
-         esac
-     } }
+    on-key %{ %sh{
+        case "$kak_key" in
+            \\) echo tmux-new-horizontal ;;
+            "<minus>") echo tmux-new-vertical ;;
+        esac
+    } }
 }
-##map global user t :tmux-new<ret>
-##map global user r %{ :send-text <ret> }
+map global user t :tmux-new<ret>
+
+def repl-send %{
+    on-key %{ %sh{
+        case "$kak_key" in
+            's') echo 'send-text' ;;
+            'l') echo 'exec hxH:send-text<ret>;exec ";"<ret>' ;;
+        esac
+    } }
+}
+map global user r :repl-send<ret>
+
+# Git
+# ===
+
+hook global WinSetOption filetype=diff %{
+    map window normal '@' /^@@<ret>
+    map window normal '#' /^diff\><ret>
+}
+
+# X11 (copy/paste)
+# ===============
+map global user y 'y<a-|>xclip -i<ret>; :echo Information "copied
+ selection to X11 clipboard"<ret>'
+map global user p '!xclip -o <ret>'
 
 # commenting
-# map global user c ':on-key %{ %sh{ case "$kak_key" in; \'c\') echo'
-# \':comment-line<ret>\'; ;} }'
-#map global user n :comment-line<ret>
-#map global user c :comment-selection<ret>
+def comment %{
+    on-key %{ %sh{
+        case "$kak_key" in
+            'c') echo comment-line ;;
+            'b') echo 'exec <a-i>pH:comment-block<ret>' ;;
+            'g') echo 'set buffer filetype go;comment-line;set buffer filetype markdown' ;;
+        esac
+    } }
+}
+map global user c :comment<ret>
 
 # Haskell
 # =======
 
+# Typescript
+# ==========
+
+# html tags
+hook global BufSetOption filetype=typescript %{
+    map global user h 'i<lt><gt><lt>/<gt><esc>hh/<gt><ret>HHHHs<lt>/?<ret>\'a'
+}
+
 # Markdown manipulation
 # =====================
 
-# build document
-#map global user w %{ :nop "%sh{ alias_call md beamer ${kak_buffile}  }" <ret> }
+hook global BufSetOption filetype=(markdown|latex) %{
+    #def build %{
+        #on-key %{ %sh{
+            #case "$kak_key" in
+                #'d') echo 'nop "%sh{ alias_call md latex ${kak_buffile}  }" <ret>' ;;
+                #'b') echo 'nop "%sh{ alias_call md beamer ${kak_buffile}  }" <ret>' ;;
+            #esac
+        #} }
+    #}
+    #map global user b :build<ret>
 
+    # build document
+    map global user w %{ :nop "%sh{ alias_call md beamer ${kak_buffile}  }" <ret> }
 
-# format text with pandoc
-map global user g %{ | pandoc --from=markdown --to=markdown --columns=80 <ret> }
-#map global user b %{ | pandoc-citeproc --bib2yaml --format=biblatex <ret> }
+    # format text with pandoc
+    map global user g %{ | pandoc --from=markdown --to=markdown --columns=80 <ret> }
 
-# custom commands
-map global user = XypjXHr=A<ret><esc>XHd
-map global user <minus> hXypjXHr-A<ret><esc>XHd
+    # format github-flavored markdown with pandoc (utility, should be function)
+    map global user z %{ | pandoc --from=gfm --to=gfm --columns=80 <ret> }
 
-map global user w '<esc>:w<ret>; :echo -color Information "Written"<ret>'
+    # custom commands
+    def header %{
+        on-key %{ %sh{
+            case "$kak_key" in
+                '1') echo 'exec hxypjxHr=A<ret><esc>' ;;
+                '2') echo 'exec hxypjxHr-A<ret><esc>' ;;
+                '3') echo 'exec I###<space><esc>A<ret><esc>' ;;
+            esac
+        } }
+    }
+    map global user h :header<ret>
+    #map global user b %{ | pandoc-citeproc --bib2yaml --format=biblatex <ret> }
 
-map global user s '<esc>:spell<ret>'
-map global user y 'y<a-|>xclip -i<ret>; :echo -color Information "copied
- selection to X11 clipboard"<ret>'
-map global user p '!xclip -o<ret>'
-map global user x 'Xd'
-map global user c 'Xy'
+    def inline_code_helper %{ exec ',ea`f`a{.}<esc>;i' }
+    def inline_code %{
+        on-key %{ %sh{
+            case "$kak_key" in
+                'i') echo inline_code_helper ;;
+                'r') echo 'inline_code_helper;exec ruby<esc><ret>' ;;
+                'h') echo 'inline_code_helper;exec hs<esc><ret>' ;;
+            esac
+        } }
+    }
+    map global user i :inline_code<ret>
+}
 
-map global user a '<a-i>ps=<ret>&<space>gl'
-
-map global normal <ret> 'i<ret><esc>'
-map global normal <backspace> 'i<backspace><esc>'
-
-map global normal <a-j> '<a-a>pgh'
-map global normal <a-k> '<a-a>p<a-;>kk'
-map global insert <a-j> '<c-n>'
-map global insert <a-k> '<c-p>'
-
-map global user r '%<a-|>python<ret>;'
-
-
-
-#
 def add-surround %!on-key %@exec %sh&
   case "$kak_key" in
-  "<lt>") key="<" ;;
-  "<gt>") key=">" ;;
-  "<space>") key=" " ;;
-  \<*\>) echo ":echo<space>no<ret>"; exit 1 ;;
-  *) key="$kak_key" ;;
+      "<lt>") key="<" ;;
+      "<gt>") key=">" ;;
+      "<space>") key=" " ;;
+      \<*\>) echo ":echo<space>no<ret>"; exit 1 ;;
+      *) key="$kak_key" ;;
   esac
 
   open="$key"
   close="$key"
   case "$key" in
-  "("|")") open="("; close=")" ;;
-  "["|"]") open="["; close="]" ;;
-  "{"|"}") open="{"; close="}" ;;
-  "<"|">") open="<"; close=">" ;;
+      "("|")") open="("; close=")" ;;
+      "["|"]") open="["; close="]" ;;
+      "{"|"}") open="{"; close="}" ;;
+      "<"|">") open="<"; close=">" ;;
   esac
 
   epilogue=${close//?/H}
@@ -148,27 +190,27 @@ def add-surround %!on-key %@exec %sh&
 
   open=${open/ /<space>}
   close=${close/ /<space>}
-
+  
   echo "i$open<esc>a$close<esc>$epilogue"
 &@!
 
 def delete-surround %!on-key %@exec %sh&
   case "$kak_key" in
-  "<lt>") key="<" ;;
-  "<gt>") key=">" ;;
-  "<space>") key=" " ;;
-  \<*\>) echo ":echo<space>no<ret>"; exit 1 ;;
-  *) key="$kak_key" ;;
+      "<lt>") key="<" ;;
+      "<gt>") key=">" ;;
+      "<space>") key=" " ;;
+      \<*\>) echo ":echo<space>no<ret>"; exit 1 ;;
+      "*"|"."|"?"|"\\") key="\\$kak_key" ;;
+      *) key="$kak_key" ;;
   esac
-
 
   open="$key"
   close="$key"
   case "$key" in
-  "("|")") open="\("; close="\)" ;;
-  "["|"]") open="\["; close="\]" ;;
-  "{"|"}") open="{"; close="}"   ;;
-  "<"|">") open="<"; close=">"   ;;
+      "("|")") open="\("; close="\)" ;;
+      "["|"]") open="\["; close="\]" ;;
+      "{"|"}") open="{"; close="}"   ;;
+      "<"|">") open="<"; close=">"   ;;
   esac
 
   open=${open/</<lt>}
@@ -176,7 +218,7 @@ def delete-surround %!on-key %@exec %sh&
 
   open=${open/ /<space>}
   close=${close/ /<space>}
-
+  
   echo "<a-a>${kak_key}s${open}|${close}<ret>d<space>"
 &@!
 
@@ -191,4 +233,3 @@ def surround %{
     } }
 }
 map global user e ":surround<ret>"
-

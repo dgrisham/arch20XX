@@ -10,3 +10,16 @@ get_song() {
     done
 }
 
+ipfs() {
+    case "$1" in
+        'public')      config='--config ~/.ipfs'
+                       shift
+                       ;;
+        'p'|'private') config='--config ~/.ipfs-private'
+                       shift
+                       ;;
+        *)             config=''
+                       ;;
+    esac
+    eval /usr/bin/ipfs "$config" $@
+}

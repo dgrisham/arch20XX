@@ -24,8 +24,7 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CONFIG_HOME="$DOTFILES"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DOWNLOAD_DIR="$DOWNLOADS"
-#export XDG_DESKTOP_DIR="/dev/null"
-export XDG_DESKTOP_DIR="/home/username"
+export XDG_DESKTOP_DIR="/home/lhilber"
 #export XDG_RUNTIME_DIR="/tmp"
 
 # Alias files
@@ -40,9 +39,16 @@ export VIEWER="evince"
 export BROWSER="w3m"
 export PUBLISHER="git"
 export PLAYER="mpv"
+
 ## NeoVim
 export VIM="/etc/nvim"
 export VIMRUNTIME="/usr/share/nvim/runtime"
+
+# vtk
+export LD_LIBRARY_PATH=/home/lhillber/vtkBuild/lib
+export PYTHONPATH=/home/lhillber/vtkBuild/Wrapping/Python:/home/lhillber/vtkBuild/lib
+
+
 
 ### open fbterm/x automatically, depending on tty
 virtual_terminal="$( tty | grep -oE ....$ )"
