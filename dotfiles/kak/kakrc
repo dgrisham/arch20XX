@@ -16,7 +16,7 @@ hook global WinCreate .* %{addhl global show_matching}
 # tabs
 # ====
 
-## 4-space tabs
+# 4-space tabs
 hook global InsertChar \t %{ exec -draft -itersel h@ }
 set global indentwidth 4
 set global tabstop 4
@@ -27,7 +27,7 @@ hook global BufSetOption filetype=haskell %{
     set buffer indentwidth 2
 }
 
-## backspace full tab width
+# backspace full tab width
 map global insert <backspace> ⌫
 hook global InsertChar ⌫ %{ try %{
     execute-keys <backspace>
@@ -38,7 +38,7 @@ hook global InsertChar ⌫ %{ try %{
     }
 } }
 
-## tab completion and indentation
+# tab completion and indentation
 hook global InsertCompletionShow .* %{
     try %{
         # this command temporarily removes cursors preceded by whitespace;
