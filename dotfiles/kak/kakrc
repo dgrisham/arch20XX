@@ -1,60 +1,60 @@
-## Hooks
+# colors
+colorscheme solarized2
 
-# case-insensitive search
-map global user s '/(?i)'
+# scroll offset
+set global scrolloff 12,0
 
-# add line numbers
-hook global WinCreate .* %{addhl global number_lines -relative}
-# highlight characters in 81st column
-hook global BufCreate .*[.](md|tex) %{
-    set buffer autowrap_column 80
-    addhl regex ^\V{80}(\V) 1:Error
-}
-hook global WinCreate .*[.](md|tex) %{
-    set buffer autowrap_column 80
-    autowrap-enable
-    #addhl regex ^\V{80}(\V) 1:Error
+# show all trailing whispaces red
+hook -group TrailingWhitespaces global WinCreate .* %{
+    addhl global regex "[ \t]+$" 0:default,red
 }
 
 # add brackets highlighting
 hook global WinCreate .* %{addhl global show_matching}
 
-# scroll offset
-set global scrolloff 12,0
 
 # tabs
+# ====
+
 ## 4-space tabs
+hook global InsertChar \t %{ exec -draft -itersel h@ }
 set global indentwidth 4
 set global tabstop 4
+
 ## 2-space tabs for Haskell
 hook global BufSetOption filetype=haskell %{
     set buffer tabstop 2
     set buffer indentwidth 2
 }
-hook global InsertChar \t %{ exec -draft -itersel h@ }
-## soft tabs (excluding makefiles and Go)
 
-#hook global BufSetOption filetype=.*?(go|makefile) %{
-    #hook buffer InsertChar \t %{ exec -draft -itersel h@ }
-#}
+## backspace full tab width
+map global insert <backspace> ⌫
+hook global InsertChar ⌫ %{ try %{
+    execute-keys <backspace>
+    try %{
+        execute-keys -draft hGh <a-k>\A\h+\z<ret> <lt>
+    } catch %{
+        execute-keys <backspace>
+    }
+} }
 
-hook global InsertKey <backspace> %{ try %{
-  exec -draft hGh<a-k>\A\h+\Z<ret>gihyp<lt>
-}}
-
-hook global BufCreate .*[.](ts|tsx|html) %{
-    set buffer tabstop 2
-    set buffer indentwidth 2
+## tab completion and indentation
+hook global InsertCompletionShow .* %{
+    try %{
+        # this command temporarily removes cursors preceded by whitespace;
+        # if there are no cursors left, it raises an error, does not
+        # continue to execute the mapping commands, and the error is eaten
+        # by the `try` command so no warning appears.
+        execute-keys -draft 'h<a-K>\h<ret>'
+        map window insert <tab> <c-n>
+        map window insert <s-tab> <c-p>
+    }
+}
+hook global InsertCompletionHide .* %{
+    unmap window insert <tab> <c-n>
+    unmap window insert <s-tab> <c-p>
 }
 
-map global user f '/%opt{function_start}<a-n>?%opt{function_end}<ret>'
-
-# auto wrap at 80 chars
-#set global autowrap_column 80
-#hook global WinCreate .* %{ autowrap-enable }
-
-# colors
-colorscheme solarized2
 
 # Tmux integration
 # ================
@@ -67,7 +67,7 @@ def tmux-new %{
         esac
     } }
 }
-map global user t :tmux-new<ret>
+map global user t :tmux-new<ret> -docstring 'new tmux'
 
 def repl-send %{
     on-key %{ %sh{
@@ -77,7 +77,8 @@ def repl-send %{
         esac
     } }
 }
-map global user r :repl-send<ret>
+map global user r :repl-send<ret> -docstring 'tmux send ret'
+
 
 # Git
 # ===
@@ -87,11 +88,39 @@ hook global WinSetOption filetype=diff %{
     map window normal '#' /^diff\><ret>
 }
 
-# X11 (copy/paste)
+
+# custom commands
 # ===============
-map global user y 'y<a-|>xclip -i<ret>; :echo Information "copied
- selection to X11 clipboard"<ret>'
-map global user p '!xclip -o <ret>'
+
+# X11 copy paste
+map global user y 'y<a-|>xclip -i<ret>' -docstring 'yank to X11'
+map global user p '!xclip -o<ret>' -docstring 'paste from X11'
+# align equals signs
+map global user a '<a-i>ps=<ret>&<space>gl' -docstring 'align ='
+# non inset mode backspace and return
+# case-insensitive search
+map global user / '/(?i)' -docstring 'caseless search'
+map global user s 's(?i)' -docstring 'caseless selection'
+map global user S 'S(?i)' -docstring 'caseless split'
+# normal mode comands
+map global normal <ret> 'i<ret><esc>'
+map global normal <backspace> 'i<backspace><esc>'
+# jump paragraph
+map global normal <a-j> '<a-a>pgh'
+map global normal <a-k> '<a-a>p<a-;>kk'
+
+# toggle spell check
+def toggle-spell %{
+    try %{
+        addhl window ranges 'spell_regions'
+        spell
+        } catch %{ rmhl window/hlranges_spell_regions }
+}
+map global user <a-s> :toggle-spell<ret> -docstring 'toggle spell check'
+
+# add line numbers
+hook global WinCreate .* %{addhl global number_lines -relative
+}
 
 # commenting
 def comment %{
@@ -103,43 +132,24 @@ def comment %{
         esac
     } }
 }
-map global user c :comment<ret>
+map global user c :comment<ret> -docstring 'commenting'
 
-# Haskell
-# =======
-
-# Typescript
-# ==========
-
-# html tags
-hook global BufSetOption filetype=typescript %{
-    map global user h 'i<lt><gt><lt>/<gt><esc>hh/<gt><ret>HHHHs<lt>/?<ret>\'a'
+# commented headers
+def header %{
+    on-key %{ %sh{
+        case "$kak_key" in
+            '1') echo comment-line; echo 'exec hxypjxHr=A<ret><esc>kr#lr<space>j';;
+            '2') echo comment-line; echo 'exec hxypjxHr-A<ret><esc>kr#lr<space>j';;
+            '3') echo comment-line; echo 'exec I##<esc>A<ret><esc>hd' ;;
+        esac
+    } }
 }
+map global user h :header<ret> -docstring 'headers'
 
-# Markdown manipulation
-# =====================
 
-hook global BufSetOption filetype=(markdown|latex) %{
-    #def build %{
-        #on-key %{ %sh{
-            #case "$kak_key" in
-                #'d') echo 'nop "%sh{ alias_call md latex ${kak_buffile}  }" <ret>' ;;
-                #'b') echo 'nop "%sh{ alias_call md beamer ${kak_buffile}  }" <ret>' ;;
-            #esac
-        #} }
-    #}
-    #map global user b :build<ret>
-
-    # build document
-    map global user w %{ :nop "%sh{ alias_call md beamer ${kak_buffile}  }" <ret> }
-
-    # format text with pandoc
-    map global user g %{ | pandoc --from=markdown --to=markdown --columns=80 <ret> }
-
-    # format github-flavored markdown with pandoc (utility, should be function)
-    map global user z %{ | pandoc --from=gfm --to=gfm --columns=80 <ret> }
-
-    # custom commands
+# Markdown specific commands
+hook global BufSetOption filetype=(markdown) %{
+    # headers
     def header %{
         on-key %{ %sh{
             case "$kak_key" in
@@ -149,21 +159,12 @@ hook global BufSetOption filetype=(markdown|latex) %{
             esac
         } }
     }
-    map global user h :header<ret>
-    #map global user b %{ | pandoc-citeproc --bib2yaml --format=biblatex <ret> }
-
-    def inline_code_helper %{ exec ',ea`f`a{.}<esc>;i' }
-    def inline_code %{
-        on-key %{ %sh{
-            case "$kak_key" in
-                'i') echo inline_code_helper ;;
-                'r') echo 'inline_code_helper;exec ruby<esc><ret>' ;;
-                'h') echo 'inline_code_helper;exec hs<esc><ret>' ;;
-            esac
-        } }
-    }
-    map global user i :inline_code<ret>
+map global user h :header<ret> -docstring 'headers'
 }
+
+
+# edit surrounding
+# ================
 
 def add-surround %!on-key %@exec %sh&
   case "$kak_key" in
@@ -184,13 +185,10 @@ def add-surround %!on-key %@exec %sh&
   esac
 
   epilogue=${close//?/H}
-
   open=${open/</<lt>}
   close=${close/>/<gt>}
-
   open=${open/ /<space>}
   close=${close/ /<space>}
-  
   echo "i$open<esc>a$close<esc>$epilogue"
 &@!
 
@@ -215,10 +213,8 @@ def delete-surround %!on-key %@exec %sh&
 
   open=${open/</<lt>}
   close=${close/>/<gt>}
-
   open=${open/ /<space>}
   close=${close/ /<space>}
-  
   echo "<a-a>${kak_key}s${open}|${close}<ret>d<space>"
 &@!
 
@@ -232,4 +228,4 @@ def surround %{
         esac
     } }
 }
-map global user e ":surround<ret>"
+map global user e ":surround<ret>" -docstring 'edit surrounding'

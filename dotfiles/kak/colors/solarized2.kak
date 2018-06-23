@@ -32,48 +32,48 @@
 
     echo "
         # then we map them to code
-        face value      ${orange}
-        face type       ${blue_medium}
-        face identifier ${blue_light}
-        face string     ${magenta}
-        face keyword    ${green}
-        face operator   ${blue}
-        face attribute  ${violet}
-        face comment    ${grey_medium}
-        face meta       ${grey_light}
-        face builtin    ${cyan}
+        face global value       ${orange}
+        face global type        ${blue_medium}
+        face global identifier  ${blue_light}
+        face global string      ${magenta}
+        face global keyword     ${green}
+        face global operator    ${blue}
+        face global attribute   ${violet}
+        face global comment     ${grey_medium}
+        face global meta        ${grey_light}
+        face global builtin     ${cyan}
 
         # and markup
-        face title      ${white}
-        face header     ${cyan_light}
-        face bold       ${cyan_dark}
-        face italic     ${cyan}
-        face mono       ${magenta}
-        face block      ${violet}
-        face link       ${blue_medium}
-        face bullet     ${orange}
-        face list       ${default_text}
+        face global title       ${white}
+        face global header      ${cyan_light}
+        face global bold        ${cyan_dark}
+        face global italic      ${cyan}
+        face global mono        ${magenta}
+        face global block       ${violet}
+        face global link        ${blue_medium}
+        face global bullet      ${orange}
+        face global list        ${default_text}
 
         # and built in faces
-        face Default            ${default_text}
-        face PrimarySelection   ${yellow},${grey_dark}
-        face SecondarySelection black,${grey_medium}
-        face PrimaryCursor      black,${white}
-        face SecondaryCursor    black,${grey_light}
-        face LineNumbers        ${base0},black
-        face LineNumberAbsolute ${yellow},${base03}+b
-        face MenuForeground     ${yellow}+b
-        face MenuBackground     white,${black}
-        face MenuInfo           white,${black}
-        face Information        ${base02},${base1}
-        face Error              ${white},red
-        face StatusLine         default,${base02}
-        face StatusLineMode     ${orange}
-        face StatusLineInfo     ${cyan}
-        face StatusLineValue    ${green}
-        face StatusCursor       ${base00},${base3}
-        face Prompt             yellow
-        face MatchingChar       default+b
-        face BufferPadding      ${base01},black
+        face global Default             ${default_text}
+        face global PrimarySelection    ${yellow},${grey_dark}
+        face global SecondarySelection  black,${grey_medium}
+        face global PrimaryCursor       black,${white}
+        face global SecondaryCursor     black,${grey_light}
+        face global LineNumbers         ${base0},black
+        face global LineNumberAbsolute  ${yellow},${base03}+b
+        face global MenuForeground      ${yellow}+b
+        face global MenuBackground      white,${black}
+        face global MenuInfo            white,${black}
+        face global Information         ${base02},${base1}
+        face global Error               ${white},red
+        face global StatusLine          default,${base02}
+        face global StatusLineMode      ${orange}
+        face global StatusLineInfo      ${cyan}
+        face global StatusLineValue     ${green}
+        face global StatusCursor        ${base00},${base3}
+        face global Prompt              yellow
+        face global MatchingChar        default+b
+        face global BufferPadding       ${base01},black
     "
 }
