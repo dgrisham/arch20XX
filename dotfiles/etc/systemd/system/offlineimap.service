@@ -1,0 +1,9 @@
+[Unit]
+Description=OfflineIMAP sync daemon
+Requires=network-online.target
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/offlineimap -o -q -u quiet -c /home/grish/dotfiles/mail/offlineimaprc
+TimeoutStartSec=2min30s

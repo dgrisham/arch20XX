@@ -1,0 +1,13 @@
+[Unit]
+Description=Powertop tunings
+
+[Service]
+Type=oneshot
+ExecStart=/usr/custom/bin/powertop_fix
+
+[Unit]
+After=multi-user.target
+
+[Install]
+WantedBy=multi-user.target
+
