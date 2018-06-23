@@ -86,6 +86,36 @@ def toggle-spell %{
 }
 map global user <a-s> :toggle-spell<ret>
 
+# tab indents or tab-completes, depending on context
+hook global InsertCompletionShow .* %{
+    try %{
+        # this command temporarily removes cursors preceded by whitespace;
+        # if there are no cursors left, it raises an error, does not
+        # continue to execute the mapping commands, and the error is eaten
+        # by the `try` command so no warning appears.
+        execute-keys -draft 'h<a-K>\h<ret>'
+        map window insert <tab> <c-n>
+        map window insert <s-tab> <c-p>
+    }
+}
+hook global InsertCompletionHide .* %{
+    unmap window insert <tab> <c-n>
+    unmap window insert <s-tab> <c-p>
+}
+
+# commented headers
+def header %{
+    on-key %{ %sh{
+        case "$kak_key" in
+            '1') echo comment-line; echo 'exec hxypj<a-h>f\ l<a-l>r=o<esc>h<a-h>d' ;;
+            '2') echo comment-line; echo 'exec hxypj<a-h>f\ l<a-l>r-o<esc>h<a-h>d' ;;
+            # '3') echo comment-line; echo 'exec I##<esc>A<ret><esc>hd' ;;
+        esac
+    } }
+}
+map global user h :header<ret> -docstring 'headers'
+# '1') echo comment-line; echo 'exec hxypjxH<a-;>LLr=A<ret><esc>klr<space>j' ;;>
+
 # auto wrap at 80 chars
 #set global autowrap_column 80
 #hook global WinCreate .* %{ autowrap-enable }
@@ -268,19 +298,3 @@ def surround %{
     } }
 }
 map global user e ":surround<ret>"
-
-hook global InsertCompletionShow .* %{
-    try %{
-        # this command temporarily removes cursors preceded by whitespace;
-        # if there are no cursors left, it raises an error, does not
-        # continue to execute the mapping commands, and the error is eaten
-        # by the `try` command so no warning appears.
-        execute-keys -draft 'h<a-K>\h<ret>'
-        map window insert <tab> <c-n>
-        map window insert <s-tab> <c-p>
-    }
-}
-hook global InsertCompletionHide .* %{
-    unmap window insert <tab> <c-n>
-    unmap window insert <s-tab> <c-p>
-}
