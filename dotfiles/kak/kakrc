@@ -1,8 +1,8 @@
 ## Hooks
 
 # case-insensitive search
-map global user / '/(?i)'
-map global user s 's(?i)'
+map global user / '/(?i)' -docstring 'case-insensitive search'
+map global user s 's(?i)' -docstring 'case-insensitive select'
 # map global user S 'S(?i)'
 
 # add line numbers
@@ -76,7 +76,7 @@ hook global BufCreate .*[.](ts|tsx|html) %{
     set buffer indentwidth 2
 }
 
-map global user f '/%opt{$function_start}<a-n>?%opt{$function_end}<ret>'
+# map global user f '/%opt{$function_start}<a-n>?%opt{$function_end}<ret>' -docstring '(not working)'
 
 def toggle-spell %{
     try %{
@@ -84,7 +84,7 @@ def toggle-spell %{
         spell
     } catch %{ rmhl window/hlranges_spell_regions }
 }
-map global user <a-s> :toggle-spell<ret>
+map global user <a-s> :toggle-spell<ret> -docstring 'toggle spellcheck'
 
 # tab indents or tab-completes, depending on context
 hook global InsertCompletionShow .* %{
@@ -131,7 +131,7 @@ def tmux-new %{
         esac
     } }
 }
-map global user t :tmux-new<ret>
+map global user t :tmux-new<ret> -docstring 'new tmux pane. \ or -'
 
 def repl-send %{
     on-key %{ %sh{
@@ -141,7 +141,7 @@ def repl-send %{
         esac
     } }
 }
-map global user r :repl-send<ret>
+map global user r :repl-send<ret> -docstring 'send to repl. s: send, r: run'
 
 # Git
 # ===
@@ -154,8 +154,8 @@ hook global WinSetOption filetype=diff %{
 # X11 (copy/paste)
 # ===============
 map global user y 'y<a-|>xclip -i<ret>; :echo -color Information "copied
- selection to X11 clipboard"<ret>'
-map global user p '!xclip -o <ret>'
+ selection to X11 clipboard"<ret>' -docstring 'copy to X clipboard'
+map global user p '!xclip -o <ret>' -docstring 'paste from X clipboard'
 
 # commenting
 def comment %{
@@ -167,7 +167,7 @@ def comment %{
         esac
     } }
 }
-map global user c :comment<ret>
+map global user c :comment<ret> -docstring 'comment. c: line, b: block'
 
 # Haskell
 # =======
@@ -198,10 +198,10 @@ hook global BufSetOption filetype=(markdown|latex) %{
     # map global user w %{ :nop "%sh{ alias_call md beamer ${kak_buffile}  }" <ret> }
 
     # format text with pandoc
-    map global user g %{ | pandoc --from=markdown --to=markdown --columns=80 <ret> }
+    map global user g %{ | pandoc --from=markdown --to=markdown --columns=80 <ret> } -docstring 'format md'
 
     # format github-flavored markdown with pandoc (utility, should be function)
-    map global user z %{ | pandoc --from=gfm --to=gfm --columns=80 <ret> }
+    map global user z %{ | pandoc --from=gfm --to=gfm --columns=80 <ret> } -docstring 'format gfm'
 
     # custom commands
     def header %{
@@ -213,7 +213,7 @@ hook global BufSetOption filetype=(markdown|latex) %{
             esac
         } }
     }
-    map global user h :header<ret>
+    map global user h :header<ret> -docstring 'headers'
     #map global user b %{ | pandoc-citeproc --bib2yaml --format=biblatex <ret> }
 
     def inline_code_helper %{ exec ',ea`f`a{.}<esc>;i' }
@@ -227,7 +227,7 @@ hook global BufSetOption filetype=(markdown|latex) %{
             esac
         } }
     }
-    map global user i :inline_code<ret>
+    map global user i :inline_code<ret> -docstring 'inline code'
 }
 
 def add-surround %!on-key %@exec %sh&
@@ -255,7 +255,7 @@ def add-surround %!on-key %@exec %sh&
 
   open=${open/ /<space>}
   close=${close/ /<space>}
-  
+
   echo "i$open<esc>a$close<esc>$epilogue"
 &@!
 
@@ -283,7 +283,7 @@ def delete-surround %!on-key %@exec %sh&
 
   open=${open/ /<space>}
   close=${close/ /<space>}
-  
+
   echo "<a-a>${kak_key}s${open}|${close}<ret>d<space>"
 &@!
 
@@ -297,4 +297,4 @@ def surround %{
         esac
     } }
 }
-map global user e ":surround<ret>"
+map global user e ":surround<ret>" -docstring 'surround. a: add, d: delete.'
