@@ -1,10 +1,10 @@
 #!/bin/zsh
 
 wenv_setup() {
-    WENV_DIR="/home/grish/.go/src/github.com/whyrusleeping/iptb"
+    WENV_DIR="/home/grish/.go/src/github.com/ipfs/iptb"
     WENV_ALIASES=()
     WENV_PROJECT='iptb'
-    WENV_BRANCH='feat/additional-interface-attributes'
+    WENV_BRANCH='fix/connect-fail-when-offline'
     wenv_init() {
         sudo systemctl start docker
     }

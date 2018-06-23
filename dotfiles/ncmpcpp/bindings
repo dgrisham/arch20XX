@@ -2,6 +2,9 @@ def_key "t"
     select_item
     scroll_down
 
+def_key "x"
+    push_character "delete"
+
 def_key "+"
     show_clock
 def_key "="
