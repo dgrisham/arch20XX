@@ -1,0 +1,32 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR="$HOME/.go/src/github.com/ipfs/iptb"
+    WENV_ALIASES=()
+    WENV_PROJECT='iptb'
+    WENV_BRANCH='master'
+    wenv_init() {
+        sudo systemctl start docker
+    }
+    wenv_shutdown() {
+        iptb kill
+        sudo systemctl stop docker
+    }
+}
+
+export IPTB_ROOT="$HOME/.iptb"
+
+alias reset='make && yes | { cp -f iptb $GOPATH/bin && iptb init -n 2 --type docker } && iptb start'
+alias update='make && yes | cp -f iptb $GOPATH/bin'
+
+c() {
+    dest="$1"
+    case "$dest" in
+        cnet)
+            cd "$GOPATH/src/github.com/whyrusleeping/go-ctrlnet"
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
