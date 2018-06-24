@@ -4,7 +4,7 @@ wenv_setup() {
     WENV_DIR="$HOME/.go/src/github.com/ipfs/iptb"
     WENV_ALIASES=()
     WENV_PROJECT='iptb'
-    WENV_BRANCH='master'
+    WENV_BRANCH='personal'
     wenv_init() {
         sudo systemctl start docker
     }
@@ -16,7 +16,18 @@ wenv_setup() {
 
 export IPTB_ROOT="$HOME/.iptb"
 
-alias reset='make && yes | { cp -f iptb $GOPATH/bin && iptb init -n 2 --type docker } && iptb start'
+clean() {
+    docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
+}
+
+restart() {
+    clean 2>&1 >/dev/null
+    n="$1"
+    [[ -z "$n" ]] && n=2
+    yes | iptb init -n "$n" --type docker 2>&1 >/dev/null && iptb start
+}
+
+alias reset='clean 2>&1 >/dev/null && make && yes | { cp -f iptb $GOPATH/bin && iptb init -n 2 --type docker 2>&1 >/dev/null } && iptb start'
 alias update='make && yes | cp -f iptb $GOPATH/bin'
 
 c() {

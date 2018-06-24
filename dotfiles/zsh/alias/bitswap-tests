@@ -2,7 +2,7 @@
 
 wenv_setup() {
     WENV_DIR="/home/grish/src/bitswap-tests"
-    WENV_ALIASES=()
+    WENV_ALIASES=('iptb')
     WENV_PROJECT='bitswap-tests'
     WENV_BRANCH='master'
     wenv_init() {

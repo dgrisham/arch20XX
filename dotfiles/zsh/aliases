@@ -83,10 +83,10 @@ alias ra='remove_alias'
 # -----------------
 source_alias() {
     # if no input, print list of possible inputs and return
-    if [[ $# -eq 0 ]]; then
-        print_aliases
-        return 1
-    fi
+    #if [[ $# -eq 0 ]]; then
+        #print_aliases
+        #return 1
+    #fi
     # check input(s), source associated alias file(s) accordingly
     input_arg="$1"
     shift
@@ -102,7 +102,7 @@ source_alias() {
             ;;
     esac
     if [[ -f "$alias_file" ]]; then
-        echo "sourcing $alias_file"
+        #echo "sourcing $alias_file"
         source "$alias_file"
     fi
     [[ $# -gt 0 ]] && source_alias $@
