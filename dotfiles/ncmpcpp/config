@@ -192,8 +192,8 @@ visualizer_color = 161, 10, 197, 203, 173, 179, 185, 12
 #song_list_format = {%a - }{%t}|{$8%f$9}$R{$3(%l)$9}
 #
 #song_status_format = {{%a{ "%b"{ (%y)}} - }{%t}}|{%f}
-#
-#song_library_format = {%n - }{%t}|{%f}
+##
+song_library_format = {%n - }{%46t}|{%46f}{$R$4%l$9}
 #
 #alternative_header_first_line_format = $b$1$aqqu$/a$9 {%t}|{%f} $1$atqq$/a$9$/b
 #
@@ -269,7 +269,7 @@ alternative_header_second_line_format = {{$4$b%a$/b$9}{ - $7%b$9}{ ($3%y$9)}}|{%
 ##   available.
 ##
 #
-#song_columns_list_format = (20)[]{a} (6f)[green]{NE} (50)[white]{t|f:Title} (20)[cyan]{b} (7f)[magenta]{l}
+song_columns_list_format = (20)[]{a} (6f)[yellow]{NE} (50)[white]{t|f:Title} (20)[cyan]{b} (7f)[yellow]{l}
 #
 ##### various settings #####
 #
@@ -308,7 +308,7 @@ execute_on_song_change = "/home/grish/bin/mnuc"
 #
 #discard_colors_if_item_is_selected = yes
 #
-#show_duplicate_tags = true
+show_duplicate_tags = no
 #
 #incremental_seeking = yes
 #
