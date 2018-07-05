@@ -1,6 +1,6 @@
 # solarized theme
 
-%sh{
+evaluate-commands %sh{
     # Base color definitions
     base03="rgb:002b36"
     base02="rgb:073642"
