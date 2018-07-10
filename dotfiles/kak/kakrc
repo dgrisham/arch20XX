@@ -22,20 +22,11 @@ hook global KakBegin .* %{addhl global show_matching}
 
 # highlight trailing whitespace at the end of lines
 hook -group TrailingWhitespaces global KakBegin .* %{
-    addhl global regex "[ \t]+$" 0:default,red
+    addhl global/ regex "[ \t]+$" 0:default,red
 }
 
 # colors
 colorscheme solarized2
-
-# highlighters
-%sh{
-localconfdir="$XDG_CONFIG_HOME/kak"
-
-for highlighter in "$localconfdir"/hl/*.kak; do
-    cat "$highlighter"
-done
-}
 
 # scroll offset
 set global scrolloff 12,0
