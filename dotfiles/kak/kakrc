@@ -6,7 +6,7 @@ map global user s 's(?i)' -docstring 'case-insensitive select'
 # map global user S 'S(?i)'
 
 # add line numbers
-hook global KakBegin .* %{addhl global number_lines -relative}
+hook global KakBegin .* %{addhl global/ number-lines -relative}
 # highlight characters in 81st column
 #hook global BufCreate .*[.](md|tex) %{
     #set buffer autowrap_column 80
@@ -18,7 +18,7 @@ hook global WinCreate .*[.](md|tex) %{
 }
 
 # add brackets highlighting
-hook global KakBegin .* %{addhl global show_matching}
+hook global KakBegin .* %{addhl global/ show-matching}
 
 # highlight trailing whitespace at the end of lines
 hook -group TrailingWhitespaces global KakBegin .* %{
@@ -71,9 +71,9 @@ hook global BufCreate .*[.](ts|tsx|html) %{
 
 def toggle-spell %{
     try %{
-        addhl window ranges 'spell_regions'
+        addhl window/ ranges 'spell_regions'
         spell
-    } catch %{ rmhl window/hlranges_spell_regions }
+    } catch %{ rmhl window/ranges<slash>spell_regions }
 }
 map global user <a-s> :toggle-spell<ret> -docstring 'toggle spellcheck'
 
