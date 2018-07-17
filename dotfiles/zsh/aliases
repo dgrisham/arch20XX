@@ -69,7 +69,7 @@ remove_alias() {
     if [[ "$force" = false ]]; then
         echo -n "Remove $alias_file (y/n)? "
         read choice
-       
+
         if ! echo "$choice" | grep -iq "^y"; then
             return 1
         fi

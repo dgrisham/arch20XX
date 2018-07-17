@@ -42,8 +42,6 @@ hook global BufSetOption filetype=haskell %{
 }
 hook global InsertChar \t %{ exec -draft -itersel h@ }
 
-
-
 ## soft tabs (excluding makefiles and Go)
 #hook global BufSetOption filetype=.*?(go|makefile) %{
     #hook buffer InsertChar \t %{ exec -draft -itersel h@ }

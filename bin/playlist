@@ -1,0 +1,124 @@
+#!/bin/zsh
+
+source "$DOTFILES/zsh/aliases"
+source_alias 'ipfs'
+
+library="$MUSIC/library"
+pl_dir="$DOTFILES/mpd/playlists"
+pl_index="$MUSIC/playlists/index"
+
+playlist_add() {
+    [[ -z "$1" ]] && return 1
+    playlist_name="$1"
+    playlist="$pl_dir/$playlist_name.m3u"
+    [[ ! -f "$playlist" ]] && return 1
+    rm -f /tmp/pl && touch /tmp/pl
+    echo "$playlist_name" >> /tmp/pl
+    i=1
+    for song in `cat "$playlist"`; do
+        # echo "library/song: $library/$song"
+        hash=$(ipfs private add -q --nocopy $(echo "$library/$song" | sed 's/\$/\\$/g'))
+        song_name=$(sed 's/^[0-9]_[0-9]\+-//' =(echo "${song:t}"))
+        song_pl=$(printf "%02d-$song_name" $i)
+        ((i = i + 1))
+        echo "$hash $song_pl" >> /tmp/pl
+    done
+    pl_hash=$(ipfs private add -Q /tmp/pl)
+    echo "$playlist_name $pl_hash" >> "$pl_index"
+}
+
+playlist_get() {
+    [[ -z "$1" ]] && return 1
+    playlist_hash="$1"
+    is_first_line=true
+    IFS=$'\n'
+    for line in `ipfs private cat "$playlist_hash"`; do
+        if [[ "$is_first_line" = true ]]; then
+            playlist_name="$line"
+            playlist_dir="$MUSIC/playlists/$playlist_name"
+            playlist_file="$playlist_dir/playlist.pl"
+            mkdir "$playlist_dir"
+            touch "$playlist_file"
+            is_first_line=false
+            continue
+        fi
+        song_map=("${(@s/ /)line}")
+        ipfs private pin add "/ipfs/$song_map[1]"
+        ln -sf "/ipfs/$song_map[1]" "$playlist_dir/$song_map[2]"
+        echo "$playlist_dir/$song_map[2]" >> "$playlist_file"
+   done
+}
+
+# TODO: finish
+playlist_menu() {
+    playlist_index=$(ipfs private cat \
+        /ipns/QmYzX4jvZT2iUDPVdG1MCJ8bX5Q2pca66QsPgDYWU4mUGZ)
+    playlists_global=($(awk '{print $1}' =(echo $playlist_index)))
+    playlists_local=$(ls $MUSIC/playlists)
+    echo "$playlists_global"
+    echo "$playlists_local"
+    playlist_options=($(echo ${playlist_names[@]} echo ${playlists_local[@]} | \
+        tr ' ' '\n' | sort | uniq -u))
+    echo "$playlist_options"
+}
+
+alias playlist_publish="ipfs private add -Q $pl_index | ipfs private name publish --key=pl_index --lifetime='168h'"
+
+playlist_show() {
+    cat "$pl_index"
+}
+
+# interface
+# ---------
+
+playlist_command="$1"
+shift
+case "$playlist_command" in
+    a|add)
+        playlist_add $@
+        ;;
+    p|publish)
+        playlist_publish $@
+        ;;
+    g|get)
+        playlist_get $@
+        ;;
+    m|menu)
+        playlist_menu $@
+        ;;
+    s|show)
+        playlist_show $@
+        ;;
+    *)
+        echo "Unrecognized command: '$wifi_command'"
+        ;;
+esac
+
+# Other/unfinished
+# ----------------
+
+post_song() {
+    SONG=$(cmus-remote -Q | grep file | awk '{print $2}')
+    [[ -z "$SONG" ]] && return 1
+
+    source_alias ipfs > /dev/null
+    ipfs private pubsub pub 'grish_now_playing' $(ipfs private add -Q "$SONG")
+}
+
+get_song() {
+    [ -e /tmp/song_fifo ] || mkfifo /tmp/song_fifo
+    exec 3<> /tmp/song_fifo
+    zmodload zsh/zselect
+
+    while true; do
+        if zselect -r 3; then
+            read -t 0 hash <&3
+            ipfs private get -o ~/file "$hash"
+        fi
+    done &
+
+    #while read -r line </tmp/pipe; do
+        #echo "$line"
+    #done
+    ipfs private pubsub sub 'grish_now_playing' > /tmp/song_fifo &
+}
