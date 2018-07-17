@@ -62,13 +62,13 @@ conky.text = [[
 [
 # MPD
 ${if_mpd_playing}
-    {"full_text":"♫", "color":"\#c9c925",
+    {"full_text":"♫", "color":"\#f3f3f3",
      "separator":false, "separator_block_width":6},
-    {"full_text":"${mpd_artist 27}", "color" : "\#374B85",
+    {"full_text":"${mpd_artist 27}", "color" : "\#aaaaaa",
      "separator" : false, "separator_block_width":3 },
-    {"full_text":" - ", "color" : "\#909737",
+    {"full_text":" - ", "color" : "\#555555",
      "separator" : false, "separator_block_width":3 },
-    {"full_text":"${mpd_title 30}", "color" : "\#545454",
+    {"full_text":"${mpd_title 30}", "color" : "\#aeaeae",
      "separator" : false, "separator_block_width":6 },
     {"full_text":"|", "color":"\#545454",
      "separator":false, "separator_block_width":6},
@@ -77,13 +77,13 @@ ${endif}
 
 # Network
 ${if_existing /sys/class/net/eth0/operstate up}
-    {"full_text":"eth0 up", "color":"\#00ff00",
+    {"full_text":"eth0 up", "color":"\#dddddd",
      "separator":false, "separator_block_width":6},
     {"full_text":"|", "color":"\#545454",
      "separator":false, "separator_block_width":6},
 ${endif}
 ${if_existing /sys/class/net/wlan0/operstate up}
-    {"full_text":"wlan0 up", "color":"\#00ff00",
+    {"full_text":"wlan0 up", "color":"\#dddddd",
      "separator":false, "separator_block_width":6},
     {"full_text":"|", "color":"\#545454",
      "separator":false, "separator_block_width":6},
@@ -98,18 +98,18 @@ ${endif}
  "separator":false, "separator_block_width":6},
 
 # Time:
-    {"full_text":"${time %m-%d}", "color":"\#c30067",
+    {"full_text":"${time %m-%d}", "color":"\#cccccc",
      "separator":false, "separator_block_width":6},
-    {"full_text":"${time %H:%M }", "color":"\#aaaaaa",
+    {"full_text":"${time %H:%M }", "color":"\#cccccc",
      "separator":false, "separator_block_width":0 },
 
 # Autoupdate state
 ${if_match ${exec systemctl status autoupdate | grep -P 'Main PID:[^\n]*SUCCESS' | wc -l} == 1}
-    {"full_text":"✔", "color":"\#11ee11",
+    {"full_text":"✔", "color":"\#cccccc",
      "separator":false, "separator_block_width":0}
 ${else}
 ${if_match ${exec systemctl status autoupdate | grep -P 'Main PID:[^\n]*FAILURE' | wc -l} == 1}
-    {"full_text":"✕", "color":"\#ee1111",
+    {"full_text":"✕", "color":"\#eeeeee",
      "separator":false, "separator_block_width":0}
 ${else}
     {"full_text":"?", "color":"\#777777",
@@ -118,3 +118,64 @@ ${endif}
 ${endif}
 ],
 ]]
+
+-- conky.text = [[
+-- [
+-- # MPD
+-- ${if_mpd_playing}
+--     {"full_text":"♫", "color":"\#c9c925",
+--      "separator":false, "separator_block_width":6},
+--     {"full_text":"${mpd_artist 27}", "color" : "\#374B85",
+--      "separator" : false, "separator_block_width":3 },
+--     {"full_text":" - ", "color" : "\#909737",
+--      "separator" : false, "separator_block_width":3 },
+--     {"full_text":"${mpd_title 30}", "color" : "\#545454",
+--      "separator" : false, "separator_block_width":6 },
+--     {"full_text":"|", "color":"\#545454",
+--      "separator":false, "separator_block_width":6},
+-- ${endif}
+-- #{"full_text":"${exec mpc -f %artist% status | head -n1 | sed 's/\(\w\)\w*\( \|$\)/\1/g'}", "color" : "\#5c5dad",
+
+-- # Network
+-- ${if_existing /sys/class/net/eth0/operstate up}
+--     {"full_text":"eth0 up", "color":"\#00ff00",
+--      "separator":false, "separator_block_width":6},
+--     {"full_text":"|", "color":"\#545454",
+--      "separator":false, "separator_block_width":6},
+-- ${endif}
+-- ${if_existing /sys/class/net/wlan0/operstate up}
+--     {"full_text":"wlan0 up", "color":"\#00ff00",
+--      "separator":false, "separator_block_width":6},
+--     {"full_text":"|", "color":"\#545454",
+--      "separator":false, "separator_block_width":6},
+-- ${endif}
+
+-- # Battery
+-- {"full_text":"${exec cat /sys/class/power_supply/BAT0/status | cut -c1-3 | tr '/a-z/' '/A-Z/'}", "color":"\#aaaaaa",
+--  "separator":false, "separator_block_width":6 },
+-- {"full_text":"${battery_percent BAT0}%", "color":"\#aaaaaa",
+--  "separator":false, "separator_block_width":6 },
+-- {"full_text":"|", "color":"\#545454",
+--  "separator":false, "separator_block_width":6},
+
+-- # Time:
+--     {"full_text":"${time %m-%d}", "color":"\#c30067",
+--      "separator":false, "separator_block_width":6},
+--     {"full_text":"${time %H:%M }", "color":"\#aaaaaa",
+--      "separator":false, "separator_block_width":0 },
+
+-- # Autoupdate state
+-- ${if_match ${exec systemctl status autoupdate | grep -P 'Main PID:[^\n]*SUCCESS' | wc -l} == 1}
+--     {"full_text":"✔", "color":"\#11ee11",
+--      "separator":false, "separator_block_width":0}
+-- ${else}
+-- ${if_match ${exec systemctl status autoupdate | grep -P 'Main PID:[^\n]*FAILURE' | wc -l} == 1}
+--     {"full_text":"✕", "color":"\#ee1111",
+--      "separator":false, "separator_block_width":0}
+-- ${else}
+--     {"full_text":"?", "color":"\#777777",
+--      "separator":false, "separator_block_width":0}
+-- ${endif}
+-- ${endif}
+-- ],
+-- ]]

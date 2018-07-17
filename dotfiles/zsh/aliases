@@ -192,7 +192,7 @@ remove_alias() {
     if [[ "$force" = false ]]; then
         echo -n "Remove $alias_file (y/n)? "
         read choice
-       
+
         if ! echo "$choice" | grep -iq "^y"; then
             return 1
         fi
@@ -225,7 +225,7 @@ source_alias() {
             ;;
     esac
     if [[ -f "$alias_file" ]]; then
-        echo "sourcing $alias_file"
+        # echo "sourcing $alias_file"
         source "$alias_file"
     fi
     [[ $# -gt 0 ]] && source_alias $@

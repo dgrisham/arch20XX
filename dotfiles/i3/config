@@ -201,7 +201,7 @@ set_from_resource $magenta     color13 #000000
 set_from_resource $darkcyan    color6  #000000
 set_from_resource $cyan        color14 #000000
 set_from_resource $darkwhite   color7  #000000
-set_from_resource $white       color15 #000000
+set_from_resource $white       color15 #ffffff
 
 # Use custom colors for black
 set $black       #282828
@@ -217,6 +217,8 @@ bar {
         statusline         $white
         background         $transparent
         separator          $transparent
+        inactive_workspace #000000 #000000 #e0e0e0
+        focused_workspace  #000000 #e0e0e0 #000000
     }
     #status_command i3status --config ~/.i3status
     #status_command conky -c ~/.config/conky/conkyrc.lua

@@ -3,17 +3,21 @@
 source "$DOTFILES/zsh/aliases"
 source_alias 'ipfs'
 
+library="$MUSIC/library"
+pl_dir="$DOTFILES/mpd/playlists"
 pl_index="$MUSIC/playlists/index"
 
 playlist_add() {
     [[ -z "$1" ]] && return 1
-    playlist="$1"
-    playlist_name="${playlist%.*}"
+    playlist_name="$1"
+    playlist="$pl_dir/$playlist_name.m3u"
+    [[ ! -f "$playlist" ]] && return 1
     rm -f /tmp/pl && touch /tmp/pl
     echo "$playlist_name" >> /tmp/pl
     i=1
     for song in `cat "$playlist"`; do
-        hash=$(ipfs private add -q --nocopy "$song")
+        # echo "library/song: $library/$song"
+        hash=$(ipfs private add -q --nocopy $(echo "$library/$song" | sed 's/\$/\\$/g'))
         song_name=$(sed 's/^[0-9]_[0-9]\+-//' =(echo "${song:t}"))
         song_pl=$(printf "%02d-$song_name" $i)
         ((i = i + 1))
@@ -45,6 +49,7 @@ playlist_get() {
    done
 }
 
+# TODO: finish
 playlist_menu() {
     playlist_index=$(ipfs private cat \
         /ipns/QmYzX4jvZT2iUDPVdG1MCJ8bX5Q2pca66QsPgDYWU4mUGZ)
@@ -58,6 +63,10 @@ playlist_menu() {
 }
 
 alias playlist_publish="ipfs private add -Q $pl_index | ipfs private name publish --key=pl_index --lifetime='168h'"
+
+playlist_show() {
+    cat "$pl_index"
+}
 
 # interface
 # ---------
@@ -76,6 +85,9 @@ case "$playlist_command" in
         ;;
     m|menu)
         playlist_menu $@
+        ;;
+    s|show)
+        playlist_show $@
         ;;
     *)
         echo "Unrecognized command: '$wifi_command'"
