@@ -34,9 +34,6 @@ fi
 
 xrandr --dpi 100
 
-feh --randomize --bg-center ~/media/pictures/backgrounds/cowboy_bebop/*
-# ~/.fehbg
-
 redshift &
 
 setxkbmap -option caps:ctrl_modifier

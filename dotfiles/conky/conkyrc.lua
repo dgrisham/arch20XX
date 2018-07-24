@@ -62,13 +62,13 @@ conky.text = [[
 [
 # MPD
 ${if_mpd_playing}
-    {"full_text":"♫", "color":"\#f3f3f3",
+    {"full_text":"♫", "color":"\#ffffff",
      "separator":false, "separator_block_width":6},
-    {"full_text":"${mpd_artist 27}", "color" : "\#aaaaaa",
+    {"full_text":"${mpd_artist 27}", "color" : "\#888888",
      "separator" : false, "separator_block_width":3 },
-    {"full_text":" - ", "color" : "\#555555",
+    {"full_text":" - ", "color" : "\#888888",
      "separator" : false, "separator_block_width":3 },
-    {"full_text":"${mpd_title 30}", "color" : "\#aeaeae",
+    {"full_text":"${mpd_title 30}", "color" : "\#888888",
      "separator" : false, "separator_block_width":6 },
     {"full_text":"|", "color":"\#545454",
      "separator":false, "separator_block_width":6},
@@ -83,7 +83,7 @@ ${if_existing /sys/class/net/eth0/operstate up}
      "separator":false, "separator_block_width":6},
 ${endif}
 ${if_existing /sys/class/net/wlan0/operstate up}
-    {"full_text":"wlan0 up", "color":"\#dddddd",
+    {"full_text":"wlan0 up", "color":"\#ffffff",
      "separator":false, "separator_block_width":6},
     {"full_text":"|", "color":"\#545454",
      "separator":false, "separator_block_width":6},
@@ -98,18 +98,18 @@ ${endif}
  "separator":false, "separator_block_width":6},
 
 # Time:
-    {"full_text":"${time %m-%d}", "color":"\#cccccc",
+    {"full_text":"${time %m-%d}", "color":"\#bfbfbf",
      "separator":false, "separator_block_width":6},
     {"full_text":"${time %H:%M }", "color":"\#cccccc",
      "separator":false, "separator_block_width":0 },
 
 # Autoupdate state
 ${if_match ${exec systemctl status autoupdate | grep -P 'Main PID:[^\n]*SUCCESS' | wc -l} == 1}
-    {"full_text":"✔", "color":"\#cccccc",
+    {"full_text":"✔", "color":"\#aaaaaa",
      "separator":false, "separator_block_width":0}
 ${else}
 ${if_match ${exec systemctl status autoupdate | grep -P 'Main PID:[^\n]*FAILURE' | wc -l} == 1}
-    {"full_text":"✕", "color":"\#eeeeee",
+    {"full_text":"✕", "color":"\#ee1111",
      "separator":false, "separator_block_width":0}
 ${else}
     {"full_text":"?", "color":"\#777777",
