@@ -42,7 +42,11 @@ aws_ssh() {
     addr=$(/bin/aws ec2 describe-instances --instance-ids $INSTANCE_ID |
            jq --raw-output '.Reservations[0] | .Instances[0] | .PublicIpAddress')
 
-    ssh -t $dst -o Hostname=$addr "$@" 'echo -ne "\033]0;'"$WINDOW_NAME"'\007"; zsh -ic "wenv start '"$wenv"'"'
+    if [[ -n "$wenv" ]]; then
+        ssh -t $dst -o Hostname=$addr "$@" 'echo -ne "\033]0;'"$WINDOW_NAME"'\007"; zsh -ic "wenv start '"$wenv"'"'
+    else
+        ssh $dst -o Hostname=$addr "$@"
+    fi
 }
 
 aws_scp() {

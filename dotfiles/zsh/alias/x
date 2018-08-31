@@ -23,7 +23,7 @@ fi
 set_window_name() {
     eval 'precmd (){xdotool set_window --name "'"$*"'" $(xdotool getactivewindow)}'
 }
-set_window_name "$(echo $USER@$(hostname): $(pwd) | sed 's|'"$HOME"'|~|')"
+[[ $(whence -w precmd) = *none ]] && set_window_name "$(echo $USER@$(hostname): $(pwd) | sed 's|'"$HOME"'|~|')"
 
 # hdmi
 # ----
