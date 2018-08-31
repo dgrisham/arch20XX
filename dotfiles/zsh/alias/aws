@@ -29,7 +29,10 @@ aws_status() {
 aws_ssh() {
     while getopts ':w:' opt; do
         case $opt in
-            w) [[ ! -z "$OPTARG" ]] && WINDOW_NAME='$USER@$(hostname) '"#$OPTARG" ;;
+            w) if [[ ! -z "$OPTARG" ]]; then
+                 wenv="$OPTARG"
+                 WINDOW_NAME='$USER@$(hostname) '"#$wenv"
+               fi ;;
         esac
     done
     shift $((OPTIND-1))
@@ -39,7 +42,7 @@ aws_ssh() {
     addr=$(/bin/aws ec2 describe-instances --instance-ids $INSTANCE_ID |
            jq --raw-output '.Reservations[0] | .Instances[0] | .PublicIpAddress')
 
-    ssh -t $dst -o Hostname=$addr "$@" 'echo -ne "\033]0;'"$WINDOW_NAME"'\007"; zsh'
+    ssh -t $dst -o Hostname=$addr "$@" 'echo -ne "\033]0;'"$WINDOW_NAME"'\007"; zsh -ic "wenv start '"$wenv"'"'
 }
 
 aws_scp() {
