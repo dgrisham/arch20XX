@@ -27,9 +27,12 @@ aws_status() {
 }
 
 aws_ssh() {
+    dst='aws'
+    [ "$1" = 'root' ] && dst='aws-root' && shift
     addr=$(/bin/aws ec2 describe-instances --instance-ids $INSTANCE_ID |
            jq --raw-output '.Reservations[0] | .Instances[0] | .PublicIpAddress')
-    ssh aws -o Hostname=$addr $@
+
+    ssh $dst -o Hostname=$addr $@
 }
 
 aws_scp() {

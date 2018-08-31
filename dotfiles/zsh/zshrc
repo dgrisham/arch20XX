@@ -19,3 +19,5 @@ LS_COLORS="$LS_COLORS:di=01;36"
 ORIGINAL_PS1="$PS1"
 
 eval "$ZSH_INIT"
+
+precmd() { xdotool set_window --name "$(echo $USER@$(hostname): $(pwd) | sed 's|'"$HOME"'|~|')" $(xdotool getactivewindow) }

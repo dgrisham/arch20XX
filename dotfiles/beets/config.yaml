@@ -1,5 +1,6 @@
-library   : /home/grish/dotfiles/beets/library.blb
-directory : /home/grish/media/music/library/
+library       : /home/grish/dotfiles/beets/library.blb
+directory     : /home/grish/media/music/library/
+original_date : yes
 
 import:
     write              : yes
@@ -10,7 +11,6 @@ import:
     detail             : yes
     per_disc_numbering : yes
     asciify_paths      : yes
-    original_date      : yes
     threaded           : yes
 
 ui:
@@ -20,7 +20,7 @@ match:
     ignored  : missing_tracks unmatched_tracks
     preferred:
         media         : ['CD', 'Digital Media|File']
-        #original_year : yes
+        # original_year : yes
         #countries     : ['US', 'GB|UK']
 
 item_fields:
@@ -53,12 +53,9 @@ replace:
     '[\s_]{2,}'    : '_'
     '\s'           : '_'
 
-plugins: inline fetchart scrub lastgenre ftintitle play
+plugins: inline fetchart scrub lastgenre ftintitle play info
 fetchart:
     minwidth: 600
     sources: coverart itunes amazon albumart google wikipedia
 ftintitle:
     format: (feat. {0})
-
-#musicbrainz:
-#    searchlimit: 5 # default
