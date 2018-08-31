@@ -20,6 +20,11 @@ if [[ ! -n "$TMUX" ]]; then
     alias ncmpcpp='urxvt --shading 0 -e zsh -c "/bin/ncmpcpp ; zsh -i" &; exit'
 fi
 
+set_window_name() {
+    eval 'precmd (){xdotool set_window --name "'"$*"'" $(xdotool getactivewindow)}'
+}
+set_window_name "$(echo $USER@$(hostname): $(pwd) | sed 's|'"$HOME"'|~|')"
+
 # hdmi
 # ----
 hdmi-on() {

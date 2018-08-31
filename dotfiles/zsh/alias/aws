@@ -2,7 +2,7 @@
 
 wenv_setup() {
     WENV_DIR=""
-    WENV_ALIASES=()
+    WENV_ALIASES=('x')
     WENV_PROJECT=''
     WENV_BRANCH=''
     wenv_init() {
@@ -27,12 +27,19 @@ aws_status() {
 }
 
 aws_ssh() {
+    while getopts ':w:' opt; do
+        case $opt in
+            w) [[ ! -z "$OPTARG" ]] && WINDOW_NAME='$USER@$(hostname) '"#$OPTARG" ;;
+        esac
+    done
+    shift $((OPTIND-1))
+
     dst='aws'
     [ "$1" = 'root' ] && dst='aws-root' && shift
     addr=$(/bin/aws ec2 describe-instances --instance-ids $INSTANCE_ID |
            jq --raw-output '.Reservations[0] | .Instances[0] | .PublicIpAddress')
 
-    ssh $dst -o Hostname=$addr $@
+    ssh -t $dst -o Hostname=$addr "$@" 'echo -ne "\033]0;$WINDOW_NAME\a"; zsh'
 }
 
 aws_scp() {
