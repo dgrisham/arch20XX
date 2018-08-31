@@ -88,14 +88,15 @@ visualizer_look = -|
 # ocean
 #visualizer_color = 240, 25, 26, 27, 28, 34, 40, 46, white
 # fire
-visualizer_color = 161, 10, 197, 203, 173, 179, 185, 12
+#visualizer_color = 161, 10, 197, 203, 173, 179, 185, 12
 #visualizer_color = 2, 162, 163, 164, 165, 166, 14
 #visualizer_color = blue, magenta, red, yellow, white
 #visualizer_color = white, red, green, blue, white, red, green, blue
 #
 ## Alternative subset of 256 colors for terminals that support it.
 ##
-#visualizer_color = 235, 237, 239, 241, 243, 245, 247, 249, 251, 253
+# black and white
+visualizer_color = 235, 237, 239, 241, 243, 245, 247, 249, 251, 253
 #
 ##### system encoding #####
 ##
@@ -193,17 +194,17 @@ visualizer_color = 161, 10, 197, 203, 173, 179, 185, 12
 #
 #song_status_format = {{%a{ "%b"{ (%y)}} - }{%t}}|{%f}
 ##
-song_library_format = {%n - }{%46t}|{%46f}{$R$4%l$9}
+song_library_format = {%n - }{%46t}|{%46f}{$R$(255)%l$(end)}
 #
-#alternative_header_first_line_format = $b$1$aqqu$/a$9 {%t}|{%f} $1$atqq$/a$9$/b
+alternative_header_first_line_format = $b$1$aqqu$/a$9 {$(253)%t$(end)}|{%f} $1$atqq$/a$9$/b
 #
-alternative_header_second_line_format = {{$4$b%a$/b$9}{ - $7%b$9}{ ($3%y$9)}}|{%D}
+alternative_header_second_line_format = {{$(251)%a$(end)}{ - $(252)%b$(end)}{ ($(246)%y$(end)$9)}}|{%D}
 #
-#current_item_prefix = $(yellow)$r
+current_item_prefix = $(white)$r
 #
 #current_item_suffix = $/r$(end)
 #
-#current_item_inactive_column_prefix = $(white)$r
+current_item_inactive_column_prefix = $(244)$r
 #
 #current_item_inactive_column_suffix = $/r$(end)
 #
@@ -269,7 +270,7 @@ alternative_header_second_line_format = {{$4$b%a$/b$9}{ - $7%b$9}{ ($3%y$9)}}|{%
 ##   available.
 ##
 #
-song_columns_list_format = (20)[]{a} (6f)[yellow]{NE} (50)[white]{t|f:Title} (20)[cyan]{b} (7f)[yellow]{l}
+song_columns_list_format = (50)[256]{t|f:Title} (20)[251]{a} (20)[247]{b} (7f)[254]{l}
 #
 ##### various settings #####
 #
@@ -527,7 +528,7 @@ ignore_leading_the = yes
 #
 #state_flags_color = default:b
 #
-main_window_color = cyan
+main_window_color = 255
 #
 #color1 = white
 #
@@ -535,7 +536,7 @@ main_window_color = cyan
 #
 #progressbar_color = black:b
 #
-#progressbar_elapsed_color = green:b
+progressbar_elapsed_color = white:b
 #
 #statusbar_color = default
 #

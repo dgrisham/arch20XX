@@ -1,23 +1,22 @@
 #!/bin/zsh
 
 wenv_setup() {
-    #WENV_DIR="$GOPATH/src/github.com/ipfs/go-ipfs/exchange/bitswap/decision"
     WENV_DIR="$HOME/scratch/ipfs/research-bitswap/strategy-impl"
     WENV_ALIASES=()
     WENV_PROJECT='round-robin-prq'
     WENV_BRANCH='docs/strategy_impl'
     unset WENV_TASK
     wenv_init() {
-        wenv_tmux_layout 'dev-tasks' './tangle'
+        # wenv_tmux_layout 'dev-tasks' './tangle'
 
-        # open source in ipfs repo
-        wenv_tmux_split c 'source_alias wenv ; wenv cd ipfs ; cd exchange/bitswap/decision ;\
-                           wenv_tmux_layout devloop "\"gx-go rewrite --fix; gx-go rewrite; go test -v -run TestSPRQ\"" ;\
-                           kak strategy_prq{,_test}.go round_robin_queue{,_test}.go'
+        # # open source in ipfs repo
+        # wenv_tmux_split c 'source_alias wenv ; wenv cd go-bitswap ; cd decision ;\
+        #                    wenv_tmux_layout devloop "\"gx-go rewrite --fix; gx-go rewrite; go test -v -run TestSPRQ\"" ;\
+        #                    kak strategy_prq{,_test}.go round_robin_queue{,_test}.go'
 
-        sleep 1
-        wenv_tmux_split c 'source_alias wenv ; wenv cd ipfs ;\
-                           wenv_tmux_layout devloop "make test"'
+        # sleep 1
+        # wenv_tmux_split c 'source_alias wenv ; wenv cd go-bitswap ;\
+        #                    wenv_tmux_layout devloop "make test"'
 
         edit_project
     }

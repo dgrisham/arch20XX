@@ -4,7 +4,7 @@ wenv_setup() {
     WENV_DIR="$GOPATH/src/github.com/ipfs/go-ipfs"
     WENV_ALIASES=()
     WENV_PROJECT=''
-    WENV_BRANCH='impl/bitswap/round-robin-prq'
+    WENV_BRANCH='experimental/bitswap-strategy-config'
     wenv_init() { }
 }
 
