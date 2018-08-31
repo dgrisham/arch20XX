@@ -1,7 +1,7 @@
 # General
 # =======
 
-alias ipy="ipython3"
+alias ipy="ipython3 --TerminalInteractiveShell.editing_mode=vi"
 
 # Environment
 # -----------
