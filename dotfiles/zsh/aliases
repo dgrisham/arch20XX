@@ -147,8 +147,8 @@ edit_alias() {
         print_aliases
         return 1
     fi
-    input_arg="$1"
 
+    input_arg="$1"
     case "$input_arg" in
         g|global)
             alias_file="$GLOBAL_ALIAS"
@@ -157,7 +157,7 @@ edit_alias() {
             alias_file="$LOCAL_ALIAS"
             ;;
         *)
-            alias_file="$ALIASES/${input_arg}"
+            alias_file="$WENVS/${input_arg}"
             ;;
     esac
 
@@ -184,7 +184,8 @@ remove_alias() {
             ;;
     esac
 
-    alias_file="$ALIASES/${1}"
+    alias_file="$WENVS
+/${1}"
 
     [[ -f "$alias_file" ]] || return 1
 
@@ -221,7 +222,7 @@ source_alias() {
             alias_file="$LOCAL_ALIAS"
             ;;
         *)
-            alias_file="$ALIASES/${input_arg}"
+            alias_file="$WENVS/${input_arg}"
             ;;
     esac
     if [[ -f "$alias_file" ]]; then
@@ -237,7 +238,7 @@ print_aliases() {
         echo "options:"
         echo "  - global (g)"
         echo "  - local (l)"
-        ls -lh "$ALIASES" | tail -n +2 | awk '{ print $9 }'
+        ls -lh "$WENVS" | tail -n +2 | awk '{ print $9 }'
 }
 
 # general git (more in git_aliases)
@@ -250,14 +251,6 @@ alias gs='git status'
 alias gl="git log --pretty=format:'%C(auto)%h %ad %C(green)%s%Creset %C(auto)%d [%an]' --graph --date=format:'%Y-%m-%d %H:%M' --all"
 
 alias gco='git checkout'
-
-start_environments() {
-    envs=$@
-    for env in $(echo "$envs" | sed -r 's/, ?/\n/g'); do
-        start_environment -n "$env"
-    done
-}
-alias ses='start_environments'
 
 # Task Warrior
 # ============

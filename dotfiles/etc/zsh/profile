@@ -30,7 +30,7 @@ export XDG_DESKTOP_DIR="/dev/null"
 # Alias files
 export LOCAL_ALIAS="$DOTFILES/zsh/aliases"
 export GLOBAL_ALIAS="$DOTFILES/etc/zsh/aliases"
-export ALIASES="$DOTFILES/zsh/alias"
+export WENVS="$DOTFILES/zsh/wenvs"
 
 # Defaults
 export EDITOR="kak"
