@@ -21,7 +21,7 @@ if [[ ! -n "$TMUX" ]]; then
 fi
 
 set_window_name() {
-    eval 'precmd (){xdotool set_window --name "'"$*"'" $(xdotool getactivewindow)}'
+    eval 'precmd (){xdotool set_window --name "'"$*"'" $(xdotool getwindowfocus)}'
 }
 set_default_window_name() {
     set_window_name "\$(echo $USER@$(hostname): \$(pwd) | sed 's|'"$HOME"'|~|')"
