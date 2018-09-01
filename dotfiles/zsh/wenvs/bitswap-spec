@@ -2,7 +2,7 @@
 
 wenv_setup() {
     WENV_DIR="/home/grish/scratch/ipfs/specs/bitswap"
-    WENV_ALIASES=()
+    WENV_DEPS=()
     WENV_PROJECT='bitswap-spec'
     WENV_BRANCH='bitswap/spec-update'
     WENV_TASK=78

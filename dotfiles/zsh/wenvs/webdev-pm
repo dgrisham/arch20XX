@@ -2,7 +2,7 @@
 
 wenv_setup() {
     WENV_DIR="$SCRATCH/webdev/pm"
-    WENV_ALIASES=()
+    WENV_DEPS=()
     WENV_PROJECT='webdev-pm'
     WENV_BRANCH='master'
     wenv_init() { }

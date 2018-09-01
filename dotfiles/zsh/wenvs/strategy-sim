@@ -2,7 +2,7 @@
 
 wenv_setup() {
     WENV_DIR="$WORK/research/resources/repos/strategy_sim"
-    WENV_ALIASES=('python')
+    WENV_DEPS=('python')
     WENV_PROJECT='strategy_sim'
     WENV_BRANCH='feat/incremental-exchanges'
     unset WENV_TASK

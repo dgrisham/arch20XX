@@ -2,7 +2,7 @@
 
 wenv_setup() {
     WENV_DIR="$GOPATH/src/github.com/ipfs/ipfs-cluster"
-    WENV_ALIASES=('ipfs' 'iptl' 'cluster')
+    WENV_DEPS=('ipfs' 'iptl' 'cluster')
     WENV_PROJECT='cluster-basic-auth'
     WENV_BRANCH='feat/api-basic-auth'
     WENV_TASK='76'

@@ -2,7 +2,7 @@
 
 wenv_setup() {
     WENV_DIR="/home/grish/personal"
-    WENV_ALIASES=()
+    WENV_DEPS=()
     WENV_PROJECT=''
     WENV_BRANCH=''
     wenv_init() {

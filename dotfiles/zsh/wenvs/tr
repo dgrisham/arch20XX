@@ -2,7 +2,7 @@
 
 wenv_setup() {
     WENV_DIR="/home/grish/work/stanford-cs240h/labs/1/tr"
-    WENV_ALIASES=()
+    WENV_DEPS=()
     WENV_PROJECT='tr-project'
     WENV_BRANCH='master'
     wenv_init() {

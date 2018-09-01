@@ -2,7 +2,7 @@
 
 wenv_setup() {
     WENV_DIR="/home/grish/scratch/resume"
-    WENV_ALIASES=('md')
+    WENV_DEPS=('md')
     WENV_PROJECT='resume'
     WENV_TASK=''
     WENV_BRANCH='dgrisham'

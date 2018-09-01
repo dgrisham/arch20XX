@@ -2,7 +2,7 @@
 
 wenv_setup() {
     WENV_DIR="/home/grish/work/csci400/materials"
-    WENV_ALIASES=('md')
+    WENV_DEPS=('md')
     WENV_PROJECT='csci400'
     WENV_BRANCH='master'
     wenv_init() { }

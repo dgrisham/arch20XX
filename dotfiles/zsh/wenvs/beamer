@@ -2,7 +2,7 @@
 
 wenv_setup() {
     WENV_DIR=""
-    WENV_ALIASES=()
+    WENV_DEPS=()
     WENV_PROJECT='md_beamer_ideas'
     WENV_BRANCH='master'
     wenv_init() { }

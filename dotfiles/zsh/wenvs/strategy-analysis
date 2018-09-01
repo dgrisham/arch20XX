@@ -2,7 +2,7 @@
 
 wenv_setup() {
     WENV_DIR="/home/grish/scratch/ipfs/research-bitswap/analysis"
-    WENV_ALIASES=('md')
+    WENV_DEPS=('md')
     WENV_PROJECT=''
     WENV_TASK=73
     WENV_BRANCH='docs/strategy_analysis'

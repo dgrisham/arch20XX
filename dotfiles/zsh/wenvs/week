@@ -2,7 +2,7 @@
 
 wenv_setup() {
     WENV_DIR=""
-    WENV_ALIASES=""
+    WENV_DEPS=""
     WENV_PROJECT='current-week'
     unset WENV_BRANCH
     wenv_init() { }

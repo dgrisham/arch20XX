@@ -4,7 +4,7 @@ wenv_setup() {
     WENV_DIR="$WORK/stanford-cs240h"
     WENV_DIR="$WENV_DIR/slides/02-concurrency"
 
-    unset WENV_ALIASES
+    unset WENV_DEPS
     WENV_PROJECT='stanford-240h'
 
     wenv_init() {

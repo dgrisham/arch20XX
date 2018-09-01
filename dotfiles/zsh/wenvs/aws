@@ -2,7 +2,7 @@
 
 wenv_setup() {
     WENV_DIR=""
-    WENV_ALIASES=('x')
+    WENV_DEPS=('x')
     WENV_PROJECT=''
     WENV_BRANCH=''
 

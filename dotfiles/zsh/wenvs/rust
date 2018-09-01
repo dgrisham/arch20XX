@@ -3,7 +3,7 @@
 wenv_setup() {
     WENV_DIR="$SCRATCH/rust/04-ownership/src"
     #WENV_DIR="$WENV_DIR/variables"
-    unset WENV_ALIASES
+    unset WENV_DEPS
     WENV_PROJECT="$WENV"
 
     wenv_init() {

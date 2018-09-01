@@ -2,7 +2,7 @@
 
 wenv_setup() {
     WENV_DIR="$GOPATH/src/github.com/ipfs/ipfs-cluster"
-    WENV_ALIASES=('ipfs' 'iptl')
+    WENV_DEPS=('ipfs' 'iptl')
     WENV_PROJECT='ipfs-cluster-pnets'
     WENV_BRANCH='feat/pnet'
 

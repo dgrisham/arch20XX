@@ -2,7 +2,7 @@
 
 wenv_setup() {
     WENV_DIR="/home/grish/work/research/resources/papers/other"
-    WENV_ALIASES=()
+    WENV_DEPS=()
     WENV_PROJECT='pl-research-call'
     WENV_BRANCH=''
     wenv_init() {

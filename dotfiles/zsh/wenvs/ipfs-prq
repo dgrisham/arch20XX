@@ -2,7 +2,7 @@
 
 wenv_setup() {
     WENV_DIR="$HOME/scratch/ipfs/research-bitswap/strategy-impl"
-    WENV_ALIASES=()
+    WENV_DEPS=()
     WENV_PROJECT='round-robin-prq'
     WENV_BRANCH='docs/strategy_impl'
     unset WENV_TASK
