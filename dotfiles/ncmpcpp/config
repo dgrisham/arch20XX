@@ -79,24 +79,26 @@ visualizer_sync_interval = 30
 ##
 #
 ## Available values: spectrum, wave, wave_filled, ellipse.
-##
-visualizer_type = spectrum
-#
-#visualizer_look = ●▮
-visualizer_look = -|
-#
+
+visualizer_type = wave
+visualizer_look = ..
+# black and white
+visualizer_color = 242, 243, 244, 245, 246, 248, 249, 250, 251, 252, 253, 254, 255
+
+# visualizer_type = spectrum
+# visualizer_look = -|
+# black and white
+# visualizer_color = 235, 237, 239, 241, 243, 245, 247, 249, 251, 253
 # ocean
-#visualizer_color = 240, 25, 26, 27, 28, 34, 40, 46, white
+# visualizer_color = 240, 25, 26, 27, 28, 34, 40, 46, white
 # fire
-#visualizer_color = 161, 10, 197, 203, 173, 179, 185, 12
-#visualizer_color = 2, 162, 163, 164, 165, 166, 14
+
 #visualizer_color = blue, magenta, red, yellow, white
 #visualizer_color = white, red, green, blue, white, red, green, blue
-#
 ## Alternative subset of 256 colors for terminals that support it.
 ##
-# black and white
-visualizer_color = 235, 237, 239, 241, 243, 245, 247, 249, 251, 253
+#visualizer_color = 161, 10, 197, 203, 173, 179, 185, 12
+#visualizer_color = 2, 162, 163, 164, 165, 166, 14
 #
 ##### system encoding #####
 ##
@@ -193,31 +195,31 @@ visualizer_color = 235, 237, 239, 241, 243, 245, 247, 249, 251, 253
 #song_list_format = {%a - }{%t}|{$8%f$9}$R{$3(%l)$9}
 #
 #song_status_format = {{%a{ "%b"{ (%y)}} - }{%t}}|{%f}
-##
+
 song_library_format = {%n - }{%46t}|{%46f}{$R$(255)%l$(end)}
-#
+
 alternative_header_first_line_format = $b$1$aqqu$/a$9 {$(253)%t$(end)}|{%f} $1$atqq$/a$9$/b
-#
+
 alternative_header_second_line_format = {{$(251)%a$(end)}{ - $(252)%b$(end)}{ ($(246)%y$(end)$9)}}|{%D}
-#
+
 current_item_prefix = $(white)$r
-#
-#current_item_suffix = $/r$(end)
-#
+
+current_item_suffix = $/r$(end)
+
 current_item_inactive_column_prefix = $(244)$r
-#
-#current_item_inactive_column_suffix = $/r$(end)
-#
+
+current_item_inactive_column_suffix = $/r$(end)
+
 #now_playing_prefix = $b
 #
 #now_playing_suffix = $/b
-#
+
 #browser_playlist_prefix = "$2playlist$9 "
-#
-#selected_item_prefix = $6
-#
-#selected_item_suffix = $9
-#
+
+selected_item_prefix = $(244)
+
+selected_item_suffix = $(end)
+
 #modified_item_prefix = $3> $9
 #
 ##
@@ -269,17 +271,18 @@ current_item_inactive_column_prefix = $(244)$r
 ##   display artist tag and then composer and performer if previous ones are not
 ##   available.
 ##
-#
+
 song_columns_list_format = (50)[256]{t|f:Title} (20)[251]{a} (20)[247]{b} (7f)[254]{l}
-#
+
 ##### various settings #####
 #
 ##
 ## Note: Custom command that will be executed each time song changes. Useful for
 ## notifications etc.
 ##
+
 execute_on_song_change = "/home/grish/bin/mnuc"
-#
+
 ##
 ## Note: Custom command that will be executed each time player state
 ## changes. The environment variable MPD_PLAYER_STATE is set to the current
