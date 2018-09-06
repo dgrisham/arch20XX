@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -x
+
+MUSIC_DIR="$MUSIC/library"
+file="$(mpc --format %file% current)"
+album_dir="${file%/*}"
+cover="$MUSIC_DIR/$album_dir/cover.jpg"
+# cover="/tmp/cover2.jpg"
+
+config="$DOTFILES/cava/config"
+num=2
+
+colors=$(get_colors.py $num "$cover")
+perl -pi -e 's/^gradient_count = \d+$/gradient_count = '$num'/' -- "$config"
+
+if [[ -z "$colors" ]]; then
+    colors='#222222
+#ffffff'
+fi
+
+i=1
+echo "$colors" | while read -r color; do
+    if cat "$config" | grep "gradient_color_$i"; then
+        perl -pi -e "s/^gradient_color_$i = '#[0-9A-Fa-f]+'$/gradient_color_$i = '$color'/" "$config"
+    else
+        echo "gradient_color_$i = '$color'" >> $config
+    fi
+    ((i++))
+done

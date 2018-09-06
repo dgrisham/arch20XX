@@ -15,9 +15,11 @@ alias pdf='zathura'
 # -----
 alias stm='LD_PRELOAD='"'"'/usr/$LIB/libstdc++.so.6 /usr/$LIB/libgcc_s.so.1 /usr/$LIB/libxcb.so.1 /usr/$LIB/libgpg-error.so'"'"' steam'
 
-# ncmpcpp (for album art)
+# ncmpcpp/visualizer (for album art)
 if [[ ! -n "$TMUX" ]]; then
     alias ncmpcpp='urxvt --shading 0 -e zsh -c "/bin/ncmpcpp ; zsh -i" &; exit'
+    # alias cava='urxvt --shading 0 -e zsh -c "/bin/cava ; zsh -i" &; exit'
+    alias cava='urxvt --shading 0 -e zsh -c "mpd_watch.sh \"mnuc2; dynamic_cava_colors >/home/grish/scratch/dynamic_cava_colors-log 2>&1 ; pkill -USR1 cava\" &; /bin/cava; zsh -i" &; exit'
 fi
 
 set_window_name() {
@@ -39,6 +41,11 @@ hdmi-on() {
             ;;
         'class')
             opts="--mode 1920x1080 --same-as DP-0 $@"
+            ;;
+        'work')
+            $HOME/.screenlayout/work.sh
+            feh --bg-center --randomize --no-fehbg '/home/grish/media/pictures/backgrounds/cowboy_bebop/spike_ship_outline-no_title.jpg' /home/grish/media/pictures/backgrounds/*-bw.{jpg,png}
+            return 0
             ;;
         *)
             opts="--auto --above DP-0 $@"

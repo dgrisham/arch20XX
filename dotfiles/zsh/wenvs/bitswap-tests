@@ -4,7 +4,7 @@ wenv_setup() {
     WENV_DIR="/home/grish/src/bitswap-tests"
     WENV_DEPS=()
     WENV_PROJECT='bitswap-tests'
-    WENV_BRANCH='master'
+    WENV_BRANCH='rewrite'
     wenv_init() {
         sudo systemctl start docker
     }
