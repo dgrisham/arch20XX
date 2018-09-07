@@ -3,7 +3,7 @@
 cmd="$@"
 [[ -z "$cmd" ]] && return 1
 
-echo "$cmd"
+echo "$cmd" >/home/grish/log
 eval "$cmd"
 while :; do
     mpc idle >/dev/null

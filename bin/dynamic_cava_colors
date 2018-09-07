@@ -1,12 +1,9 @@
 #!/bin/bash
 
-set -x
-
 MUSIC_DIR="$MUSIC/library"
 file="$(mpc --format %file% current)"
 album_dir="${file%/*}"
 cover="$MUSIC_DIR/$album_dir/cover.jpg"
-# cover="/tmp/cover2.jpg"
 
 config="$DOTFILES/cava/config"
 num=2
@@ -20,11 +17,21 @@ if [[ -z "$colors" ]]; then
 fi
 
 i=1
-echo "$colors" | while read -r color; do
+modified=0
+for color in $(echo "$colors"); do
+    if cat "$config" | grep "gradient_color_$i = '$color'"; then
+        echo "NOT MODIFYING"
+        ((i++))
+        continue
+    fi
+    echo "MODIFYING"
     if cat "$config" | grep "gradient_color_$i"; then
         perl -pi -e "s/^gradient_color_$i = '#[0-9A-Fa-f]+'$/gradient_color_$i = '$color'/" "$config"
     else
         echo "gradient_color_$i = '$color'" >> $config
     fi
+    modified=1
     ((i++))
 done
+
+((modified == 1)) && pkill -USR1 cava
