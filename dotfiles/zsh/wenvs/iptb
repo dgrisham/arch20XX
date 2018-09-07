@@ -5,7 +5,7 @@ wenv_setup() {
     WENV_DEPS=()
     WENV_PROJECT='iptb'
     WENV_BRANCH='feat/async-run-list'
-    WENV_TASK=85
+    WENV_TASK=86
     wenv_init() {
         sudo systemctl start docker
     }

@@ -1,8 +1,10 @@
 #!/bin/bash
 
-MUSIC_DIR="$MUSIC/library"
 file="$(mpc --format %file% current)"
+i=0
+[[ -z "$file" ]] && exit 1
 album_dir="${file%/*}"
+MUSIC_DIR="$MUSIC/library"
 cover="$MUSIC_DIR/$album_dir/cover.jpg"
 
 config="$DOTFILES/cava/config"
@@ -34,4 +36,4 @@ for color in $(echo "$colors"); do
     ((i++))
 done
 
-((modified == 1)) && pkill -USR1 cava
+((modified == 1)) && pkill -USR2 cava

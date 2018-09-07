@@ -19,7 +19,7 @@ alias stm='LD_PRELOAD='"'"'/usr/$LIB/libstdc++.so.6 /usr/$LIB/libgcc_s.so.1 /usr
 if [[ ! -n "$TMUX" ]]; then
     alias ncmpcpp='urxvt --shading 0 -e zsh -c "/bin/ncmpcpp ; zsh -i" &; exit'
     # alias cava='urxvt --shading 0 -e zsh -c "/bin/cava ; zsh -i" &; exit'
-    alias cava='urxvt --shading 0 -e zsh -c "mpd_watch.sh \"mnuc2; dynamic_cava_colors >/home/grish/scratch/dynamic_cava_colors-log 2>&1\" &; /bin/cava; zsh -i" &; exit'
+    alias cava='urxvt --shading 0 -e zsh -c "mpd_watch.sh \"mnuc2; dynamic_cava_colors >/home/grish/scratch/dynamic_cava_colors-log 2>&1\" &; /usr/local/bin/cava; zsh -i" &; exit'
 fi
 
 set_window_name() {
