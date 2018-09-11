@@ -4,7 +4,7 @@ wenv_setup() {
     WENV_DIR="$HOME/.go/src/github.com/ipfs/iptb"
     WENV_ALIASES=()
     WENV_PROJECT='iptb'
-    WENV_BRANCH='personal'
+    WENV_BRANCH='test/rrq'
     wenv_init() {
         sudo systemctl start docker
     }
