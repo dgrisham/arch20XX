@@ -13,6 +13,8 @@ done
 
 LS_COLORS="$LS_COLORS:di=01;36"
 
+# necessary for WENVs
+
 ORIGINAL_PS1="$PS1"
 
 eval "$ZSH_INIT"

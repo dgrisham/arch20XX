@@ -14,6 +14,10 @@ wenv_setup() {
     }
 }
 
+clean() {
+    docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
+}
+
 export IPTB_ROOT="$HOME/.iptb"
 
 clean() {
@@ -33,6 +37,9 @@ alias update='make && yes | cp -f iptb $GOPATH/bin'
 c() {
     dest="$1"
     case "$dest" in
+        ipfs)
+            cd "$GOPATH/src/github.com/ipfs/go-ipfs"
+            ;;
         cnet)
             cd "$GOPATH/src/github.com/whyrusleeping/go-ctrlnet"
             ;;

@@ -1,0 +1,58 @@
+#!/bin/zsh
+
+wenv_setup() {
+    typeset -Ag WENV_CONSTS
+    WENV_DIR="/home/grish/src/bitswap-tests/plot"
+    WENV_DEPS=('aws')
+    WENV_NAME='bitswap-test-plots'
+    WENV_BRANCH='master'
+    wenv_init() {
+        wenv_tmux_layout tasks
+        wenv_tmux_split c 'pipenv shell --fancy'
+        tmux select-window -t1
+        $EDITOR plot.py
+    }
+    wenv_shutdown() {
+        # iptb kill
+        # sudo systemctl stop docker
+    }
+}
+
+update() {
+    for i in 1 2 3; do
+        aws rsync aws:~/src/bitswap-tests/results/$i/rrq $HOME/src/bitswap-tests/results/$i --delete
+    done
+}
+
+# py() {
+#     pyenv local 3.6.5
+#     pipenv shell --fancy
+# }
+
+# export IPTB_ROOT="$HOME/.iptb"
+
+# init() {
+#     num="$1"
+#     [[ -z "$num" ]] && num=3
+#     yes | iptb init -n $num --type docker
+# }
+
+# reinit() {
+#     iptb kill
+#     init "$1"
+# }
+
+# c() {
+#     dest="$1"
+#     case "$dest" in
+#         iptb)
+#             cd "$GOPATH/src/github.com/whyrusleeping/iptb"
+#             ;;
+#         cnet)
+#             cd "$GOPATH/src/github.com/whyrusleeping/go-ctrlnet"
+#             ;;
+#         *)
+#             return 1
+#             ;;
+#     esac
+# }

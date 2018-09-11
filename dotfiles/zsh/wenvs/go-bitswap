@@ -1,0 +1,25 @@
+#!/bin/zsh
+
+wenv_setup() {
+    typeset -Ag WENV_CONSTS
+    WENV_DIR="$GOPATH/src/github.com/ipfs/go-bitswap"
+    WENV_DEPS=()
+    WENV_NAME='go-bitswap'
+    WENV_BRANCH='impl/strategy-prq'
+    wenv_init() {
+        wenv_tmux_layout 'tasks'
+        edit_project
+    }
+    wenv_shutdown() { }
+}
+
+edit_project() {
+        workfile='wantlist/wantlist.go'
+        [[ -n "$1" ]] && workfile="$1"
+        session=${${workfile#*/}%%.*}
+        wenv_tmux_split v "kak -s $session $workfile $GOPATH/src/github.com/ipfs/go-ipfs/exchange/bitswap/$workfile"
+        tmux select-pane -U
+        until kak -l | grep "$session"; do :; done
+        kak -c "$session" -e 'buffer-next'
+
+}

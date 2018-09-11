@@ -3,7 +3,7 @@
 # Shortcuts
 # =========
 
-becho() { echo '\033[0;34m'$@'\033[0m' }
+becho() { echo '\033[0;36m'$@'\033[0m' }
 gecho() { echo '\033[0;32m'$@'\033[0m' }
 recho() { echo '\033[0;31m'$@'\033[0m' }
 
@@ -24,8 +24,8 @@ edit_alias() {
         print_aliases
         return 1
     fi
-    input_arg="$1"
 
+    input_arg="$1"
     case "$input_arg" in
         g|global)
             alias_file="$GLOBAL_ALIAS"
@@ -34,7 +34,7 @@ edit_alias() {
             alias_file="$LOCAL_ALIAS"
             ;;
         *)
-            alias_file="$ALIASES/${input_arg}"
+            alias_file="$WENVS/${input_arg}"
             ;;
     esac
 
@@ -61,7 +61,8 @@ remove_alias() {
             ;;
     esac
 
-    alias_file="$ALIASES/${1}"
+    alias_file="$WENVS
+/${1}"
 
     [[ -f "$alias_file" ]] || return 1
 
@@ -98,7 +99,7 @@ source_alias() {
             alias_file="$LOCAL_ALIAS"
             ;;
         *)
-            alias_file="$ALIASES/${input_arg}"
+            alias_file="$WENVS/${input_arg}"
             ;;
     esac
     if [[ -f "$alias_file" ]]; then
@@ -114,7 +115,7 @@ print_aliases() {
         echo "options:"
         echo "  - global (g)"
         echo "  - local (l)"
-        ls -lh "$ALIASES" | tail -n +2 | awk '{ print $9 }'
+        ls -lh "$WENVS" | tail -n +2 | awk '{ print $9 }'
 }
 
 # general git (more in git_aliases)
