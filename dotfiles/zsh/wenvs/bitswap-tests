@@ -33,15 +33,19 @@ c() {
             cd "$GOPATH/src/github.com/ipfs/go-ipfs"
             ;;
         iptb)
-            cd "$GOPATH/src/github.com/whyrusleeping/iptb"
+            cd "$GOPATH/src/github.com/ipfs/iptb"
             ;;
         cnet)
             cd "$GOPATH/src/github.com/whyrusleeping/go-ctrlnet"
+            ;;
+        ipfs)
+            cd "$GOPATH/src/github.com/ipfs/go-ipfs"
+            ;;
+        bs|bitswap)
+            cd "$GOPATH/src/github.com/ipfs/go-bitswap"
             ;;
         *)
             return 1
             ;;
     esac
 }
-
-
