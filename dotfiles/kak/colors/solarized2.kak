@@ -35,7 +35,7 @@ evaluate-commands %sh{
         face global type       ${blue_medium}
         face global identifier ${blue_light}
         face global string     ${magenta}
-        face global keyword    white
+        face global keyword    "rgb:f8f8f8"
         face global operator   ${blue}
         face global attribute  ${violet}
         face global comment    ${grey_medium}

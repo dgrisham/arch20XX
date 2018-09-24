@@ -21,8 +21,8 @@ clean() {
 
 export IPTB_ROOT="$HOME/.iptb"
 
-alias reset='go build -o iptb main.go && yes | { cp -f iptb $GOPATH/bin && iptb init -n 2 --type docker } && iptb start'
-alias update='go build -o iptb main.go && yes | cp -f iptb $GOPATH/bin'
+# alias reset='go build -o iptb main.go && yes | { cp -f iptb $GOPATH/bin && iptb init -n 2 --type docker } && iptb start'
+# alias update='go build -o iptb main.go && yes | cp -f iptb $GOPATH/bin'
 
 c() {
     dest="$1"
