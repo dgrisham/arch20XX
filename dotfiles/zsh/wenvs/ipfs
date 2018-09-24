@@ -22,3 +22,15 @@ ipfs() {
 
     eval $GOPATH/bin/ipfs "$config" $@
 }
+
+c() {
+    case "$1" in
+        'bs'|'bitswap')
+            dir="$WENV_DIR/vendor/github.com/ipfs/go-bitswap"
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+    cd "$dir"
+}

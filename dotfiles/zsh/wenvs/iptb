@@ -4,14 +4,14 @@ wenv_setup() {
     WENV_DIR="/home/grish/.go/src/github.com/ipfs/iptb"
     WENV_DEPS=()
     WENV_PROJECT='iptb'
-    WENV_BRANCH='feat/async-run-list'
+    WENV_BRANCH='personal'
     WENV_TASK=86
     wenv_init() {
-        sudo systemctl start docker
+        # sudo systemctl start docker
     }
     wenv_shutdown() {
-        iptb kill
-        sudo systemctl stop docker
+        # iptb kill
+        # sudo systemctl stop docker
     }
 }
 

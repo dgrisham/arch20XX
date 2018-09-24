@@ -40,8 +40,8 @@ case "$TYPE" in
         ;;
 
     *.flac*)
-        shnsplit -f *.cue -d "$ODIR" -a track -o "flac flac -s -o %f -" *.flac
-        # cuebreakpoints *.cue | shnsplit -d "$ODIR" -a track -o flac *.flac
+        # shnsplit -f *.cue -d "$ODIR" -a track -o "flac flac -s -o %f -" *.flac
+        cuebreakpoints *.cue | shnsplit -d "$ODIR" -a track -o flac *.flac
         cuetag.sh *.cue "$ODIR"/track*.flac
         exit
         ;;

@@ -1,16 +1,17 @@
 #!/bin/zsh
 
 wenv_setup() {
-    typeset -Ag WENV_CONSTS
     WENV_DIR="/home/grish/src/bitswap-tests/plot"
-    WENV_DEPS=('aws')
+    WENV_DEPS=('aws' 'iptb')
     WENV_NAME='bitswap-test-plots'
-    WENV_BRANCH='master'
+    WENV_BRANCH='plot-rewrite'
     wenv_init() {
         wenv_tmux_layout tasks
+        tmux rename-window 'src'
         wenv_tmux_split c 'pipenv shell --fancy'
+        tmux rename-window 'run'
         tmux select-window -t1
-        $EDITOR plot.py
+        $EDITOR newplot.py
     }
     wenv_shutdown() {
         # iptb kill
@@ -20,7 +21,7 @@ wenv_setup() {
 
 update() {
     for i in 1 2 3; do
-        aws rsync aws:~/src/bitswap-tests/results/$i/rrq $HOME/src/bitswap-tests/results/$i --delete
+        aws rsync aws:~/src/bitswap-tests/results/ $HOME/src/bitswap-tests/results/ --delete
     done
 }
 

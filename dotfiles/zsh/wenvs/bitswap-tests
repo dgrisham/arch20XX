@@ -2,14 +2,15 @@
 
 wenv_setup() {
     WENV_DIR="/home/grish/src/bitswap-tests"
-    WENV_DEPS=()
+    WENV_DEPS=('iptb')
     WENV_PROJECT='bitswap-tests'
-    WENV_BRANCH='rewrite'
+    WENV_BRANCH='master'
     wenv_init() {
         sudo systemctl start docker
     }
     wenv_shutdown() {
-        iptb kill
+        iptb stop
+        clean
         sudo systemctl stop docker
     }
 }
@@ -31,15 +32,19 @@ c() {
     dest="$1"
     case "$dest" in
         iptb)
-            cd "$GOPATH/src/github.com/whyrusleeping/iptb"
+            cd "$GOPATH/src/github.com/ipfs/iptb"
             ;;
         cnet)
             cd "$GOPATH/src/github.com/whyrusleeping/go-ctrlnet"
+            ;;
+        ipfs)
+            cd "$GOPATH/src/github.com/ipfs/go-ipfs"
+            ;;
+        bs|bitswap)
+            cd "$GOPATH/src/github.com/ipfs/go-bitswap"
             ;;
         *)
             return 1
             ;;
     esac
 }
-
-
