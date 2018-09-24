@@ -4,18 +4,14 @@ wenv_setup() {
     WENV_DIR="$HOME/.go/src/github.com/ipfs/iptb"
     WENV_ALIASES=()
     WENV_PROJECT='iptb'
-    WENV_BRANCH='test/rrq'
+    WENV_BRANCH='personal'
     wenv_init() {
-        sudo systemctl start docker
+        # sudo systemctl start docker
     }
     wenv_shutdown() {
-        iptb kill
-        sudo systemctl stop docker
+        # iptb stop
+        # sudo systemctl stop docker
     }
-}
-
-clean() {
-    docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
 }
 
 export IPTB_ROOT="$HOME/.iptb"
