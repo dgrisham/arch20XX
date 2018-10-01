@@ -34,6 +34,9 @@ fi
 
 xrandr --dpi 100
 
+# hide mouse cursor after 1 second of inactivity
+unclutter -idle 1 -root &
+
 redshift &
 
 setxkbmap -option caps:ctrl_modifier

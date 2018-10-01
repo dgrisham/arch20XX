@@ -272,7 +272,7 @@ selected_item_suffix = $(end)
 ##   available.
 ##
 
-song_columns_list_format = (50)[256]{t|f:Title} (20)[251]{a} (20)[247]{b} (7f)[254]{l}
+song_columns_list_format = (50)[256]{t|f:Title} (20)[247]{b} (20)[251]{a} (7f)[254]{l}
 
 ##### various settings #####
 #

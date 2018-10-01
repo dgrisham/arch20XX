@@ -8,32 +8,40 @@ MUSIC_DIR="$MUSIC/library"
 cover="$MUSIC_DIR/$album_dir/cover.jpg"
 
 config="$DOTFILES/cava/config"
-num=2
+num=4
 
-colors=$(get_colors.py $num "$cover")
-perl -pi -e 's/^gradient_count = \d+$/gradient_count = '$num'/' -- "$config"
-
+colors=$($BIN/get_colors.py $num $cover)
 if [[ -z "$colors" ]]; then
     colors='#222222
 #ffffff'
+    num=2
 fi
+perl -pi -e 's/^gradient_count = \d+$/gradient_count = '$num'/' -- "$config"
 
 i=1
+j=1
 modified=0
 for color in $(echo "$colors"); do
     if cat "$config" | grep "gradient_color_$i = '$color'"; then
-        echo "NOT MODIFYING"
         ((i++))
+        ((j++))
         continue
     fi
-    echo "MODIFYING"
     if cat "$config" | grep "gradient_color_$i"; then
         perl -pi -e "s/^gradient_color_$i = '#[0-9A-Fa-f]+'$/gradient_color_$i = '$color'/" "$config"
+        ((j++))
     else
         echo "gradient_color_$i = '$color'" >> $config
     fi
     modified=1
     ((i++))
 done
+
+if ((j == i)); then
+    while cat "$config" | grep "gradient_color_$j"; do
+        sed -i "/^gradient_color_$j =/d" "$config"
+        ((j++))
+    done
+fi
 
 ((modified == 1)) && pkill -USR2 cava

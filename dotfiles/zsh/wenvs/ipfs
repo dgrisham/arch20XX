@@ -28,6 +28,12 @@ c() {
         'bs'|'bitswap')
             dir="$WENV_DIR/vendor/github.com/ipfs/go-bitswap"
             ;;
+        'gx')
+            dir="$GOPATH/src/github.com/whyrusleeping/gx"
+            ;;
+        'gx-go')
+            dir="$GOPATH/src/github.com/whyrusleeping/gx-go"
+            ;;
         *)
             return 1
             ;;

@@ -1,0 +1,1 @@
+/home/grish/src/get-colors/get_colors.py

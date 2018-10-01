@@ -1,2 +1,2 @@
 #!/bin/sh
-feh --bg-scale --randomize --no-fehbg '/home/grish/media/pictures/backgrounds/cowboy_bebop/spike_ship_outline-no_title.jpg' /home/grish/media/pictures/backgrounds/*-bw.{jpg,png}
+feh --bg-scale --randomize --no-fehbg '/home/grish/media/pictures/backgrounds/cowboy_bebop/spike_ship_outline-no_title.jpg' '/home/grish/media/pictures/backgrounds/it.jpg' /home/grish/media/pictures/backgrounds/*-bw.{jpg,png}

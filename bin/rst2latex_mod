@@ -1,0 +1,117 @@
+#!/usr/bin/python3
+
+# $Id: rst2latex.py 5905 2009-04-16 12:04:49Z milde $
+# Author: David Goodger <goodger@python.org>
+# Copyright: This module has been placed in the public domain.
+
+"""
+A minimal front end to the Docutils Publisher, producing LaTeX.
+"""
+
+try:
+    import locale
+    locale.setlocale(locale.LC_ALL, '')
+except:
+    pass
+
+from docutils.writers.latex2e import *
+from docutils.parsers.rst.directives.images import Image, Figure
+from docutils import nodes
+from docutils.parsers.rst import directives, roles
+from docutils.core import publish_cmdline
+
+description = ('Generates LaTeX documents from standalone reStructuredText '
+               'sources. '
+               'Reads from <source> (default is stdin) and writes to '
+               '<destination> (default is stdout).  See '
+               '<http://docutils.sourceforge.net/docs/user/latex.html> for '
+               'the full reference.')
+
+# Notes
+# =====
+#
+# -   For the `hl` role to work, the following lines must be placed in the preamble:
+#
+#     ```
+#     \usepackage{color} % xcolor also works
+#     \usepackage{soul}
+#     \soulregister\color7
+#     ```
+
+class hl(nodes.Special, nodes.Inline, nodes.PreBibliographic, nodes.FixedTextElement):
+    pass
+
+def hl_role(role, rawtext, text, lineno, inliner, options={}, content={}):
+    if 'fg' not in options and 'bg' not in options:
+        msg = inliner.reporter.error(
+           f'No foreground or background color specified for {role} role.\n'
+            'The "hl" role cannot be used directly.\n'
+            'Instead, use the "role" directive to create a new role with '
+            'associated foreground and/or background colors.', line=lineno)
+        prb = inliner.problematic(rawtext, rawtext, msg)
+        return [prb], [msg]
+    roles.set_classes(options)
+    node = hl(rawtext, utils.unescape(text, True), **options)
+    node.source, node.line = inliner.reporter.get_source_and_line(lineno)
+    return [node], []
+
+hl_role.options = { 'fg': directives.unchanged,
+                    'bg': directives.unchanged,
+                    'prefix': directives.unchanged
+                  }
+roles.register_canonical_role('hl', hl_role)
+
+# inherit from Figure and extend its run method
+class FigureLabel(Figure):
+    option_spec = Figure.option_spec.copy()
+    has_content = True
+
+    def run(self):
+        node = super().run()
+        if isinstance(node[0], nodes.system_message):
+            return node
+        figure_node = node[0]
+        # elevate the image node's 'ids' attribute to the figure node
+        figure_node['ids'] = figure_node.children[0]['ids']
+        figure_node.children[0]['ids'] = []
+        return [figure_node] + node[1:]
+
+directives.register_directive("fig", FigureLabel)
+
+class LaTeXTranslator_Mod(LaTeXTranslator):
+    # output label in depart_figure, instead of visit_figure. this way the label comes after
+    # the caption, which is required for refs to work.
+    def visit_figure(self, node):
+        self.requirements['float_settings'] = PreambleCmds.float_settings
+        alignment = node.attributes.get('align', 'center')
+        if alignment != 'center':
+            self.out.append('\n\\begin{figure} %% align = "%s"\n' % alignment)
+        else:
+            self.out.append('\n\\begin{figure}\n')
+
+    def depart_figure(self, node):
+        if node.get('ids'):
+            self.out += self.ids_to_labels(node) + ['\n']
+        super().depart_figure(node)
+
+    def visit_hl(self, node):
+        fg = node.get('fg', '')
+        bg = node.get('bg', '')
+        prefix = node.get('prefix', '')
+        self.out += "{"
+        if bg:
+            self.out += "\\sethlcolor{" + bg + "}\\hl{"
+        if fg:
+            self.out += "\\color{" + fg + "}"
+        if prefix:
+            self.out += f"{prefix} "
+
+    def depart_hl(self, node):
+        bg = node.get('bg', '')
+        if bg:
+            self.out += "}"
+        self.out += "}"
+
+writer = Writer()
+writer.translator_class = LaTeXTranslator_Mod
+publish_cmdline(writer=writer, description=description)

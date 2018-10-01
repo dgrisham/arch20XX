@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Script intended to be executed from ncmpcpp (execute_on_song_change
+# preference) running from urxvt to set album cover as background image
+
+# Copyright (c) 2013  Vyacheslav Levit
+# Licensed under The MIT License: http://opensource.org/licenses/MIT
+
+MUSIC_DIR=$MUSIC/library
+
+COVER=/tmp/cover2.jpg
+#IM_ARGS=(-limit memory 32mb -limit map 64mb)
+
+function reset_background
+{
+    # is there any better way?
+    printf "\e]20;;100x100+1000+1000\a"
+}
+
+{
+    file="$(mpc --format %file% current)"
+    album_dir="${file%/*}"
+    [[ -z "$album_dir" ]] && exit 1
+    album_dir="$MUSIC_DIR/$album_dir"
+
+    cover="$album_dir/cover.jpg"
+    rm -f "$COVER"
+    if [[ -f "$cover" ]]; then
+        cp "$cover" "$COVER"
+        # resize the image's width to 700px
+        # convert "$cover" -resize 700x "$COVER"
+    fi
+    #scale down the cover to 30% of the original
+    #place it 1% away from left and 50% away from top.
+    printf "\e]20;${COVER};55x95+50+50:op=keep-aspect\a"
+    if [[ ! -f "$cover" ]]; then
+        reset_background
+    fi
+} &

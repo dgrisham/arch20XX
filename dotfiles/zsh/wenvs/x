@@ -9,7 +9,10 @@ xb() { xbacklight $1% }
 
 # change pdf viewer
 # -----------------
-alias pdf='zathura'
+unalias pdf 2>/dev/null
+pdf() {
+    zathura $@ >/dev/null 2>&1
+}
 
 # steam
 # -----
@@ -44,7 +47,7 @@ hdmi-on() {
             ;;
         'work')
             $HOME/.screenlayout/work.sh
-            feh --bg-center --randomize --no-fehbg '/home/grish/media/pictures/backgrounds/cowboy_bebop/spike_ship_outline-no_title.jpg' /home/grish/media/pictures/backgrounds/*-bw.{jpg,png}
+            feh --bg-center --randomize --no-fehbg '/home/grish/media/pictures/backgrounds/cowboy_bebop/spike_ship_outline-no_title.jpg' '/home/grish/media/pictures/backgrounds/it.jpg' /home/grish/media/pictures/backgrounds/*-bw.{jpg,png}
             return 0
             ;;
         *)

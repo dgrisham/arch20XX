@@ -5,13 +5,14 @@ wenv_setup() {
     WENV_DEPS=('aws' 'iptb')
     WENV_NAME='bitswap-test-plots'
     WENV_BRANCH='plot-rewrite'
+    # WENV_PROJECT='plot-rewrite'
     wenv_init() {
         wenv_tmux_layout tasks
         tmux rename-window 'src'
         wenv_tmux_split c 'pipenv shell --fancy'
         tmux rename-window 'run'
         tmux select-window -t1
-        $EDITOR newplot.py
+        $EDITOR plot.py
     }
     wenv_shutdown() {
         # iptb kill
