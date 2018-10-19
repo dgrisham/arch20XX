@@ -1,0 +1,73 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR="/home/grish/work/research/thesis/repo/thesis/src"
+    # WENV_GIT_DIR="/home/grish/work/research/thesis/repo"
+    WENV_DEPS=()
+    WENV_NAME='thesis'
+    WENV_TASK=''
+    WENV_BRANCH='master'
+    wenv_init() {
+        make
+        pdf thesis.pdf &
+        wenv_tmux_layout 'devloop' -w files bin/mkbase.sh template.tex sections/* figures/* -- make
+        wenv_tmux_split -n 'tex' c 'edit tex'
+        tmux select-window -t1
+        edit -r doc
+    }
+    wenv_shutdown() { }
+}
+
+edit() {
+    local flag_r=0
+    while getopts ":r" opt; do
+        case $opt in
+            r) flag_r=1 ;;
+        esac
+    done
+    shift $((OPTIND-1))
+
+    local input="$1"
+    shift
+    case "$input" in
+        build)
+            files='Makefile'
+            ;;
+        tex)
+            files='{thesis,template}.tex'
+            ;;
+        doc)
+            files='$(echo sections/* | xargs -n1 | sort -r)'
+            ;;
+        base)
+            files='bin/mkbase.sh thesis.rst'
+            ;;
+        todo)
+            files='todos.rst'
+            ;;
+        rst|all)
+            files='{thesis.rst,sections/*}'
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+    (( flag_r == 1 )) && tmux rename-window "$input"
+    eval $EDITOR $@ "$WENV_DIR/$files"
+}
+
+_edit() {
+    COMPREPLY=()
+    complete +o default # Disable default to not deny completion, see: http://stackoverflow.com/a/19062943/1216348
+
+    local word="${COMP_WORDS[COMP_CWORD]}"
+    local prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    case "${COMP_CWORD}" in
+        1)
+            local opts="build tex doc base rst all"
+            COMPREPLY=( $(compgen -W "${opts}" -- ${word}) )
+            ;;
+    esac
+}
+complete -F _edit edit

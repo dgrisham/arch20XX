@@ -39,15 +39,25 @@ hdmi-on() {
     arg="$1"
     shift
     case "$arg" in
-        'home'|'insignia'|'tv')
+        'insignia'|'tv')
             opts="--right-of DP-0 --scale 1.2x1.2 $@"
             ;;
         'class')
             opts="--mode 1920x1080 --same-as DP-0 $@"
             ;;
+        'home')
+            $HOME/.screenlayout/home.sh
+            feh --bg-center --randomize --no-fehbg '/home/grish/media/pictures/backgrounds/cowboy_bebop/spike_ship_outline-no_title.jpg' '/home/grish/media/pictures/backgrounds/it.jpg' /home/grish/media/pictures/backgrounds/pink_floyd_dsotm{,-realistic}.jpg /home/grish/media/pictures/backgrounds/*-bw.{jpg,png}
+            return 0
+            ;;
+        'horizontal')
+            $HOME/.screenlayout/home-horizontal.sh
+            feh --bg-center --randomize --no-fehbg '/home/grish/media/pictures/backgrounds/cowboy_bebop/spike_ship_outline-no_title.jpg' '/home/grish/media/pictures/backgrounds/it.jpg' /home/grish/media/pictures/backgrounds/pink_floyd_dsotm{,-realistic}.jpg /home/grish/media/pictures/backgrounds/*-bw.{jpg,png}
+            return 0
+            ;;
         'work')
             $HOME/.screenlayout/work.sh
-            feh --bg-center --randomize --no-fehbg '/home/grish/media/pictures/backgrounds/cowboy_bebop/spike_ship_outline-no_title.jpg' '/home/grish/media/pictures/backgrounds/it.jpg' /home/grish/media/pictures/backgrounds/*-bw.{jpg,png}
+            feh --bg-center --randomize --no-fehbg '/home/grish/media/pictures/backgrounds/cowboy_bebop/spike_ship_outline-no_title.jpg' '/home/grish/media/pictures/backgrounds/it.jpg' /home/grish/media/pictures/backgrounds/pink_floyd_dsotm{,-realistic}.jpg /home/grish/media/pictures/backgrounds/*-bw.{jpg,png}
             return 0
             ;;
         *)

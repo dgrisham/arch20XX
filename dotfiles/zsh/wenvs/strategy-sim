@@ -1,14 +1,15 @@
 #!/bin/zsh
 
 wenv_setup() {
-    WENV_DIR="$WORK/research/resources/repos/strategy_sim"
+    WENV_DIR="$SRC/strategy-sim"
     WENV_DEPS=('python')
     WENV_PROJECT='strategy_sim'
     WENV_BRANCH='feat/incremental-exchanges'
     unset WENV_TASK
     wenv_init() {
         wenv_tmux_layout tasks
-        wenv_tmux_split c 'pipenv shell --fancy'
+        tmux rename-window 'src'
+        wenv_tmux_split -n 'run' c
         tmux select-window -t1
         $EDITOR src/strategy_sim/sim.py
     }
@@ -18,7 +19,9 @@ wenv_setup() {
     }
 }
 
+PIPENV_PYTHON=$(which ipython3)
+
 py() {
-    pyenv local 3.6.5
+    pyenv local 3.7
     pipenv shell --fancy
 }
