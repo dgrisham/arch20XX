@@ -148,7 +148,7 @@ map global user p '!xclip -o <ret>' -docstring 'paste from X clipboard'
 
 # commenting
 def comment %{
-    on-key %{ evaluate-commands evaluate-commands %sh{
+    on-key %{ evaluate-commands %sh{
         case "$kak_key" in
             'c') echo comment-line ;;
             'b') echo 'exec <a-i>pH:comment-block<ret>' ;;
@@ -158,8 +158,12 @@ def comment %{
 }
 map global user c :comment<ret> -docstring 'comment. c: line, b: block'
 
-# Haskell
+# Python
 # =======
+
+hook global BufSetOption filetype=python %!
+    map global user d 'iprint(f": {}")<esc>h<a-a>bs(?=[:}])<ret>i' -docstring "debug print statement"
+!
 
 # Typescript
 # ==========
@@ -232,7 +236,8 @@ hook global BufSetOption filetype=(restructuredtext) %{
                 1) echo 'exec hxypjxHr=A<ret><esc>' ;;
                 2) echo 'exec hxypjxHr-A<ret><esc>' ;;
                 3) echo 'exec hxypjxHr~A<ret><esc>' ;;
-                4) echo 'exec hxypjxHr.A<ret><esc>' ;;
+                4) echo 'exec hxypjxHr+A<ret><esc>' ;;
+                5) echo 'exec hxypjxHr.A<ret><esc>' ;;
             esac
         } }
     }
@@ -246,6 +251,7 @@ m: math
 l: raw-latex
 t: todo
 b: blank todo
+c: cite todo
 r: blank role
         }
         on-key %{ evaluate-commands %sh{
@@ -255,7 +261,8 @@ r: blank role
                 m) echo 'exec -with-hooks i:math:``<esc>hi' ;;
                 l) echo 'exec -with-hooks i:raw-latex:``<esc>hi' ;;
                 t) echo 'exec -with-hooks i:todo:``<esc>hi' ;;
-                b) echo 'exec -with-hooks i:todo-hl:`TODO`<esc>' ;;
+                b) echo 'exec -with-hooks i:hl-cyan:`TODO`<esc>' ;;
+                c) echo 'exec -with-hooks i:todo:`cite`<esc>' ;;
                 r) echo 'exec -with-hooks i::``<esc>hhhi' ;;
             esac
         } }
@@ -331,3 +338,38 @@ def surround %{
     } }
 }
 map global user e ":surround<ret>" -docstring 'surround. a: add, d: delete.'
+
+# Plugins
+# =======
+
+# Buffers
+# -------
+
+hook global WinDisplay .* info-buffers
+map global user b ':enter-buffers-mode<ret>' -docstring 'buffers mode'
+map global user B ':enter-user-mode -lock buffers<ret>' -docstring 'buffers mode (lock)'
+alias global bd delete-buffer
+alias global bf buffer-first
+alias global bl buffer-last
+alias global bo buffer-only
+alias global bo! buffer-only-force
+
+# LSP
+# ---
+
+hook global WinSetOption filetype=(go|python|sh) %{
+    hook -group lsp window InsertEnd .* lsp-formatting
+    map global user g :lsp-formatting<ret> -docstring 'lsp format'
+    map global user i :lsp-hover<ret> -docstring 'hover lsp message for current line'
+    map global goto n "<esc>:lsp-find-error --include-warnings<ret>:lsp-hover<ret>" -docstring 'go to next lsp error'
+    map global goto p "<esc>:lsp-find-error --previous --include-warnings<ret>:lsp-hover<ret>" -docstring 'go to previous lsp error'
+    set global lsp_hover_anchor true
+    set-option global lsp_server_configuration pyls.configurationSources=['flake8']
+}
+eval %sh{kak-lsp --kakoune -s $kak_session}
+
+# lineindent
+# ----------
+
+map global user l ":lineindent -1<ret>" -docstring "indent selection to preceding line's level"
+alias global li lineindent

@@ -30,8 +30,9 @@ include /usr/share/doc/task/rc/dark-gray-256.theme
 #include /usr/share/doc/task/rc/no-color.theme
 
 color.active=black on white
+report.active.columns=id,project,description
+report.active.labels=ID,Project,Description
 
-report.project.columns=id,description.desc,priority
-report.project.labels=ID,Desc,Priority
-report.project.sort=entry+
+report.project.columns=id,description
+report.project.labels=ID,Description
 report.project.filter=(status:pending or status:waiting)
