@@ -15,9 +15,11 @@ evaluate-commands %sh{
     default_text="rgb:a9a9a9"
     black="rgb:111111"
     yellow="rgb:cccc00"
+    yellow_pale="rgb:c1fc83"
     orange="rgb:eb6b2b"
     red="rgb:dc322f"
     magenta="rgb:c83682"
+    magenta_dark="rgb:c5283d"
     violet="rgb:6c71c4"
     blue="rgb:3333d3"
     blue_medium="rgb:7373ca"
@@ -26,15 +28,24 @@ evaluate-commands %sh{
     cyan_light="rgb:2aeaea"
     cyan_dark="rgb:2a99c0"
     green="rgb:9f9f00"
+    green_light="rgb:22c422"
     grey_light="rgb:989898"
     grey_medium="rgb:707070"
     grey_dark="rgb:3a3a3a"
 
     echo "
-        # then we map them to code face global value      ${orange}
+        # then we map them to code face global value
+        face global value      ${cyan_dark}
         face global type       ${blue_medium}
-        face global identifier ${blue_light}
+
+        face global variable   "rgb:c5283d"
+        # face global variable   "rgb:734b5e"
+
         face global string     ${magenta}
+        # face global string     ${yellow_pale}
+
+        face global identifier ${blue_light}
+        face global function   "rgb:11d4d4"
         face global keyword    "rgb:f8f8f8"
         face global operator   ${blue}
         face global attribute  ${violet}

@@ -1,2 +1,4 @@
 #!/bin/sh
-feh --bg-scale --randomize --no-fehbg '/home/grish/media/pictures/backgrounds/cowboy_bebop/spike_ship_outline-no_title.jpg' '/home/grish/media/pictures/backgrounds/it.jpg' /home/grish/media/pictures/backgrounds/*-bw.{jpg,png}
+scale_opt="$1"
+[[ -z "$scale_opt" ]] && scale_opt="--bg-scale"
+feh --randomize --no-fehbg "$scale_opt" /home/grish/media/pictures/backgrounds/current/*

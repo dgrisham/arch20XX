@@ -8,7 +8,8 @@ MUSIC_DIR="$MUSIC/library"
 cover="$MUSIC_DIR/$album_dir/cover.jpg"
 
 config="$DOTFILES/cava/config"
-num=4
+num="$1"
+[[ -z "$num" ]] && num=5
 
 colors=$($BIN/get_colors.py $num $cover)
 if [[ -z "$colors" ]]; then

@@ -403,7 +403,7 @@ follow_now_playing_lyrics = yes
 #
 ##
 ## Note: You can define startup screen by choosing screen from the list above.
-##
+## default startup screen
 startup_screen = media_library
 #
 ##

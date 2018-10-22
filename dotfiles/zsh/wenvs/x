@@ -47,23 +47,19 @@ hdmi-on() {
             ;;
         'home')
             $HOME/.screenlayout/home.sh
-            feh --bg-center --randomize --no-fehbg '/home/grish/media/pictures/backgrounds/cowboy_bebop/spike_ship_outline-no_title.jpg' '/home/grish/media/pictures/backgrounds/it.jpg' /home/grish/media/pictures/backgrounds/pink_floyd_dsotm{,-realistic}.jpg /home/grish/media/pictures/backgrounds/*-bw.{jpg,png}
-            return 0
             ;;
         'horizontal')
             $HOME/.screenlayout/home-horizontal.sh
-            feh --bg-center --randomize --no-fehbg '/home/grish/media/pictures/backgrounds/cowboy_bebop/spike_ship_outline-no_title.jpg' '/home/grish/media/pictures/backgrounds/it.jpg' /home/grish/media/pictures/backgrounds/pink_floyd_dsotm{,-realistic}.jpg /home/grish/media/pictures/backgrounds/*-bw.{jpg,png}
-            return 0
             ;;
         'work')
             $HOME/.screenlayout/work.sh
-            feh --bg-center --randomize --no-fehbg '/home/grish/media/pictures/backgrounds/cowboy_bebop/spike_ship_outline-no_title.jpg' '/home/grish/media/pictures/backgrounds/it.jpg' /home/grish/media/pictures/backgrounds/pink_floyd_dsotm{,-realistic}.jpg /home/grish/media/pictures/backgrounds/*-bw.{jpg,png}
-            return 0
             ;;
         *)
             opts="--auto --above DP-0 $@"
             ;;
     esac
-    xrandr --output HDMI-0 `echo "$opts"` && $HOME/.fehbg
+    $HOME/.fehbg "$fehbg_opt"
+    [[ -z "$opts" ]] && return 0
+    xrandr --output HDMI-0 `echo "$opts"`
 }
 alias hdmi-off="xrandr --output HDMI-0 --off && $HOME/.fehbg"

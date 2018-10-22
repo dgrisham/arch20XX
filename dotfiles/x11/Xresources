@@ -29,6 +29,11 @@ URxvt.scrollBar: false
 ! disable searchable scrollback
 URxvt.perl-ext-common: "default, -searchable-scrollback"
 
+URxvt.iso14755: true
+URxvt.iso14755_52: false
+
+URxvt.perl-ext-common:...,font-size
+
 ! ! BLK
 ! URxvt.color0: t_bg_bump
 ! URxvt.color8: t_fg_comment
