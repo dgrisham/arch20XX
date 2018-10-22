@@ -8,7 +8,8 @@ wenv_setup() {
     unset WENV_TASK
     wenv_init() {
         wenv_tmux_layout tasks
-        wenv_tmux_split c 'pipenv shell --fancy'
+        tmux rename-window 'src'
+        wenv_tmux_split -n 'run' c
         tmux select-window -t1
         $EDITOR src/strategy_sim/sim.py
     }

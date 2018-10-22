@@ -12,7 +12,7 @@ hook global KakBegin .* %{addhl global/ number-lines -relative}
     #set buffer autowrap_column 80
     #addhl regex ^\V{80}(\V) 1:Error
 #}
-hook global WinCreate .*[.](md|tex) %{
+hook global WinCreate .*[.](md|tex|rst) %{
     set buffer autowrap_column 80
     autowrap-enable
 }
@@ -71,7 +71,7 @@ def toggle-spell %{
     try %{
         addhl window/ ranges 'spell_regions'
         spell
-    } catch %{ rmhl window/ranges<slash>spell_regions }
+    } catch %{ rmhl window/ranges_spell_regions }
 }
 map global user <a-s> :toggle-spell<ret> -docstring 'toggle spellcheck'
 
@@ -93,16 +93,16 @@ hook global InsertCompletionHide .* %{
 }
 
 # commented headers
-def header %{
-    on-key %{ %sh{
-        case "$kak_key" in
-            '1') echo comment-line; echo 'exec hxypj<a-h>f\ l<a-l>r=o<esc>h<a-h>d' ;;
-            '2') echo comment-line; echo 'exec hxypj<a-h>f\ l<a-l>r-o<esc>h<a-h>d' ;;
-            # '3') echo comment-line; echo 'exec I##<esc>A<ret><esc>hd' ;;
-        esac
-    } }
-}
-map global user h :header<ret> -docstring 'headers'
+# def header %{
+#     on-key %{ %sh{
+#         case "$kak_key" in
+#             '1') echo comment-line; echo 'exec hxypj<a-h>f\ l<a-l>r=o<esc>h<a-h>d' ;;
+#             '2') echo comment-line; echo 'exec hxypj<a-h>f\ l<a-l>r-o<esc>h<a-h>d' ;;
+#             # '3') echo comment-line; echo 'exec I##<esc>A<ret><esc>hd' ;;
+#         esac
+#     } }
+# }
+# map global user h :header<ret> -docstring 'headers'
 # '1') echo comment-line; echo 'exec hxypjxH<a-;>LLr=A<ret><esc>klr<space>j' ;;>
 
 # auto wrap at 80 chars
@@ -123,7 +123,7 @@ def tmux-new %{
 map global user t :tmux-new<ret> -docstring 'new tmux pane. \ or -'
 
 def repl-send %{
-    on-key %{ %sh{
+    on-key %{ evaluate-commands %sh{
         case "$kak_key" in
             's') echo 'send-text' ;;
             'l') echo 'exec hxH:send-text<ret>;exec ";"<ret>' ;;
@@ -148,7 +148,7 @@ map global user p '!xclip -o <ret>' -docstring 'paste from X clipboard'
 
 # commenting
 def comment %{
-    on-key %{ %sh{
+    on-key %{ evaluate-commands evaluate-commands %sh{
         case "$kak_key" in
             'c') echo comment-line ;;
             'b') echo 'exec <a-i>pH:comment-block<ret>' ;;
@@ -194,7 +194,7 @@ hook global BufSetOption filetype=(markdown|latex) %{
 
     # custom commands
     def header %{
-        on-key %{ %sh{
+        on-key %{ evaluate-commands %sh{
             case "$kak_key" in
                 '1') echo 'exec hxypjxHr=A<ret><esc>' ;;
                 '2') echo 'exec hxypjxHr-A<ret><esc>' ;;
@@ -207,8 +207,8 @@ hook global BufSetOption filetype=(markdown|latex) %{
 
     def inline_code_helper %{ exec ',ea`f`a{.}<esc>;i' }
     def inline_code %{
-        on-key %{ %sh{
-            case "$kak_key" in
+        on-key %{ evaluate-commands %sh{
+            case $kak_key in
                 'i') echo inline_code_helper ;;
                 'h') echo 'inline_code_helper;exec hs<esc><ret>' ;;
                 'p') echo 'inline_code_helper;exec python<esc><ret>' ;;
@@ -217,6 +217,50 @@ hook global BufSetOption filetype=(markdown|latex) %{
         } }
     }
     map global user i :inline_code<ret> -docstring 'inline code'
+}
+
+hook global BufSetOption filetype=(restructuredtext) %{
+    # format text with pandoc
+    # map global user g %{ | pandoc --from=rst --to=rst --columns=80 <ret> } -docstring 'format md'
+    # format lines to 80 characters (escape backticks to preseve calls to default role)
+    map global user g %{ | sed 's/`/\\`/g' | pandoc --from=rst --to=rst --columns=81 | sed 's/\\`/`/g' <ret> } -docstring 'format md'
+
+    # custom commands
+    def -hidden header %{
+        on-key %{ evaluate-commands %sh{
+            case $kak_key in
+                1) echo 'exec hxypjxHr=A<ret><esc>' ;;
+                2) echo 'exec hxypjxHr-A<ret><esc>' ;;
+                3) echo 'exec hxypjxHr~A<ret><esc>' ;;
+                4) echo 'exec hxypjxHr.A<ret><esc>' ;;
+            esac
+        } }
+    }
+    map global user h :header<ret> -docstring 'make header'
+
+    def -hidden role %{
+        info -title Roles %{
+d: default role
+i: literal
+m: math
+l: raw-latex
+t: todo
+b: blank todo
+r: blank role
+        }
+        on-key %{ evaluate-commands %sh{
+            case $kak_key in
+                d) echo 'exec -with-hooks i``<esc>hi' ;;
+                i) echo 'exec -with-hooks i````<esc>hhi' ;;
+                m) echo 'exec -with-hooks i:math:``<esc>hi' ;;
+                l) echo 'exec -with-hooks i:raw-latex:``<esc>hi' ;;
+                t) echo 'exec -with-hooks i:todo:``<esc>hi' ;;
+                b) echo 'exec -with-hooks i:todo-hl:`TODO`<esc>' ;;
+                r) echo 'exec -with-hooks i::``<esc>hhhi' ;;
+            esac
+        } }
+    }
+    map global user r :role<ret> -docstring 'insert role'
 }
 
 def add-surround %!on-key %@exec %sh&

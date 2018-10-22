@@ -1,0 +1,45 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR="$SRC/bitswap-experiments-ctl"
+    WENV_DEPS=()
+    WENV_PROJECT='bitswap-experiments-ctl'
+    WENV_BRANCH='master'
+    WENV_TASK=''
+    WENV_GITDIR=""
+
+    wenv_init() { }
+    wenv_shutdown() { }
+}
+
+c() {
+    case "$1" in
+        'sim')
+            wenv cd strategy-sim
+            ;;
+        'exp'|'tests')
+            wenv cd bitswap-tests
+            ;;
+        'exp-plots'|'test-plots')
+            wenv cd bitswap-test-plots
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+_c() {
+    COMPREPLY=()
+    complete +o default
+
+    local work="${COMP_WORDS[COMP_CWORD]}"
+    local prev="${COMP_WORDS[COMP_CWORD-1]}"
+    case "${COMP_CWORD}" in
+        1)
+            local opts="sim exp exp-plots"
+            COMPREPLY=( $(compgen -W "${opts}" -- ${word}) )
+            ;;
+    esac
+}
+complete -F _c c
