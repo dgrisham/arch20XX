@@ -13,10 +13,7 @@ wenv_setup() {
         tmux select-window -t1
         $EDITOR src/strategy_sim/sim.py
     }
-    wenv_shutdown() {
-        # TODO: how to do this?
-        #[[ $PIPENV_ACTIVE -eq 1 ]] && echo 'hi' && exit
-    }
+    wenv_shutdown() {}
 }
 
 PIPENV_PYTHON=$(which ipython3)

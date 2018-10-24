@@ -357,14 +357,19 @@ alias global bo! buffer-only-force
 # LSP
 # ---
 
-hook global WinSetOption filetype=(go|python|sh) %{
-    hook -group lsp window InsertEnd .* lsp-formatting
+hook global BufSetOption filetype=(python) %{
+    set-option global lsp_server_configuration pyls.configurationSources=['flake8']
+}
+hook global WinSetOption filetype=(go|python) %{
+    hook -group lsp buffer InsertEnd .* lsp-formatting-sync
+    hook -group lsp buffer BufWritePre .* lsp-formatting-sync
     map global user g :lsp-formatting<ret> -docstring 'lsp format'
+}
+hook global BufSetOption filetype=(go|python|sh) %{
     map global user i :lsp-hover<ret> -docstring 'hover lsp message for current line'
     map global goto n "<esc>:lsp-find-error --include-warnings<ret>:lsp-hover<ret>" -docstring 'go to next lsp error'
     map global goto p "<esc>:lsp-find-error --previous --include-warnings<ret>:lsp-hover<ret>" -docstring 'go to previous lsp error'
     set global lsp_hover_anchor true
-    set-option global lsp_server_configuration pyls.configurationSources=['flake8']
 }
 eval %sh{kak-lsp --kakoune -s $kak_session}
 
