@@ -361,8 +361,8 @@ hook global BufSetOption filetype=(python) %{
     set-option global lsp_server_configuration pyls.configurationSources=['flake8']
 }
 hook global WinSetOption filetype=(go|python) %{
-    hook -group lsp buffer InsertEnd .* lsp-formatting-sync
-    hook -group lsp buffer BufWritePre .* lsp-formatting-sync
+    hook -group lsp window InsertEnd .* lsp-formatting-sync
+    hook -group lsp window BufWritePre .* lsp-formatting-sync
     map global user g :lsp-formatting<ret> -docstring 'lsp format'
 }
 hook global BufSetOption filetype=(go|python|sh) %{
@@ -372,6 +372,7 @@ hook global BufSetOption filetype=(go|python|sh) %{
     set global lsp_hover_anchor true
 }
 eval %sh{kak-lsp --kakoune -s $kak_session}
+# nop %sh{ (kak-lsp -s $kak_session -vvv ) > /tmp/kak-lsp.log 2>&1 < /dev/null & }
 
 # lineindent
 # ----------
